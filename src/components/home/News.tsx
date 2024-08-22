@@ -12,14 +12,16 @@ export default function News() {
                 <p className="text-lg text-center text-zinc-400"
                 >OrleansMC sunucusu ile ilgili haberler ve güncellemeler</p>
             </div>
-            <div>
+            <div className="lg:max-w-[40rem]">
                 <Link
-                    className="flex flex-row space-x-8 hover:shadow-lg p-8 rounded-lg bg-zinc-900/70 hover:bg-zinc-900/75 transition-transform"
+                    className="flex flex-row lg:items-center space-x-8 hover:shadow-lg p-8 
+                    rounded-lg bg-zinc-900/70 hover:bg-zinc-900/75 transition-transform
+                    lg:flex-col lg:space-x-0 lg:space-y-8"
                     href={`/haberler/1`}>
                     <div className="relative rounded-lg overflow-hidden flex-[1_0_0%]">
                         <Image className="" src="/uploads/fire_c244b1f02a.png" alt="Haber 1" width={245 * 3} height={53 * 3} />
                     </div>
-                    <div className="flex-[1_0_0%]">
+                    <div className="flex-[1_0_0%] lg:text-center">
                         <h3 className="text-2xl font-semibold mb-3">1.0.0 - İlk Ateş 🔥</h3>
                         <span className="text-zinc-500 text-lg">
                             <span className="text-yellow-400 font-semibold">
@@ -32,8 +34,8 @@ export default function News() {
                                 Ağustos 15, 2024
                             </span>
                         </span>
-                        <p className="text-lg text-zinc-400 mt-6 leading-9 text-pretty">
-                            OrleansMC, Minecraft dünyasının en heyecanlı ve özgün deneyimlerinden birini sunmak için burada! Yeni oyun modumuz "Diyarlar" ile karşınızdayız. Her oyuncu, başlangıçta kendine özel bir iklim seçme şansı bulacak. İster tropikal, ister soğuk ve karlı, isterse de kuru ve sıcak bir bölge; her iklim, kendine özgü kaynaklar, zorluklar ve güzelliklerle dolu olacak.
+                        <p className="text-lg text-zinc-400 mt-6 leading-8 text-pretty">
+                            OrleansMC, Minecraft dünyasının en heyecanlı ve özgün deneyimlerinden birini sunmak için burada! Yeni oyun modumuz "Diyarlar" ile karşınızdayız. Her oyuncu, başlangıçta kendine özel bir iklim seçme şansı bulacak. İster tropikal, ister soğuk ve karlı, isterse de kuru ve sıcak bir bölge; her iklim, kendine özgü...
                         </p>
                     </div>
                 </Link>

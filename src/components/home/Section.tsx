@@ -22,22 +22,22 @@ export default function Section(props: SectionProps) {
 
     return (
         <section className={
-            "flex justify-between items-center" +
+            "flex justify-between items-center lg:!flex-col lg:space-y-16" +
             (props.imagePosition === "right" ? " flex-row-reverse" : "")
         }>
-            <div className={"flex-[3_0_0%]" + (props.imagePosition === "right" ? " flex justify-end" : "")}
-                data-aos={"fade-" + (props.imagePosition === "right" ? "left" : "right")} data-offset="100">
+            <div className={"flex-[3_0_0%] lg:!justify-center" + (props.imagePosition === "right" ? " flex justify-end" : " lg:flex")}
+                data-aos={"fade-" + (props.imagePosition === "right" ? "left" : "right")} data-aos-offset="100">
                 <Image className=""
                     quality={100}
                     placeholder="blur"
                     blurDataURL={blurDataUrl}
                     src={props.image} alt={props.imageAlt} width={props.imageWidth} height={props.imageHeight} />
             </div>
-            <div className="flex-[4_0_0%]" data-aos={"fade-" + (props.imagePosition === "right" ? "right" : "left")} data-offset="100">
+            <div className="flex-[4_0_0%] lg:flex lg:flex-col lg:items-center lg:justify-center lg:text-center lg:max-w-[40rem]" data-aos={"fade-" + (props.imagePosition === "right" ? "right" : "left")} data-aos-offset="100">
                 <h2 className="text-3xl font-semibold mb-5">
                     {props.title}
                 </h2>
-                <p className="text-xl text-zinc-400 leading-9 text-pretty">
+                <p className="text-lg text-zinc-400 leading-8 text-pretty">
                     {props.description}
                 </p>
                 {

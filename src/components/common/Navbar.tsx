@@ -27,9 +27,9 @@ export default function Navbar() {
     ]
     const router = useRouter();
     return (
-        <header className="container">
+        <header className="flex justify-center w-full">
             <div className="glow"></div>
-            <nav className="flex justify-between backdrop-blur items-center py-4 h-24 fixed z-50 container">
+            <nav className="flex justify-between backdrop-blur items-center py-5 fixed z-50 container">
                 <div>
                     <ul className="flex space-x-4 font-semibold items-center">
                         {navigators.map((navigator, index) => (

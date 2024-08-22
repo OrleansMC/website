@@ -19,15 +19,29 @@
 body {
   font-size: 1.125rem;
   line-height: 1.75rem;
+  overflow-x: hidden;
 }
 
 .container {
-  width: 80%;
-  max-width: 1400px;
-  margin: auto;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 2rem;
+  padding-left: 2rem;
+
+  @media screen and (min-width: 1200px) {
+    max-width: 1200px;
+  }
+
+  @media screen and (max-width: 992px) {
+    max-width: 992px;
+  }
+
+  @media screen and (max-width: 768px) {
+    max-width: 768px;
+  }
 
   @media screen and (max-width: 576px) {
-    width: 90%;
+    max-width: 576px;
   }
 }
 

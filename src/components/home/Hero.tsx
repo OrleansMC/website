@@ -5,14 +5,14 @@ import Button from "../common/Button";
 export default function Hero() {
     return (
         <header data-aos="fade-down" data-offset="100">
-            <div className="flex flex-col justify-center items-center h-[48rem]">
+            <div className="flex flex-col justify-center items-center h-[47rem]">
                 <Image className=""
                     src="/uploads/logo_ae2b79e367.png" alt="Logo"
                     quality={100}
                     placeholder="blur"
-                    blurDataURL={"/_next/image?url=/uploads/logo_ae2b79e367.png&w=750&q=5"}
-                    width={245 * 2.75}
-                    height={53 * 2.75}
+                    blurDataURL={"/_next/image?url=/uploads/logo_ae2b79e367.png&w=640&q=5"}
+                    width={245 * 2.6}
+                    height={53 * 2.6}
                 />
                 <Button type="button" onClick={() => { }}
                     className="bg-gray-500/85 hover:bg-gray-500 mt-10">

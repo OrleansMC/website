@@ -8,7 +8,7 @@ export default function Home() {
     return (
         <Layout>
             <Hero />
-            <div className="flex flex-col space-y-48">
+            <div className="flex flex-col gap-48">
                 <News />
                 <Section
                     title="Discord Topluluğumuzun Bir Parçası Olun"

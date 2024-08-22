@@ -14,6 +14,22 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
     },
+    screens: {
+      '2xl': { 'max': '1536px' },
+      // => @media (max-width: 1535px) { ... }
+
+      'xl': { 'max': '1280px' },
+      // => @media (max-width: 1279px) { ... }
+
+      'lg': { 'max': '1024px' },
+      // => @media (max-width: 1023px) { ... }
+
+      'md': { 'max': '768px' },
+      // => @media (max-width: 767px) { ... }
+
+      'sm': { 'max': '640px' },
+      // => @media (max-width: 639px) { ... }
+    },
   },
   plugins: [],
 };

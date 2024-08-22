@@ -64,7 +64,14 @@ export default class BlogManager {
                                     width: blog.attributes.thumbnail.data.attributes.width,
                                     height: blog.attributes.thumbnail.data.attributes.height,
                                     url: blog.attributes.thumbnail.data.attributes.url,
-                                    blurhash: blog.attributes.thumbnail.data.attributes.blurhash
+                                    blurhash: blog.attributes.thumbnail.data.attributes.blurhash,
+                                    formats: {
+                                        thumbnail: {
+                                            url: blog.attributes.thumbnail.data.attributes.formats.thumbnail.url,
+                                            width: blog.attributes.thumbnail.data.attributes.formats.thumbnail.width,
+                                            height: blog.attributes.thumbnail.data.attributes.formats.thumbnail.height
+                                        }
+                                    }
                                 }
                             }
                         }

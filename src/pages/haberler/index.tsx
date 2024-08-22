@@ -8,7 +8,7 @@ import React from 'react'
 
 type BlogsProps = InferGetServerSidePropsType<typeof getServerSideProps> & React.HTMLProps<HTMLDivElement>
 
-export default function Blogs({ blogs, page, lastPage }: BlogsProps) {
+export default function BlogsPage({ blogs, page, lastPage }: BlogsProps) {
     const router = useRouter();
     const [currentPage, setCurrentPage] = React.useState(page);
 

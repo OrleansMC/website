@@ -41,7 +41,7 @@ export default function News({ lastBlog }: NewsProps) {
                             </span>
                         </span>
                         <p className="text-lg text-zinc-400 mt-6 leading-8 text-pretty">
-                            {lastBlog?.attributes.description.slice(0, 320)}...
+                            {Util.cleanMarkdown(lastBlog?.attributes.description).slice(0, 320)}...
                         </p>
                     </div>
                 </Link>

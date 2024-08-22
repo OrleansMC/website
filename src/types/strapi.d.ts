@@ -6,6 +6,13 @@ type StrapiImage = {
             height: number;
             url: string;
             blurhash: string;
+            formats: {
+                thumbnail: {
+                    url: string;
+                    width: number;
+                    height: number;
+                }
+            }
         }
     }
 }

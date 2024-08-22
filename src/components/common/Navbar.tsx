@@ -36,7 +36,9 @@ export default function Navbar() {
                             <li key={index} className="flex items-center relative">
                                 <Button
                                     type="link" href={navigator.url}
-                                    className={(router.pathname === navigator.url ? `${navigator.bg} ` : "") + `hover:${navigator.bg}`}>
+                                    className={((navigator.url == "/" && router.pathname == "/") ||
+                                        (navigator.url != "/" && router.pathname.startsWith(navigator.url))
+                                        ? `${navigator.bg} ` : "") + `hover:${navigator.bg}`}>
                                     {navigator.name}
                                 </Button>
                             </li>

@@ -18,12 +18,12 @@ export default function BlogCard({ blog }: BlogCardProp) {
                 <div className="relative rounded-lg overflow-hidden">
                     <Image
                         className=""
-                        src="/uploads/fire_c244b1f02a.png"
-                        alt="Haber 1"
+                        src={blog.attributes.thumbnail.data.attributes.url}
+                        alt="Blog Thumbnail"
                         width={750}
                         height={424}
                         placeholder="blur"
-                        blurDataURL={"/_next/image?url=%2Fuploads%2Ffire_c244b1f02a.png&w=25&q=50"}
+                        blurDataURL={blog.attributes.thumbnail.data.attributes.formats.thumbnail.url}
                     />
                 </div>
                 <div className="lg:text-center">
@@ -40,7 +40,7 @@ export default function BlogCard({ blog }: BlogCardProp) {
                         </span>
                     </span>
                     <p className="text-lg text-zinc-400 mt-2 leading-8 text-pretty">
-                        {blog.attributes.description.slice(0, 150)}...
+                        {Util.cleanMarkdown(blog.attributes.description).slice(0, 150)}...
                     </p>
                 </div>
             </Link>

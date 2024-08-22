@@ -65,11 +65,11 @@ export default function Footer() {
         }
     ]
     return (
-        <footer className="container mb-8 mt-52">
-            <div className="rounded-tl-lg rounded-tr-lg bg-zinc-900/70 px-12 py-9">
+        <footer className="container mb-8 mt-16">
+            <div className="rounded-tl-lg rounded-tr-lg bg-dark-950 px-12 py-9">
                 <div className="flex gap-10 lg:flex-wrap items-center justify-between md:flex-col">
                     <div className="flex flex-col items-center space-y-2">
-                        <Image src="/uploads/logo_903c38fe13.png" alt="OrleansMC" width={245} height={53} quality={100} />
+                        <Image src="/uploads/logo_ae2b79e367.png" alt="OrleansMC" width={245} height={53} quality={100} />
                         <p className="text-zinc-400 text-center text-xs max-w-[17rem]">
                             We are in no way affiliated with or endorsed by Mojang, AB.
                         </p>
@@ -95,7 +95,7 @@ export default function Footer() {
                 </div>
             </div>
 
-            <div className="rounded-bl-lg rounded-br-lg bg-zinc-800/60 px-12 py-3">
+            <div className="rounded-bl-lg rounded-br-lg bg-dark-800 px-12 py-3">
                 <div className="flex items-center justify-between md:flex-col md:space-y-1">
                     <p className="text-zinc-400 text-base">
                         © 2024 OrleansMC. Tüm hakları saklıdır.

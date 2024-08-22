@@ -2,14 +2,23 @@ import Hero from '@/components/home/Hero'
 import News from '@/components/home/News'
 import Section from '@/components/home/Section'
 import Layout from '@/layouts/Layout'
+import BlogManager, { Blog } from '@/lib/server/BlogManager'
 import React from 'react'
 
-export default function Home() {
+type HomeProps = {
+    lastBlog: Blog
+} & React.HTMLProps<HTMLDivElement>
+
+export default function Home({ lastBlog }: HomeProps) {
     return (
-        <Layout>
+        <Layout
+            title="OrleansMC - Minecraft Sunucusu"
+            description="OrleansMC, Minecraft sunucusu. Türkiye'nin en iyi Minecraft sunucusu."
+            ogDescription="OrleansMC, Minecraft sunucusu. Türkiye'nin en iyi Minecraft sunucusu."
+        >
             <Hero />
-            <div className="flex flex-col gap-48">
-                <News />
+            <div className="flex flex-col gap-48 mb-44">
+                <News lastBlog={lastBlog} />
                 <Section
                     title="Discord Topluluğumuzun Bir Parçası Olun"
                     description="OrleansMC Discord sunucumuza katılarak topluluğumuzun bir parçası olabilirsiniz. 
@@ -41,4 +50,13 @@ export default function Home() {
             </div>
         </Layout>
     )
+}
+
+
+export function getServerSideProps() {
+    return {
+        props: {
+            lastBlog: BlogManager.getInstance().blogs[0]
+        }
+    }
 }

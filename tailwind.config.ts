@@ -13,6 +13,12 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors: {
+        'dark-950': '#12121e',
+        'dark-900': '#141520',
+        'dark-850': '#171722',
+        'dark-800': '#1a1a25',
+      }
     },
     screens: {
       '2xl': { 'max': '1536px' },
@@ -29,7 +35,7 @@ const config: Config = {
 
       'sm': { 'max': '640px' },
       // => @media (max-width: 639px) { ... }
-    },
+    }
   },
   plugins: [],
 };

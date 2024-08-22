@@ -33,8 +33,8 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="apple-mobile-web-app-title" content="OrleansMC - Minecraft Sunucusu" />
         <meta name="color-scheme" content="dark" />
 
-        <link rel="shortcut icon" href="/uploads/rounded_logo_b2d306763c.png"></link>
-        <link rel="apple-touch-icon" href="/uploads/rounded_logo_b2d306763c.png" sizes="512x512"></link>
+        <link rel="shortcut icon" href="/_next/image?url=/uploads/icon_79e19a6c43.png&w=48&q=100"></link>
+        <link rel="apple-touch-icon" href="/_next/image?url=/uploads/icon_79e19a6c43.png&w=512&q=100" sizes="512x512"></link>
 
         <meta name="twitter:card" property="twitter:card" content="summary" />
         <meta name="twitter:site" property="twitter:site" content="@orleansmc" />

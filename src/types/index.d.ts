@@ -1,3 +1,5 @@
+import BlogManager from "@/lib/server/BlogManager";
+
 declare namespace JSX {
     interface IntrinsicElements {
         "lottie-player": any;
@@ -6,6 +8,8 @@ declare namespace JSX {
 
 declare namespace NodeJS {
     interface ProcessEnv {
-        [key: string]: undefined;
+        [key: string]: unknown;
+        STRAPI_URL: string;
+        STRAPI_TOKEN: string;
     }
 }

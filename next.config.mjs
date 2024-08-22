@@ -52,6 +52,7 @@ const nextConfig = {
   reactStrictMode: true,
   experimental: {
     webpackBuildWorker: true,
+    instrumentationHook: true
   },
   poweredByHeader: false,
   sassOptions: {

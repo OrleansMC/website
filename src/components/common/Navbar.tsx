@@ -11,7 +11,7 @@ export default function Navbar() {
         },
         {
             name: "Haberler",
-            url: "#",
+            url: "/haberler",
             bg: "bg-blue-500"
         },
         {

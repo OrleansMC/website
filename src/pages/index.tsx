@@ -2,7 +2,7 @@ import Hero from '@/components/home/Hero'
 import News from '@/components/home/News'
 import Section from '@/components/home/Section'
 import Layout from '@/layouts/Layout'
-import BlogManager, { Blog } from '@/lib/server/BlogManager'
+import BlogManager, { Blog } from '@/lib/server/blogs/BlogManager'
 import React from 'react'
 
 type HomeProps = {
@@ -30,7 +30,6 @@ export default function Home({ lastBlog }: HomeProps) {
                     imageWidth={360}
                     imageHeight={360}
                     imagePosition="left"
-                    blurhash='T89HhQ?wI8%hIAofQkH=cFR4MwpJ'
                     discordButton
                 />
                 <Section
@@ -43,7 +42,6 @@ export default function Home({ lastBlog }: HomeProps) {
                     imageWidth={360}
                     imageHeight={360}
                     imagePosition="right"
-                    blurhash='TKCaFuS~wP*GypOW0guLXj9]KI-p'
                     buttonText="Rehberlere Göz At"
                     buttonUrl="/rehberler"
                 />

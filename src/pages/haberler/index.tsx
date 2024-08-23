@@ -1,7 +1,7 @@
 import BlogCard from '@/components/blogs/BlogCard'
 import Button from '@/components/common/Button'
 import Layout from '@/layouts/Layout'
-import BlogManager, { Blog } from '@/lib/server/BlogManager'
+import BlogManager, { Blog } from '@/lib/server/blogs/BlogManager'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
 import React from 'react'

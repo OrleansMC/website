@@ -10,7 +10,7 @@ export default function Hero() {
                     src="/uploads/logo_ae2b79e367.png" alt="Logo"
                     quality={100}
                     placeholder="blur"
-                    blurDataURL={"/_next/image?url=/uploads/logo_ae2b79e367.png&w=640&q=5"}
+                    blurDataURL={"/uploads/thumbnail_logo_ae2b79e367.png"}
                     width={245 * 2.6}
                     height={53 * 2.6}
                 />

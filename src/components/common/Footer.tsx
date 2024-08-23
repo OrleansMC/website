@@ -69,7 +69,14 @@ export default function Footer() {
             <div className="rounded-tl-lg rounded-tr-lg bg-dark-950 px-12 py-9">
                 <div className="flex gap-10 lg:flex-wrap items-center justify-between md:flex-col">
                     <div className="flex flex-col items-center space-y-2">
-                        <Image src="/uploads/logo_ae2b79e367.png" alt="OrleansMC" width={245} height={53} quality={100} />
+                        <Image
+                            src="/uploads/logo_ae2b79e367.png"
+                            alt="OrleansMC Logo"
+                            width={245}
+                            placeholder="blur"
+                            blurDataURL="/uploads/thumbnail_logo_ae2b79e367.png"
+                            height={53}
+                            quality={100} />
                         <p className="text-zinc-400 text-center text-xs max-w-[17rem]">
                             We are in no way affiliated with or endorsed by Mojang, AB.
                         </p>

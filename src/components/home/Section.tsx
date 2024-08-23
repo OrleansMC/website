@@ -1,6 +1,5 @@
 import Image from "next/image";
 import React from "react";
-import useNextBlurhash from "use-next-blurhash";
 import Button from "../common/Button";
 
 type SectionProps = {
@@ -11,15 +10,12 @@ type SectionProps = {
     imageWidth: number;
     imageHeight: number;
     imagePosition: "left" | "right";
-    blurhash: string;
     buttonText?: string;
     buttonUrl?: string;
     discordButton?: boolean;
 }
 
 export default function Section(props: SectionProps) {
-   const [blurDataUrl] = useNextBlurhash(props.blurhash);
-
     return (
         <section className={
             "flex justify-between items-center lg:!flex-col lg:space-y-16" +
@@ -30,7 +26,7 @@ export default function Section(props: SectionProps) {
                 <Image className=""
                     quality={100}
                     placeholder="blur"
-                    blurDataURL={blurDataUrl}
+                    blurDataURL={props.image.replace(/\/uploads\//, "/uploads/thumbnail_")}
                     src={props.image} alt={props.imageAlt} width={props.imageWidth} height={props.imageHeight} />
             </div>
             <div className="flex-[4_0_0%] lg:flex lg:flex-col lg:items-center lg:justify-center lg:text-center lg:max-w-[40rem]" data-aos={"fade-" + (props.imagePosition === "right" ? "right" : "left")} data-aos-offset="100">

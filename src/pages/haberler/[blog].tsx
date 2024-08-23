@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
-import { Blog } from "@/lib/server/BlogManager";
+import { Blog } from "@/lib/server/blogs/BlogManager";
 import Util from "@/lib/common/Util";
 import { GetServerSideProps } from "next";
 import { createRoot } from "react-dom/client";

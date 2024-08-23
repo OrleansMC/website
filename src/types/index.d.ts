@@ -1,4 +1,4 @@
-import BlogManager from "@/lib/server/BlogManager";
+import BlogManager from "@/lib/server/blog/BlogManager";
 
 declare namespace JSX {
     interface IntrinsicElements {

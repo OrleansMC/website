@@ -19,6 +19,9 @@ export default function RegisterPage(props: PageProps) {
     const [recaptchaVisible, setRecaptchaVisible] = React.useState<boolean>(false);
     const [submitting, setSubmitting] = React.useState<boolean>(false);
     const [pinRequested, setPinRequested] = React.useState<boolean>(false);
+    const [pendingEmail, setPendingEmail] = React.useState<string>('');
+    const [pendingUsername, setPendingUsername] = React.useState<string>('');
+    const [pendingPassword, setPendingPassword] = React.useState<string>('');
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -28,7 +31,7 @@ export default function RegisterPage(props: PageProps) {
         }
 
         const token = recaptchaRef.current?.getValue();
-        if (!token) {
+        if (!token && !pinRequested) {
             setRecaptchaVisible(true);
             return;
         }
@@ -36,10 +39,14 @@ export default function RegisterPage(props: PageProps) {
         recaptchaRef.current?.reset();
         setRecaptchaVisible(false);
 
-        const username = (e.currentTarget.querySelector('#username') as HTMLInputElement).value;
-        const email = (e.currentTarget.querySelector('#email') as HTMLInputElement).value;
-        const password = (e.currentTarget.querySelector('#password') as HTMLInputElement).value;
-        const passwordAgain = (e.currentTarget.querySelector('#password-again') as HTMLInputElement).value;
+        const username = (e.currentTarget.querySelector('#username') as HTMLInputElement)?.value || pendingUsername;
+        const email = (e.currentTarget.querySelector('#email') as HTMLInputElement)?.value || pendingEmail;
+        const password = (e.currentTarget.querySelector('#password') as HTMLInputElement)?.value || pendingPassword;
+        const passwordAgain = (e.currentTarget.querySelector('#password-again') as HTMLInputElement)?.value || pendingPassword;
+
+        setPendingEmail(email);
+        setPendingUsername(username);
+        setPendingPassword(password);
 
         if (!Util.isValidEmail(email)) {
             const emailInput = e.currentTarget.querySelector('#email') as HTMLInputElement;
@@ -52,30 +59,56 @@ export default function RegisterPage(props: PageProps) {
         if (password !== passwordAgain) {
             const passwordInput = e.currentTarget.querySelector('#password') as HTMLInputElement;
             const passwordAgainInput = e.currentTarget.querySelector('#password-again') as HTMLInputElement;
-            passwordInput.value = '';
-            passwordAgainInput.value = '';
-            passwordInput.focus();
+            if (passwordInput && passwordAgainInput) {
+                passwordInput.value = '';
+                passwordAgainInput.value = '';
+                passwordInput.focus();
+            }
             setErrorMessage('Şifreler uyuşmuyor.');
             return;
         }
 
-
         setSubmitting(true);
+
+        let pin = '';
+        for (let i = 0; i < 6; i++) {
+            pin += (document.getElementById(`pin-${i}`) as HTMLInputElement)?.value;
+        }
 
         try {
             await axios.post('/api/auth/register', {
-                email,
-                username,
-                password,
-                captcha: token
+                email: email,
+                username: username,
+                password: password,
+                captcha: token || undefined,
+                pin: pinRequested ? pin || "undefined" : undefined
             });
 
+            if (pinRequested) {
+                router.push('/giris-yap');
+                return;
+            }
             setPinRequested(true);
+            setErrorMessage('');
             setSubmitting(false);
         } catch (error) {
-            setErrorMessage((error as any).response.data.message);
+            setErrorMessage((error as any).response.data.name);
             setSubmitting(false);
         }
+    }
+
+    const getPinInput = (index: number) => {
+        return <input type="text" maxLength={1} pattern="[0-9]{1}"
+            id={`pin-${index}`}
+            className='w-16 h-16 p-4 outline-none bg-dark-850 border-2 border-dark-500 rounded-lg text-center text-2xl'
+            onKeyUp={(e) => {
+                if (e.key === 'Backspace') {
+                    (document.getElementById(`pin-${index - 1}`) as HTMLInputElement)?.focus();
+                } else {
+                    (document.getElementById(`pin-${index + 1}`) as HTMLInputElement)?.focus();
+                }
+            }}
+        />
     }
 
     return (
@@ -96,34 +129,56 @@ export default function RegisterPage(props: PageProps) {
                 </div>
                 <div className='flex-[9_0_0%]' >
                     <h1 className='text-4xl font-semibold'>Kaydol</h1>
-                    {!errorMessage && <p className='text-zinc-400 mt-4'>
-                        Büyük küçük harflere dikkat ederek doğru bilgileri giriniz!
+                    {
+                        submitting &&
+                        <p className='text-zinc-400 mt-4'>İşlem yapılıyor...</p>
+                    }
+                    {!errorMessage && !submitting && <p className='text-zinc-400 mt-4'>
+                        {
+                            pinRequested ?
+                                'E-posta adresinize gönderilen pin kodunu girin' :
+                                'Büyük küçük harflere dikkat ederek doğru bilgileri giriniz!'
+                        }
                     </p>}
                     {
-                        errorMessage &&
+                        errorMessage && !submitting &&
                         <p className='text-red-500 mt-4'>{errorMessage}</p>
                     }
                     <form className='mt-4 flex flex-col gap-4' onSubmit={onSubmit}>
-                        <Input
-                            id='username'
-                            type="text"
-                            placeholder="Minecraft Adı"
-                        />
-                        <Input
-                            id='email'
-                            type="email"
-                            placeholder="E-Posta Adresi"
-                        />
-                        <Input
-                            id='password'
-                            type="password"
-                            placeholder="Şifre"
-                        />
-                        <Input
-                            id='password-again'
-                            type="password"
-                            placeholder="Şifre Tekrar"
-                        />
+                        {!pinRequested ? <>
+                            <Input
+                                id='username'
+                                type="text"
+                                placeholder="Minecraft Adı"
+                            />
+                            <Input
+                                id='email'
+                                type="email"
+                                placeholder="E-Posta Adresi"
+                            />
+                            <Input
+                                id='password'
+                                type="password"
+                                placeholder="Şifre"
+                            />
+                            <Input
+                                id='password-again'
+                                type="password"
+                                placeholder="Şifre Tekrar"
+                            />
+                        </> : <>
+                            <div className='flex gap-2'>
+                                {
+                                    Array.from({ length: 3 }).map((_, index) => getPinInput(index))
+                                }
+                                <span className='text-zinc-400 text-lg flex items-center mx-2'>
+                                    -
+                                </span>
+                                {
+                                    Array.from({ length: 3 }).map((_, index) => getPinInput(index + 3))
+                                }
+                            </div>
+                        </>}
                         <ReCAPTCHA
                             style={{ display: recaptchaVisible ? 'block' : 'none' }}
                             ref={recaptchaRef}

@@ -59,12 +59,12 @@ export default class AuthManager {
 
         Util.validateMinecraftNickname(username);
 
-        const user = await this.userCollection.findOne({ _id: username.toLocaleLowerCase() });
+        const user = await this.getWebUser(username);
         if (user) {
             throw new Error("Bu kullanıcı adı zaten alınmış.");
         }
 
-        const emailUser = await this.userCollection.findOne({ email });
+        const emailUser = await this.getWebUserByEmail(email);
         if (emailUser) {
             throw new Error("Bu e-posta adresi zaten kullanılmakta.");
         }
@@ -78,15 +78,18 @@ export default class AuthManager {
 
         const pendingRegistration = this.pendingRegistrations.get(username);
         if (pendingRegistration && !pin) {
+            ConsoleManager.warn("AuthManager", "Kullanıcı zaten kayıt olmaya çalışıyordu ama pin yoktu. Pin yeniden gönderildi: " + username);
             this.pendingRegistrations.delete(username);
         }
 
         if (pendingRegistration && pin) {
             if (!pendingRegistration) {
+                ConsoleManager.warn("AuthManager", "Kullanıcının pin bilgisi yoktu: " + username);
                 throw new Error("Pininizin süresi doldu. Lütfen tekrar deneyin.");
             }
 
             if (!pendingRegistration || pendingRegistration.pin !== pin) {
+                ConsoleManager.warn("AuthManager", "Kullanıcının pin bilgisi yanlıştı: " + username);
                 throw new Error("Geçersiz pin. Lütfen tekrar deneyin.");
             }
 
@@ -113,6 +116,7 @@ export default class AuthManager {
 
     public async forceRegister(email: string, username: string, password: string, ip?: string): Promise<void> {
         const hashedPassword = await bcrypt.hash(password, 10);
+        ConsoleManager.info("AuthManager", "Kullanıcı kaydediliyor: " + username);
 
         const newUser: WebUser = {
             _id: username.toLocaleLowerCase(),
@@ -123,10 +127,16 @@ export default class AuthManager {
 
         await MysqlManager.getInstance().registerToLimboAuth(username, hashedPassword, ip);
         await this.userCollection.updateOne({ _id: newUser._id }, { $set: newUser }, { upsert: true });
+
+        ConsoleManager.info("AuthManager", "Kullanıcı kaydedildi: " + username);
     }
 
     public async getWebUser(username: string): Promise<WebUser | null> {
         return this.userCollection.findOne({ _id: username.toLocaleLowerCase() });
+    }
+
+    public async getWebUserByEmail(email: string): Promise<WebUser | null> {
+        return this.userCollection.findOne({ email });
     }
 
     public async checkIP(ip: string): Promise<boolean> {

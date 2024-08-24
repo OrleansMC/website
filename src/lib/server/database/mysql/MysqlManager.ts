@@ -1,3 +1,4 @@
+import ConsoleManager from '../../logs/ConsoleManager';
 import AuthModel from './AuthModel';
 
 declare global {
@@ -14,7 +15,7 @@ export default class MysqlManager {
     }
 
     public async registerToLimboAuth(username: string, hashedPassword: string, ip?: string): Promise<void> {
-        const newAuth = await AuthModel.create({
+        await AuthModel.upsert({
             NICKNAME: username,
             LOWERCASENICKNAME: username.toLowerCase(),
             HASH: hashedPassword,
@@ -28,6 +29,6 @@ export default class MysqlManager {
             ISSUEDTIME: Date.now()
         });
 
-        console.log('Yeni kullanıcı eklendi:', newAuth.toJSON());
+        ConsoleManager.info('MysqlManager', `Registered user ${username} to LimboAuth`);
     }
 }

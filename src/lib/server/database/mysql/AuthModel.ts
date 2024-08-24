@@ -10,6 +10,7 @@ const Auth = sequelize.define('Auth', {
     LOWERCASENICKNAME: {
         type: DataTypes.STRING(255),
         allowNull: false,
+        primaryKey: true,
     },
     HASH: {
         type: DataTypes.STRING(60),
@@ -17,11 +18,11 @@ const Auth = sequelize.define('Auth', {
     },
     IP: {
         type: DataTypes.STRING(15),
-        allowNull: false,
+        allowNull: true,
     },
     TOTPTOKEN: {
         type: DataTypes.STRING(255),
-        allowNull: false,
+        allowNull: true,
         defaultValue: '',
     },
     REGDATE: {
@@ -30,29 +31,28 @@ const Auth = sequelize.define('Auth', {
     },
     UUID: {
         type: DataTypes.STRING(36),
-        allowNull: false,
+        allowNull: true,
     },
     PREMIUMUUID: {
         type: DataTypes.STRING(255),
-        allowNull: false,
+        allowNull: true,
         defaultValue: '',
     },
     LOGINIP: {
         type: DataTypes.STRING(15),
-        allowNull: false,
+        allowNull: true,
     },
     LOGINDATE: {
         type: DataTypes.BIGINT,
-        allowNull: false,
+        allowNull: true,
     },
     ISSUEDTIME: {
         type: DataTypes.BIGINT,
-        allowNull: false,
+        allowNull: true,
     }
 }, {
     tableName: 'AUTH',
     timestamps: false,
-    schema: 'limboauth', // limboauth şemasında olduğundan emin olalım
 });
 
 export default Auth;

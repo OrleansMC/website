@@ -67,7 +67,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
 
   try {
-    AuthManager.getInstance().register(email, username, password, pin, req.socket.remoteAddress);
+    await AuthManager.getInstance().register(email, username, password, pin, req.socket.remoteAddress);
   } catch (error) {
     return res.status(400).json({ name: (error as Error).message });
   }

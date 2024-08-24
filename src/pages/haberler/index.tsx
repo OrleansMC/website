@@ -1,14 +1,14 @@
 import BlogCard from '@/components/blogs/BlogCard'
-import Button from '@/components/common/Button'
 import Layout from '@/layouts/Layout'
 import BlogManager, { Blog } from '@/lib/server/blogs/BlogManager'
+import { PageProps } from '@/types'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
 import React from 'react'
 
-type BlogsProps = InferGetServerSidePropsType<typeof getServerSideProps> & React.HTMLProps<HTMLDivElement>
+type BlogsProps = InferGetServerSidePropsType<typeof getServerSideProps> & PageProps
 
-export default function BlogsPage({ blogs, page, lastPage }: BlogsProps) {
+export default function BlogsPage({ blogs, page, lastPage, user }: BlogsProps) {
     const router = useRouter();
     const [currentPage, setCurrentPage] = React.useState(page);
 
@@ -20,6 +20,7 @@ export default function BlogsPage({ blogs, page, lastPage }: BlogsProps) {
             title="OrleansMC - Haberler"
             description="OrleansMC, Minecraft sunucusu. Türkiye'nin en iyi Minecraft sunucusu."
             ogDescription="OrleansMC, Minecraft sunucusu. Türkiye'nin en iyi Minecraft sunucusu."
+            user={user}
         >
             <div className='mt-28 grid grid-cols-2 md:grid-cols-1 gap-12'>
                 {

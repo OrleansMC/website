@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
-import { Blog } from "@/lib/server/blog/BlogManager";
+import { Blog } from "@/lib/server/blogs/BlogManager";
 import Util from "@/lib/common/Util";
 
 type BlogCardProp = {

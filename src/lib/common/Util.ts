@@ -55,6 +55,16 @@ export default class Util {
         return text.trim();
     }
 
+    public static isValidEmail(email: string) {
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@(gmail\.com|icloud\.com)$/;
+
+        if (emailPattern.test(email)) {
+            return true;
+        }
+
+        return false;
+    }
+
     public static validateMinecraftNickname(nickname: string) {
         // Uzunluk kontrolü (En az 3, en fazla 16 karakter)
         if (nickname.length < 3) {
@@ -81,7 +91,13 @@ export default class Util {
         if (!validEnd.test(nickname)) {
             throw new Error("Kullanıcı adı bir harf veya sayı ile bitmeli.");
         }
+    }
 
-        return true;
+    public static generateNumericPin() {
+        let pin = '';
+        for (let i = 0; i < 6; i++) {
+            pin += Math.floor(Math.random() * 10).toString(); // 0-9 arası rastgele bir sayı ekle
+        }
+        return pin;
     }
 }

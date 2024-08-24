@@ -1,24 +1,27 @@
 import Image from "next/image";
 import React from "react";
-import Link from "next/link";
-import { Blog } from "@/lib/server/blogs/BlogManager";
+import BlogManager, { Blog } from "@/lib/server/blogs/BlogManager";
+import AuthManager from "@/lib/server/auth/AuthManager";
 import Util from "@/lib/common/Util";
 import { GetServerSideProps } from "next";
-import { createRoot } from "react-dom/client";
 import Markdown from "react-markdown";
 import Layout from "@/layouts/Layout";
 import styles from "@/styles/blog.module.scss";
+import { PageProps } from "@/types";
+import { WebUser } from "@/lib/server/auth/AuthManager";
 
 type BlogProps = {
     blog: Blog
-}
+    user: WebUser
+} & PageProps;
 
-export default function BlogPage({ blog }: BlogProps) {
+export default function BlogPage({ blog, user }: BlogProps) {
     return (
         <Layout
             title={"OrleansMC - " + blog.attributes.title}
             description="OrleansMC, Minecraft sunucusu. Türkiye'nin en iyi Minecraft sunucusu."
             ogDescription="OrleansMC, Minecraft sunucusu. Türkiye'nin en iyi Minecraft sunucusu."
+            user={null}
         >
             <div className="mt-28">
                 <div data-aos="fade-up">
@@ -56,7 +59,7 @@ export default function BlogPage({ blog }: BlogProps) {
 }
 
 export const getServerSideProps = (async (ctx) => {
-    const blog = BlogManager.blogs.find(blog => blog.attributes.path === "/" + ctx.params?.blog);
+    const blog = BlogManager.getInstance().blogs.find(blog => blog.attributes.path === "/" + ctx.params?.blog);
     if (!blog) {
         return {
             notFound: true
@@ -64,7 +67,8 @@ export const getServerSideProps = (async (ctx) => {
     }
     return {
         props: {
-            blog: blog
+            blog: blog,
+            user: await AuthManager.getInstance().getUserFromContext(ctx)
         }
     }
-}) satisfies GetServerSideProps<{ blog: Blog }>
+}) satisfies GetServerSideProps<{ blog: Blog, user: WebUser | null }>

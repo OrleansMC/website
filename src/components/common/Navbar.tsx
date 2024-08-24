@@ -1,8 +1,11 @@
 import { useRouter } from "next/router";
 import React from "react";
 import Button from "./Button";
+import { WebUser } from "@/lib/server/auth/AuthManager";
 
-export default function Navbar() {
+export default function Navbar(navbarProps: {
+    user: WebUser | null;
+}) {
     const navigators = [
         {
             name: "Ana Sayfa",
@@ -46,12 +49,20 @@ export default function Navbar() {
                     </ul>
                 </div>
                 <div className="flex space-x-4">
-                    <Button type="link" href="/kaydol" className="bg-purple-500 hover:bg-blue-500 hover:bg-purple-500 hover:!bg-purple-400">
-                        <span>Kaydol</span>
-                    </Button>
-                    <Button type="link" href="/giris-yap" className="bg-green-500 hover:!bg-green-400">
-                        <span>Giriş Yap</span>
-                    </Button>
+                    {!navbarProps.user && (<>
+                        <Button type="link" href="/kaydol" className="bg-purple-500 hover:bg-blue-500 hover:bg-purple-500 hover:!bg-purple-400">
+                            <span>Kaydol</span>
+                        </Button>
+                        <Button type="link" href="/giris-yap" className="bg-green-500 hover:!bg-green-400">
+                            <span>Giriş Yap</span>
+                        </Button></>)}
+                    {
+                        navbarProps.user && (
+                            <Button type="link" href="/profil" className="bg-green-500 hover:!bg-green-400">
+                                <span>{navbarProps.user.username}</span>
+                            </Button>
+                        )
+                    }
                 </div>
             </nav>
         </header>

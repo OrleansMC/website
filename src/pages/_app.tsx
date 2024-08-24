@@ -14,8 +14,10 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import 'material-symbols/rounded.css';
 import { useEffect } from 'react';
+import { PageProps } from '@/types';
+import Script from 'next/script';
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps }: PageProps & AppProps) {
   useEffect(() => {
     AOS.init({ duration: 1000, once: true });
     import('@lottiefiles/lottie-player');

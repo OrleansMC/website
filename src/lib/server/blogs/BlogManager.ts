@@ -15,7 +15,7 @@ export type Blog = {
 }
 
 declare global {
-    var BlogManager: BlogManager;
+    var blogManager: BlogManager;
 }
 
 export default class BlogManager {
@@ -29,11 +29,11 @@ export default class BlogManager {
     }
 
     public static getInstance(): BlogManager {
-        if (!global.BlogManager) {
-            global.BlogManager = new BlogManager();
+        if (!global.blogManager) {
+            global.blogManager = new BlogManager();
         }
 
-        return global.BlogManager;
+        return global.blogManager;
     }
 
     public async fetchBlogs(): Promise<Blog[]> {

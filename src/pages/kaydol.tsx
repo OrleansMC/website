@@ -1,25 +1,47 @@
 import Input from '@/components/register/Input';
 import Layout from '@/layouts/Layout'
-import { InferGetServerSidePropsType } from 'next'
+import Util from '@/lib/common/Util';
+import { WebUser } from '@/lib/server/auth/AuthManager';
+import AuthManager from '@/lib/server/auth/AuthManager';
+import { PageProps } from '@/types';
+import axios from 'axios';
+import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router'
 import React from 'react'
+import ReCAPTCHA from "react-google-recaptcha";
 
-export default function LoginPage() {
+export default function RegisterPage(props: PageProps) {
     const router = useRouter();
+    const recaptchaRef = React.createRef<ReCAPTCHA>();
 
     const [errorMessage, setErrorMessage] = React.useState<string>('');
+    const [recaptchaVisible, setRecaptchaVisible] = React.useState<boolean>(false);
+    const [submitting, setSubmitting] = React.useState<boolean>(false);
+    const [pinRequested, setPinRequested] = React.useState<boolean>(false);
 
-    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (submitting) {
+            return;
+        }
+
+        const token = recaptchaRef.current?.getValue();
+        if (!token) {
+            setRecaptchaVisible(true);
+            return;
+        }
+
+        recaptchaRef.current?.reset();
+        setRecaptchaVisible(false);
+
         const username = (e.currentTarget.querySelector('#username') as HTMLInputElement).value;
         const email = (e.currentTarget.querySelector('#email') as HTMLInputElement).value;
         const password = (e.currentTarget.querySelector('#password') as HTMLInputElement).value;
         const passwordAgain = (e.currentTarget.querySelector('#password-again') as HTMLInputElement).value;
 
-        const emailPattern = /^[a-zA-Z0-9._%+-]+@(gmail\.com|icloud\.com)$/;
-
-        if (!emailPattern.test(email)) {
+        if (!Util.isValidEmail(email)) {
             const emailInput = e.currentTarget.querySelector('#email') as HTMLInputElement;
             emailInput.value = '';
             emailInput.focus();
@@ -36,6 +58,24 @@ export default function LoginPage() {
             setErrorMessage('Şifreler uyuşmuyor.');
             return;
         }
+
+
+        setSubmitting(true);
+
+        try {
+            await axios.post('/api/auth/register', {
+                email,
+                username,
+                password,
+                captcha: token
+            });
+
+            setPinRequested(true);
+            setSubmitting(false);
+        } catch (error) {
+            setErrorMessage((error as any).response.data.message);
+            setSubmitting(false);
+        }
     }
 
     return (
@@ -43,6 +83,7 @@ export default function LoginPage() {
             title="OrleansMC - Kaydol"
             description="OrleansMC, Minecraft sunucusu. Türkiye'nin en iyi Minecraft sunucusu."
             ogDescription="OrleansMC, Minecraft sunucusu. Türkiye'nin en iyi Minecraft sunucusu."
+            user={props.user}
         >
             <div className='w-full flex justify-between items-center mt-36 mb-36 gap-28 flex-wrap' data-aos="fade-up">
                 <div className='flex-[5_0_0%] flex justify-end items-end min-w-[23rem]'>
@@ -83,7 +124,12 @@ export default function LoginPage() {
                             type="password"
                             placeholder="Şifre Tekrar"
                         />
-
+                        <ReCAPTCHA
+                            style={{ display: recaptchaVisible ? 'block' : 'none' }}
+                            ref={recaptchaRef}
+                            className='mt-2 w-min'
+                            sitekey="6LfqPi4qAAAAAIK5m2YK_iSDStqsCzU1FPBwLcK8"
+                        />
                         <label className='flex items-center m-1'>
                             <input
                                 required
@@ -123,3 +169,11 @@ export default function LoginPage() {
         </Layout >
     )
 }
+
+export const getServerSideProps = (async (ctx) => {
+    return {
+        props: {
+            user: await AuthManager.getInstance().getUserFromContext(ctx)
+        }
+    }
+}) satisfies GetServerSideProps<{ user: WebUser | null }>

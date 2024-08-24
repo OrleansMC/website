@@ -1,5 +1,7 @@
 import BlogManager from "./lib/server/blogs/BlogManager"
 
 export async function register() {
-    await BlogManager.getInstance().fetchBlogs();
+    if (process.env.NEXT_RUNTIME === 'nodejs') {
+        await BlogManager.getInstance().fetchBlogs();
+    }
 }

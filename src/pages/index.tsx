@@ -2,19 +2,24 @@ import Hero from '@/components/home/Hero'
 import News from '@/components/home/News'
 import Section from '@/components/home/Section'
 import Layout from '@/layouts/Layout'
+import { WebUser } from '@/lib/server/auth/AuthManager'
 import BlogManager, { Blog } from '@/lib/server/blogs/BlogManager'
+import AuthManager from '@/lib/server/auth/AuthManager'
+import { PageProps } from '@/types'
+import { GetServerSideProps } from 'next'
 import React from 'react'
 
 type HomeProps = {
     lastBlog: Blog
-} & React.HTMLProps<HTMLDivElement>
+} & PageProps
 
-export default function Home({ lastBlog }: HomeProps) {
+export default function Home({ lastBlog, user }: HomeProps) {
     return (
         <Layout
             title="OrleansMC - Minecraft Sunucusu"
             description="OrleansMC, Minecraft sunucusu. Türkiye'nin en iyi Minecraft sunucusu."
             ogDescription="OrleansMC, Minecraft sunucusu. Türkiye'nin en iyi Minecraft sunucusu."
+            user={user}
         >
             <Hero />
             <div className="flex flex-col gap-48 mb-44">
@@ -51,10 +56,11 @@ export default function Home({ lastBlog }: HomeProps) {
 }
 
 
-export function getServerSideProps() {
+export const getServerSideProps = (async (ctx) => {
     return {
-        props: {
-            lastBlog: BlogManager.getInstance().blogs[0]
-        }
+      props: {
+        lastBlog: BlogManager.getInstance().blogs[0],
+        user: await AuthManager.getInstance().getUserFromContext(ctx)
+      }
     }
-}
+  }) satisfies GetServerSideProps<{ user: WebUser | null, lastBlog: Blog }>

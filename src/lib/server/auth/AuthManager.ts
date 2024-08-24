@@ -73,8 +73,10 @@ export default class AuthManager {
 
         if (ip) {
             const theSessionHasSameIP = await SessionManager.getInstance().getSessionsByIp(ip, username);
-            if (theSessionHasSameIP.length > 0) {
-                throw new Error("Bu IP adresiyle zaten bir hesap oluşturulmuş.");
+            if (theSessionHasSameIP.length > 2) {
+                ConsoleManager.warn("AuthManager", "Bu IP adresi ile çok fazla hesap var: " + ip);
+                throw new Error("Hesap oluşturmayı suistimal etmek sunucudan yasaklanmanıza sebep olabilir." +
+                    " Durum yetkililere bildirildi! Lütfen destek açın.");
             }
         }
 
@@ -103,6 +105,10 @@ export default class AuthManager {
         }
 
         if (!pin) {
+            if (ip && !this.checkIP(ip)) {
+                ConsoleManager.warn("AuthManager", "Kullanıcı kaydı yapılırken proxy veya vpn tespit edildi: " + ip + " - " + username);
+                throw new Error("Proxy veya VPN kullanarak kayıt olamazsınız.");
+            }
             const pin = Util.generateNumericPin();
             this.pendingRegistrations.set(username, { pin, email, password, username });
 

@@ -21,6 +21,8 @@ export type WebUser = {
     email: string;
     username: string;
     password: string;
+    created_at: Date;
+    updated_at: Date;
 }
 
 
@@ -122,7 +124,9 @@ export default class AuthManager {
             _id: username.toLocaleLowerCase(),
             email,
             username,
-            password: hashedPassword
+            password: hashedPassword,
+            created_at: new Date(),
+            updated_at: new Date()
         };
 
         await MysqlManager.getInstance().registerToLimboAuth(username, hashedPassword, ip);

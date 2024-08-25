@@ -1,0 +1,52 @@
+.navbar-toggle-button {
+    background-color: transparent;
+    border: none;
+
+    @media screen and (max-width: 1024px) {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        z-index: 1000;
+        margin-left: auto;
+        cursor: pointer;
+    }
+
+    span {
+        display: block;
+        width: 2.4rem;
+        height: 0.25rem;
+        background: white;
+        transition-duration: 200ms;
+        border-radius: 0.25rem;
+    }
+}
+
+.navbar-toggle-button.active {
+    span:nth-child(1) {
+        transform: rotate(45deg) translate(0.75rem, 0.25rem);
+        transition-duration: 200ms;
+    }
+
+    span:nth-child(2) {
+        opacity: 0;
+    }
+
+    span:nth-child(3) {
+        transform: rotate(-45deg) translate(0.75rem, -0.25rem);
+        transition-duration: 200ms;
+    }
+}
+
+.navbar-mobile-menu.active {
+    visibility: visible;
+    transform: translate(-50%);
+}
+
+.navbar-mobile-menu {
+    @media screen and (max-width: 1024px) {
+        visibility: hidden;
+        transition-duration: 400ms;
+        transform: translate(-150%);
+        z-index: 999;
+    }
+}

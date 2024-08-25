@@ -36,7 +36,7 @@ export default function Button(props: ButtonProps) {
         return (
             <Link
                 href={href}
-                className={classNames}
+                className={classNames + (href.includes("buymeacoffee") ? " lg:ml-6" : "")}
                 target={href.includes("http") ? "_blank" : ""}
                 onMouseEnter={
                     () => {

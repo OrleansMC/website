@@ -66,7 +66,7 @@ export default function Footer() {
     ]
     return (
         <footer className="container mb-8 mt-16">
-            <div className="rounded-tl-lg rounded-tr-lg bg-dark-950 px-12 py-9">
+            <div className="rounded-tl-lg rounded-tr-lg bg-dark-950 px-12 py-9 md:py-6 md:px-6">
                 <div className="flex gap-10 lg:flex-wrap items-center justify-between md:flex-col">
                     <div className="flex flex-col items-center space-y-2">
                         <Image
@@ -102,7 +102,7 @@ export default function Footer() {
                 </div>
             </div>
 
-            <div className="rounded-bl-lg rounded-br-lg bg-dark-800 px-12 py-3">
+            <div className="rounded-bl-lg rounded-br-lg bg-dark-800 px-12 py-3 md:px-6">
                 <div className="flex items-center justify-between md:flex-col md:space-y-1">
                     <p className="text-zinc-400 text-base">
                         © 2024 OrleansMC. Tüm hakları saklıdır.

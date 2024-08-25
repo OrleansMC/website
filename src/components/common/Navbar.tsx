@@ -5,6 +5,7 @@ import { WebUser } from "@/lib/server/auth/AuthManager";
 import UUIDManager from "@/lib/client/UUIDManager";
 import Image from "next/image";
 import Link from "next/link";
+import styles from "@/styles/navbar.module.scss";
 
 declare namespace JSX {
     interface IntrinsicElements {
@@ -49,6 +50,8 @@ export default function Navbar(navbarProps: {
     const router = useRouter();
     const [avatar, setAvatar] = React.useState<string>("https://render.skinmc.net/3d.php?user=MustafaCan&vr=-5&hr0&hrh=25&aa=1&headOnly=true&ratio=10");
 
+    const [menuOpen, setMenuOpen] = React.useState<boolean>(false);
+
     useEffect(() => {
         (async () => {
             if (navbarProps.user) {
@@ -71,24 +74,44 @@ export default function Navbar(navbarProps: {
         src="/uploads/coins_75c0679ecf.json"
     />
 
+    const menuButton = <button className={
+        `hidden lg:block ${styles["navbar-toggle-button"]}${menuOpen ? " " + styles["active"] : ""}`
+    }
+        onClick={() => {
+            setMenuOpen(!menuOpen);
+        }}
+    >
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
     return (
         <header className="flex justify-center w-full">
             <div className="glow"></div>
             <nav className="flex justify-between backdrop-blur items-center py-5 fixed z-30 container">
                 <div>
-                    <ul className="flex space-x-4 font-semibold items-center">
-                        {navigators.map((navigator, index) => (
-                            <li key={index} className="flex items-center relative">
-                                <Button
-                                    type="link" href={navigator.url}
-                                    className={((navigator.url == "/" && router.pathname == "/") ||
-                                        (navigator.url != "/" && router.pathname.startsWith(navigator.url))
-                                        ? `${navigator.bg} ` : "") + `hover:${navigator.bg}`}>
-                                    {navigator.name}
-                                </Button>
-                            </li>
-                        ))}
-                    </ul>
+                    {menuButton}
+                    <div className={`flex items-center space-x-4 lg:absolute lg:left-1/2 lg:transform lg:-translate-x-1/2 
+                        lg:z-50 lg:bg-black/90 lg:rounded-lg lg:py-8 lg:px-8 lg:top-0 lg:w-full lg:h-screen
+                        lg:flex-col lg:justify-start lg:items-center lg:space-y-4 lg:gap-4 navbar-mobile-menu
+                        ` + `${menuOpen ? " active" : ""}`}>
+                        {menuButton}
+                        <ul className="flex space-x-4 font-semibold items-center lg:w-full 
+                        lg:flex-col lg:space-y-4 lg:space-x-0 lg:absolute lg:top-1/2 lg:left-1/2 lg:transform lg:-translate-x-1/2 lg:-translate-y-1/2">
+                            {navigators.map((navigator, index) => (
+                                <li key={index} className="flex items-center relative">
+                                    <Button
+                                        type="link" href={navigator.url}
+                                        className={((navigator.url == "/" && router.pathname == "/") ||
+                                            (navigator.url != "/" && router.pathname.startsWith(navigator.url))
+                                            ? `${navigator.bg} ` : "") + `hover:${navigator.bg} lg:!text-2xl lg:px-10 lg:py-2`}>
+                                        {navigator.name}
+                                    </Button>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
                 <div className="flex space-x-4">
                     {!navbarProps.user && (<>

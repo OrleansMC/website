@@ -1,7 +1,16 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "./Button";
 import { WebUser } from "@/lib/server/auth/AuthManager";
+import UUIDManager from "@/lib/client/UUIDManager";
+import Image from "next/image";
+import Link from "next/link";
+
+declare namespace JSX {
+    interface IntrinsicElements {
+        "lottie-player": any;
+    }
+};
 
 export default function Navbar(navbarProps: {
     user: WebUser | null;
@@ -29,6 +38,30 @@ export default function Navbar(navbarProps: {
         }
     ]
     const router = useRouter();
+    const [avatar, setAvatar] = React.useState<string>("https://render.skinmc.net/3d.php?user=MustafaCan&vr=-5&hr0&hrh=25&aa=1&headOnly=true&ratio=10");
+
+    useEffect(() => {
+        (async () => {
+            if (navbarProps.user) {
+                const uuid = await UUIDManager.getInstance().getUUID(navbarProps.user.username);
+                setAvatar(`https://render.skinmc.net/3d.php?user=${uuid}&vr=-5&hr0&hrh=25&aa=1&headOnly=true&ratio=10`);
+            }
+        })();
+    }, []);
+
+    const coinRef = React.createRef<HTMLTemplateElement>();
+
+    // @ts-ignore
+    const lottie = <lottie-player
+        id="upgrade_crown"
+        ref={coinRef}
+        speed={1}
+        loop={true}
+        hover={false}
+        mode="normal"
+        src="https://lottie.host/c5b358ee-2b3c-44e9-8c3d-bc3543ba1d74/0mNnW9dfuD.json"
+    />
+
     return (
         <header className="flex justify-center w-full">
             <div className="glow"></div>
@@ -58,9 +91,51 @@ export default function Navbar(navbarProps: {
                         </Button></>)}
                     {
                         navbarProps.user && (
-                            <Button type="link" href="/profil" className="bg-green-500 hover:!bg-green-400">
-                                <span>{navbarProps.user.username}</span>
-                            </Button>
+                            <div className="flex items-center gap-2">
+                                <Link href={`/profil`} className="flex items-center gap-2" onMouseEnter={
+                                    () => {
+                                        const lottiePlayer = coinRef.current as any;
+                                        lottiePlayer?.play();
+                                    }
+                                } onMouseLeave={
+                                    () => {
+                                        const lottiePlayer = coinRef.current as any;
+                                        lottiePlayer?.pause();
+                                    }
+                                }>
+                                    <div
+                                        className="flex flex-col">
+                                        <div className="flex items-center justify-center font-medium leading-5">
+                                            <span>{navbarProps.user.username}</span>
+                                        </div>
+                                        <div className="flex items-center justify-end gap-1 text-base text-zinc-300">
+                                            <span>1000</span>
+                                            <span
+                                                className="w-6 h-6"
+                                            >{lottie}</span>
+                                        </div>
+                                    </div>
+                                    <Image
+                                        className="ml-2"
+                                        unoptimized
+                                        src={avatar} alt="Avatar" width={56} height={56} />
+                                </Link>
+                                <div className="ml-2 flex items-center text-zinc-300 font-semibold hover:text-zinc-100 cursor-pointer duration-300"
+                                    onClick={async () => {
+                                        await fetch("/api/auth/logout", {
+                                            method: "POST",
+                                            headers: {
+                                                "Content-Type": "application/json"
+                                            },
+                                            credentials: "include"
+                                        });
+                                        router.reload();
+                                    }}>
+                                    <span className="material-symbols-rounded !text-4xl">
+                                        logout
+                                    </span>
+                                </div>
+                            </div>
                         )
                     }
                 </div>

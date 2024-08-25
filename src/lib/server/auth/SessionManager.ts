@@ -29,7 +29,7 @@ export default class SessionManager {
             for (const session of sessions) {
                 await this.collection.deleteOne({ token: session.token });
             }
-        });
+        }, 1000 * 60);
     }
 
     public static getInstance(): SessionManager {

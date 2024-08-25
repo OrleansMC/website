@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   const captcha = req.body.captcha;
 
   if (!email || !password || !username) {
-    ConsoleManager.warn("register", "Missing fields from " + req.socket.remoteAddress);
+    ConsoleManager.warn("Register", "Missing fields from " + req.socket.remoteAddress);
     return res.status(400).json({ name: "Missing fields" });
   }
 
@@ -51,26 +51,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     }
 
     const captchaResponse = await axios.get(
-      `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY
-      }&response=${encodeURIComponent(
-        captcha
-      )}`
-    )
-      .then((res) => res.data)
-      .catch(() => { });
+      `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${encodeURIComponent(captcha)}`
+    ).then((res) => res.data).catch(() => { });
 
     if (!captchaResponse?.success) {
       console.log(captchaResponse);
-      ConsoleManager.warn("register", "Invalid recaptcha token from " + req.socket.remoteAddress);
+      ConsoleManager.warn("Register", "Invalid recaptcha token from " + req.socket.remoteAddress);
       return res.status(400).json({ name: 'invalid recaptcha token' });
     };
   }
 
   try {
     await AuthManager.getInstance().register(email, username, password, pin, req.socket.remoteAddress);
+    const token = await AuthManager.getInstance().login(username, password, req.socket.remoteAddress || "unknown");
+    res.setHeader("Set-Cookie", AuthManager.getInstance().generateCookie(token));
+    return res.status(200).json({ name: "success" });
   } catch (error) {
     return res.status(400).json({ name: (error as Error).message });
   }
-
-  res.status(200).json({ name: "Success" });
 }

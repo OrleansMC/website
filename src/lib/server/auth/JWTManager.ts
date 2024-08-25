@@ -5,7 +5,7 @@ declare global {
 }
 
 type JWTToken = {
-    session_id: string;
+    session_token: string;
 }
 
 export default class JWTManager {
@@ -17,16 +17,16 @@ export default class JWTManager {
         return global.jwtManager;
     }
 
-    public async generateToken(sessionId: string): Promise<string> {
-        const payload = { session_id: sessionId };
+    public generateToken(sessionToken: string): string {
+        const payload = { session_token: sessionToken };
 
         return jwt.sign(payload, process.env.JWT_SECRET as string, { expiresIn: '7d' });
     }
 
-    public getSessionIdFromJWT(token: string): string | null {
+    public getSessionTokenFromJWT(token: string): string | null {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as JWTToken;
-            return decoded.session_id;  // Doğrulama başarılı, session_id döndür
+            return decoded.session_token;  // Doğrulama başarılı, session_token döndür
         } catch (error) {
             return null;  // Doğrulama başarısız
         }

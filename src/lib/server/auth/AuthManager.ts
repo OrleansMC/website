@@ -54,6 +54,28 @@ export default class AuthManager {
         return global.authManager;
     }
 
+    public generateCookie(jtwToken: string): string {
+        return `orleans.token=${jtwToken}; HttpOnly;${process.env.NODE_ENV === 'production' ? " Secure;" : ""
+            } Max-Age=${7 * 24 * 60 * 60}; Path=/`
+    }
+
+    public async login(username: string, password: string, ip: string): Promise<string> {
+        const user = await this.getWebUser(username);
+        if (!user) {
+            throw new Error("Kullanıcı adı veya şifre yanlış.");
+        }
+
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (!passwordMatch) {
+            throw new Error("Kullanıcı adı veya şifre yanlış.");
+        }
+
+        const session = await SessionManager.getInstance().createSession(username, ip);
+        const JWT = JWTManager.getInstance().generateToken(session.token);
+        ConsoleManager.info("AuthManager", "Kullanıcı giriş yaptı: " + username);
+        return JWT;
+    }
+
     public async register(email: string, username: string, password: string, pin?: string, ip?: string): Promise<void> {
         if (!Util.isValidEmail(email)) {
             throw new Error("Geçersiz email adresi.");
@@ -101,6 +123,7 @@ export default class AuthManager {
             const pendingRegistrationsBelongsToEmail = Array.from(this.pendingRegistrations.values()).filter(pr => pr.email === email);
             pendingRegistrationsBelongsToEmail.forEach(pr => this.pendingRegistrations.delete(pr.username));
             this.forceRegister(email, username, password, ip);
+            ConsoleManager.info("AuthManager", "Kullanıcı kaydedildi: " + username);
             return;
         }
 
@@ -168,9 +191,9 @@ export default class AuthManager {
 
     public async getUserFromContext(ctx: GetServerSidePropsContext<ParsedUrlQuery, PreviewData>): Promise<WebUser | null> {
         let user = null;
-        const jwt = ctx.req.cookies["orleans.jwt"];
+        const jwt = ctx.req.cookies["orleans.token"];
         if (jwt) {
-            const sessionId = JWTManager.getInstance().getSessionIdFromJWT(jwt);
+            const sessionId = JWTManager.getInstance().getSessionTokenFromJWT(jwt);
             if (sessionId) {
 
                 const session = await SessionManager.getInstance().getSession(sessionId);

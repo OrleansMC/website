@@ -25,7 +25,7 @@ export default function App({ Component, pageProps }: PageProps & AppProps) {
 
   useEffect(() => {
     setLoading(false);
-    
+
     AOS.init({ duration: 1000, once: true });
     import('@lottiefiles/lottie-player');
 

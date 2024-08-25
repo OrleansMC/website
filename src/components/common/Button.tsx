@@ -28,7 +28,7 @@ export default function Button(props: ButtonProps) {
         loop={true}
         hover={false}
         mode="normal"
-        src="https://lottie.host/c5b358ee-2b3c-44e9-8c3d-bc3543ba1d74/0mNnW9dfuD.json"
+        src="/uploads/coins_75c0679ecf.json"
     />
 
     if (type === "link") {

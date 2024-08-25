@@ -7,6 +7,7 @@ import { PageProps } from '@/types';
 import axios from 'axios';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router'
 import React from 'react'
 import ReCAPTCHA from "react-google-recaptcha";
@@ -56,6 +57,13 @@ export default function RegisterPage(props: PageProps) {
             return;
         }
 
+        try {
+            Util.validateMinecraftNickname(username);
+        } catch (error) {
+            setErrorMessage((error as Error).message);
+            return;
+        }
+
         if (password !== passwordAgain) {
             const passwordInput = e.currentTarget.querySelector('#password') as HTMLInputElement;
             const passwordAgainInput = e.currentTarget.querySelector('#password-again') as HTMLInputElement;
@@ -85,7 +93,7 @@ export default function RegisterPage(props: PageProps) {
             });
 
             if (pinRequested) {
-                router.push('/giris-yap');
+                router.back();
                 return;
             }
             setPinRequested(true);
@@ -114,8 +122,8 @@ export default function RegisterPage(props: PageProps) {
     return (
         <Layout
             title="OrleansMC - Kaydol"
-            description="OrleansMC, Minecraft sunucusu. Türkiye'nin en iyi Minecraft sunucusu."
-            ogDescription="OrleansMC, Minecraft sunucusu. Türkiye'nin en iyi Minecraft sunucusu."
+            description="OrleansMC Minecraft sunucusuna kaydolun."
+            ogDescription="OrleansMC Minecraft sunucusuna kaydolun."
             user={props.user}
         >
             <div className='w-full flex justify-between items-center mt-36 mb-36 gap-28 flex-wrap' data-aos="fade-up">
@@ -123,6 +131,8 @@ export default function RegisterPage(props: PageProps) {
                     <Image
                         src="/uploads/wizard_90f703e5a7.png"
                         alt="Register Image"
+                        placeholder='blur'
+                        blurDataURL='/uploads/thumbnail_wizard_94979b4765.png'
                         width={480}
                         height={480}
                     />
@@ -211,12 +221,12 @@ export default function RegisterPage(props: PageProps) {
                     </form>
                     <div className='mt-6'>
                         <span className='text-zinc-400'>Hesabınız var mı?</span>
-                        <button
-                            onClick={() => router.push('/giris-yap')}
+                        <Link
+                            href={'/giris-yap'}
                             className='ml-2 text-purple-400 hover:text-purple-300'
                         >
                             Giriş Yap
-                        </button>
+                        </Link>
                     </div>
 
                 </div>

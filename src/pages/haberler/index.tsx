@@ -18,8 +18,8 @@ export default function BlogsPage({ blogs, page, lastPage, user }: BlogsProps) {
     return (
         <Layout
             title="OrleansMC - Haberler"
-            description="OrleansMC, Minecraft sunucusu. Türkiye'nin en iyi Minecraft sunucusu."
-            ogDescription="OrleansMC, Minecraft sunucusu. Türkiye'nin en iyi Minecraft sunucusu."
+            description="OrleansMC sunucusundaki en son güncellemeleri, etkinlikleri ve daha fazlasını buradan takip edebilirsiniz."
+            ogDescription="OrleansMC sunucusundaki en son güncellemeleri, etkinlikleri ve daha fazlasını buradan takip edebilirsiniz."
             user={user}
         >
             <div className='mt-28 grid grid-cols-2 md:grid-cols-1 gap-12'>

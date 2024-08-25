@@ -19,9 +19,9 @@ export default function BlogPage({ blog, user }: BlogProps) {
     return (
         <Layout
             title={"OrleansMC - " + blog.attributes.title}
-            description="OrleansMC, Minecraft sunucusu. Türkiye'nin en iyi Minecraft sunucusu."
-            ogDescription="OrleansMC, Minecraft sunucusu. Türkiye'nin en iyi Minecraft sunucusu."
-            user={null}
+            description={Util.cleanMarkdown(blog.attributes.description).slice(0, 150)}
+            ogDescription={Util.cleanMarkdown(blog.attributes.description).slice(0, 150)}
+            user={user}
         >
             <div className="mt-28">
                 <div data-aos="fade-up">

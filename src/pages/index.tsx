@@ -17,8 +17,8 @@ export default function Home({ lastBlog, user }: HomeProps) {
     return (
         <Layout
             title="OrleansMC - Minecraft Sunucusu"
-            description="OrleansMC, Minecraft sunucusu. Türkiye'nin en iyi Minecraft sunucusu."
-            ogDescription="OrleansMC, Minecraft sunucusu. Türkiye'nin en iyi Minecraft sunucusu."
+            description="OrleansMC sunucusunda ikliminizi seçin ve dünyanızı inşa edin! Vahşi dünyada yaratıklarla savaşın!"
+            ogDescription="OrleansMC sunucusunda ikliminizi seçin ve dünyanızı inşa edin! Vahşi dünyada yaratıklarla savaşın!"
             user={user}
         >
             <Hero />

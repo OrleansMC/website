@@ -11,6 +11,7 @@ import fs from 'fs';
 import { GetServerSidePropsContext, PreviewData } from "next";
 import { ParsedUrlQuery } from "querystring";
 import ConsoleManager from "../logs/ConsoleManager";
+import PlayerManager, { Player } from "./PlayerManager";
 
 declare global {
     var authManager: AuthManager;
@@ -24,6 +25,10 @@ export type WebUser = {
     created_at: Date;
     updated_at: Date;
 }
+
+export type User = {
+    player: Player;
+} & WebUser;
 
 
 export type PendingRegistration = {
@@ -172,6 +177,25 @@ export default class AuthManager {
         return this.userCollection.findOne({ email });
     }
 
+    public async getUser(username: string): Promise<User | null> {
+        const datas = await Promise.all([
+            PlayerManager.getInstance().getPlayer(username),
+            this.getWebUser(username)
+        ]);
+
+        const player = datas[0];
+        const user = datas[1];
+
+        if (!user) {
+            return null;
+        }
+
+        return {
+            ...user,
+            player
+        };
+    }
+
     public async checkIP(ip: string): Promise<boolean> {
         try {
             const response = await axios.get(`http://ip-api.com/json/${encodeURIComponent(ip)}?fields=17035264`);
@@ -189,7 +213,7 @@ export default class AuthManager {
         }
     }
 
-    public async getUserFromContext(ctx: GetServerSidePropsContext<ParsedUrlQuery, PreviewData>): Promise<WebUser | null> {
+    public async getUserFromContext(ctx: GetServerSidePropsContext<ParsedUrlQuery, PreviewData>): Promise<User | null> {
         let user = null;
         const jwt = ctx.req.cookies["orleans.token"];
         if (jwt) {
@@ -205,7 +229,7 @@ export default class AuthManager {
                         await SessionManager.getInstance().updateSession(session);
                     }
 
-                    user = await AuthManager.getInstance().getWebUser(session.username) || null;
+                    user = await AuthManager.getInstance().getUser(session.username) || null;
                 }
             }
         }

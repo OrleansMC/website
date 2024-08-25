@@ -1,6 +1,6 @@
 import BlogCard from '@/components/blogs/BlogCard'
 import Layout from '@/layouts/Layout'
-import AuthManager, { WebUser } from '@/lib/server/auth/AuthManager'
+import AuthManager, { User } from '@/lib/server/auth/AuthManager'
 import BlogManager, { Blog } from '@/lib/server/blogs/BlogManager'
 import { PageProps } from '@/types'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
@@ -104,4 +104,4 @@ export const getServerSideProps = (async (ctx) => {
             user: await AuthManager.getInstance().getUserFromContext(ctx)
         }
     }
-}) satisfies GetServerSideProps<{ page: number, blogs: Blog[], user: WebUser | null }>
+}) satisfies GetServerSideProps<{ page: number, blogs: Blog[], user: User | null }>

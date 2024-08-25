@@ -2,7 +2,7 @@ import Hero from '@/components/home/Hero'
 import News from '@/components/home/News'
 import Section from '@/components/home/Section'
 import Layout from '@/layouts/Layout'
-import { WebUser } from '@/lib/server/auth/AuthManager'
+import { User } from '@/lib/server/auth/AuthManager'
 import BlogManager, { Blog } from '@/lib/server/blogs/BlogManager'
 import AuthManager from '@/lib/server/auth/AuthManager'
 import { PageProps } from '@/types'
@@ -63,4 +63,4 @@ export const getServerSideProps = (async (ctx) => {
         user: await AuthManager.getInstance().getUserFromContext(ctx)
       }
     }
-  }) satisfies GetServerSideProps<{ user: WebUser | null, lastBlog: Blog }>
+  }) satisfies GetServerSideProps<{ user: User | null, lastBlog: Blog }>

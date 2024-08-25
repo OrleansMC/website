@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import Button from "./Button";
-import { WebUser } from "@/lib/server/auth/AuthManager";
+import { User } from "@/lib/server/auth/AuthManager";
 import UUIDManager from "@/lib/client/UUIDManager";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,7 +14,7 @@ declare namespace JSX {
 };
 
 export default function Navbar(navbarProps: {
-    user: WebUser | null;
+    user: User | null;
 }) {
     const navigators = [
         {
@@ -141,7 +141,7 @@ export default function Navbar(navbarProps: {
                                             <span>{navbarProps.user.username}</span>
                                         </div>
                                         <div className="flex items-center justify-end gap-1 text-base text-zinc-300">
-                                            <span>1000</span>
+                                            <span>{navbarProps.user.player.credit}</span>
                                             <span
                                                 className="w-6 h-6"
                                             >{lottie}</span>

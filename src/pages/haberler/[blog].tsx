@@ -8,11 +8,11 @@ import Markdown from "react-markdown";
 import Layout from "@/layouts/Layout";
 import styles from "@/styles/blog.module.scss";
 import { PageProps } from "@/types";
-import { WebUser } from "@/lib/server/auth/AuthManager";
+import { User } from "@/lib/server/auth/AuthManager";
 
 type BlogProps = {
     blog: Blog
-    user: WebUser
+    user: User
 } & PageProps;
 
 export default function BlogPage({ blog, user }: BlogProps) {
@@ -71,4 +71,4 @@ export const getServerSideProps = (async (ctx) => {
             user: await AuthManager.getInstance().getUserFromContext(ctx)
         }
     }
-}) satisfies GetServerSideProps<{ blog: Blog, user: WebUser | null }>
+}) satisfies GetServerSideProps<{ blog: Blog, user: User | null }>

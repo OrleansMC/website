@@ -13,6 +13,8 @@ declare namespace NodeJS {
         STRAPI_URL: string;
         STRAPI_TOKEN: string;
         MONGO_URI: string;
+        REDIS_URI: string;
+        MYSQL_AUTH_URI: string;
         MAILGUN_PASSWORD: string;
         RECAPTCHA_SECRET_KEY: string;
     }

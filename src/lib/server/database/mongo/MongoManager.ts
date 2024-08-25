@@ -1,5 +1,6 @@
-import axios from "axios"
 import { Db, MongoClient } from "mongodb";
+import ConsoleManager from "../../logs/ConsoleManager";
+import RedisManager from "../redis/RedisManager";
 
 declare global {
     var MongoManager: MongoManager;
@@ -12,9 +13,12 @@ export default class MongoManager {
 
     private constructor() {
         this.client = new MongoClient(process.env.MONGO_URI as string);
-        this.client.connect();
+        this.client.connect().then(() => {
+            ConsoleManager.debug('Mongo Manager', 'Connected to MongoDB');
+        });
         this.websiteDatabase = this.client.db("website");
         this.minecraftDatabase = this.client.db("minecraft");
+        RedisManager.getInstance();
     }
 
     public static getInstance(): MongoManager {

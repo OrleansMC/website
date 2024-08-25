@@ -1,6 +1,7 @@
 
 import { Collection } from 'mongodb';
 import MongoManager from '../database/mongo/MongoManager';
+import RedisManager from '../database/redis/RedisManager';
 
 declare global {
     var playerManager: PlayerManager;
@@ -14,8 +15,8 @@ type MongoPlayer = {
 
 export type Player = {
     name: string;
-    uuid: string;
-    mojang_uuid: string;
+    credit: number;
+    gem: number;
 }
 
 export default class PlayerManager {
@@ -33,14 +34,25 @@ export default class PlayerManager {
         return global.playerManager;
     }
 
-    public async getPlayer(uuid: string): Promise<Player | null> {
-        const player = await this.collection.findOne({ uuid });
-        if (!player) return null;
+    public async getPlayer(name: string): Promise<Player> {
+        const redis = RedisManager.getInstance();
+        const uuid = await redis.getClient().hGet("rediseco:nameuuid", name);
+        let gem = 0;
+        let credit = 0;
+        if (uuid) {
+            const amounts = await Promise.all([
+                redis.getClient().zScore("rediseco:balances_CREDIT", uuid),
+                redis.getClient().zScore("rediseco:balances_GEM", uuid)
+            ])
+
+            credit = amounts[0] || 0;
+            gem = amounts[1] || 0;
+        }
 
         return {
-            name: player.name,
-            uuid: player.uuid,
-            mojang_uuid: player.uuid
+            name: name,
+            credit: credit,
+            gem: gem
         };
     }
 }

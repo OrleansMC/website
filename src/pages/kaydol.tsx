@@ -1,7 +1,7 @@
 import Input from '@/components/register/Input';
 import Layout from '@/layouts/Layout'
 import Util from '@/lib/common/Util';
-import { WebUser } from '@/lib/server/auth/AuthManager';
+import { User } from '@/lib/server/auth/AuthManager';
 import AuthManager from '@/lib/server/auth/AuthManager';
 import { PageProps } from '@/types';
 import axios from 'axios';
@@ -241,4 +241,4 @@ export const getServerSideProps = (async (ctx) => {
             user: await AuthManager.getInstance().getUserFromContext(ctx)
         }
     }
-}) satisfies GetServerSideProps<{ user: WebUser | null }>
+}) satisfies GetServerSideProps<{ user: User | null }>

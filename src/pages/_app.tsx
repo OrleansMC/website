@@ -13,14 +13,30 @@ const font = Inter({
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import 'material-symbols/rounded.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { PageProps } from '@/types';
 import Script from 'next/script';
+import Loading from '@/components/common/Loading';
+import { useRouter } from 'next/router';
 
 export default function App({ Component, pageProps }: PageProps & AppProps) {
+  const [loading, setLoading] = useState<boolean | null>(null);
+  const router = useRouter();
+
   useEffect(() => {
+    setLoading(false);
+    
     AOS.init({ duration: 1000, once: true });
     import('@lottiefiles/lottie-player');
+
+    const handleStart = (url: string) => {
+      url !== router.pathname ? setLoading(true) : setLoading(false);
+    };
+    const handleComplete = () => setLoading(false);
+
+    router.events.on("routeChangeStart", handleStart);
+    router.events.on("routeChangeComplete", handleComplete);
+    router.events.on("routeChangeError", handleComplete);
   }, []);
 
   return (
@@ -56,6 +72,7 @@ export default function App({ Component, pageProps }: PageProps & AppProps) {
         background: #010210;
       }
     `}</style>
+      {loading != null && <Loading loading={loading} />}
       <Component {...pageProps} />
     </>
   );

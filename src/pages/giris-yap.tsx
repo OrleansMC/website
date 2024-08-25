@@ -106,6 +106,15 @@ export default function LoginPage(props: PageProps) {
                             type="password"
                             placeholder="Şifre"
                         />
+                        <label className='flex items-center m-1 cursor-pointer w-fit'>
+                            <input
+                                type="checkbox"
+                                className='rounded-lg w-5 h-5 accent-purple-500 duration-300 hover:accent-[#a950fa]'
+                            />
+                            <span className='ml-2 text-base text-zinc-400'>
+                                Beni Hatırla
+                            </span>
+                        </label>
                         <ReCAPTCHA
                             style={{ display: recaptchaVisible ? 'block' : 'none' }}
                             ref={recaptchaRef}
@@ -114,7 +123,7 @@ export default function LoginPage(props: PageProps) {
                         />
                         <button
                             type="submit"
-                            className='p-4 bg-purple-500 text-zinc-200 rounded-lg hover:bg-purple-400 duration-300 mt-4'
+                            className='p-4 bg-purple-500 text-zinc-200 rounded-lg hover:bg-purple-400 duration-300'
                         >
                             Giriş Yap
                         </button>

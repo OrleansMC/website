@@ -37,6 +37,15 @@ export default function Navbar(navbarProps: {
             bg: "bg-purple-500"
         }
     ]
+
+    if (navbarProps.user) {
+        navigators.push({
+            name: "Kredi Yükle",
+            url: "https://buymeacoffee.com/orleansmc/extras",
+            bg: "bg-purple-500"
+        });
+    }
+
     const router = useRouter();
     const [avatar, setAvatar] = React.useState<string>("https://render.skinmc.net/3d.php?user=MustafaCan&vr=-5&hr0&hrh=25&aa=1&headOnly=true&ratio=10");
 
@@ -65,7 +74,7 @@ export default function Navbar(navbarProps: {
     return (
         <header className="flex justify-center w-full">
             <div className="glow"></div>
-            <nav className="flex justify-between backdrop-blur items-center py-5 fixed z-50 container">
+            <nav className="flex justify-between backdrop-blur items-center py-5 fixed z-30 container">
                 <div>
                     <ul className="flex space-x-4 font-semibold items-center">
                         {navigators.map((navigator, index) => (

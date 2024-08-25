@@ -1,5 +1,6 @@
 import BlogCard from '@/components/blogs/BlogCard'
 import Layout from '@/layouts/Layout'
+import AuthManager, { WebUser } from '@/lib/server/auth/AuthManager'
 import BlogManager, { Blog } from '@/lib/server/blogs/BlogManager'
 import { PageProps } from '@/types'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
@@ -99,7 +100,8 @@ export const getServerSideProps = (async (ctx) => {
         props: {
             page: page,
             lastPage: lastPage,
-            blogs: blogs.slice((page - 1) * blogCountPerPage, page * blogCountPerPage)
+            blogs: blogs.slice((page - 1) * blogCountPerPage, page * blogCountPerPage),
+            user: await AuthManager.getInstance().getUserFromContext(ctx)
         }
     }
-}) satisfies GetServerSideProps<{ page: number, blogs: Blog[] }>
+}) satisfies GetServerSideProps<{ page: number, blogs: Blog[], user: WebUser | null }>

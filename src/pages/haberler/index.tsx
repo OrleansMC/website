@@ -1,5 +1,6 @@
 import BlogCard from '@/components/blogs/BlogCard'
 import Layout from '@/layouts/Layout'
+import Util from '@/lib/common/Util'
 import AuthManager, { User } from '@/lib/server/auth/AuthManager'
 import BlogManager, { Blog } from '@/lib/server/blogs/BlogManager'
 import { PageProps } from '@/types'
@@ -100,7 +101,13 @@ export const getServerSideProps = (async (ctx) => {
         props: {
             page: page,
             lastPage: lastPage,
-            blogs: blogs.slice((page - 1) * blogCountPerPage, page * blogCountPerPage),
+            blogs: blogs.slice((page - 1) * blogCountPerPage, page * blogCountPerPage).map((blog) => {
+                const newBlog = {
+                    ...blog,
+                    description: Util.cleanMarkdown(blog.attributes.description).slice(0, 150)
+                };
+                return newBlog;
+            }),
             user: await AuthManager.getInstance().getUserFromContext(ctx)
         }
     }

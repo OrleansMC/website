@@ -8,6 +8,7 @@ export type ButtonProps = {
         {
             type: "link";
             href: string;
+            blank?: boolean;
         } | {
             type: "button";
             onClick: () => void;
@@ -37,7 +38,7 @@ export default function Button(props: ButtonProps) {
             <Link
                 href={href}
                 className={classNames + (href.includes("buymeacoffee") ? " lg:ml-6" : "")}
-                target={href.includes("http") ? "_blank" : ""}
+                target={href.includes("http") ? "_blank" : props.blank ? "_blank" : "_self"}
                 onMouseEnter={
                     () => {
                         if (href.includes("buymeacoffee")) {

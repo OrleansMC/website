@@ -8,6 +8,7 @@ import AuthManager from '@/lib/server/auth/AuthManager'
 import { PageProps } from '@/types'
 import { GetServerSideProps } from 'next'
 import React from 'react'
+import Util from '@/lib/common/Util'
 
 type HomeProps = {
     lastBlog: Blog
@@ -48,7 +49,7 @@ export default function Home({ lastBlog, user }: HomeProps) {
                     imageHeight={360}
                     imagePosition="right"
                     buttonText="Rehberlere Göz At"
-                    buttonUrl="/rehberler"
+                    buttonUrl="/rehber"
                 />
             </div>
         </Layout>
@@ -57,10 +58,14 @@ export default function Home({ lastBlog, user }: HomeProps) {
 
 
 export const getServerSideProps = (async (ctx) => {
+    const lastBlog = BlogManager.getInstance().blogs[0];
     return {
-      props: {
-        lastBlog: BlogManager.getInstance().blogs[0],
-        user: await AuthManager.getInstance().getUserFromContext(ctx)
-      }
+        props: {
+            lastBlog: {
+                ...lastBlog,
+                description: Util.cleanMarkdown(lastBlog.attributes.description).slice(0, 400) + '...'
+            },
+            user: await AuthManager.getInstance().getUserFromContext(ctx)
+        }
     }
-  }) satisfies GetServerSideProps<{ user: User | null, lastBlog: Blog }>
+}) satisfies GetServerSideProps<{ user: User | null, lastBlog: Blog }>

@@ -29,7 +29,7 @@ export default function Navbar(navbarProps: {
         },
         {
             name: "Rehber",
-            url: "#",
+            url: "/rehber",
             bg: "bg-blue-500"
         },
         {

@@ -17,18 +17,21 @@ declare global {
     var authManager: AuthManager;
 }
 
-export type WebUser = {
+type UserCommon = {
     _id: string;
     email: string;
     username: string;
-    password: string;
     created_at: Date;
     updated_at: Date;
 }
 
+export type WebUser = {
+    password: string;
+} & UserCommon;
+
 export type User = {
     player: Player;
-} & WebUser;
+} & UserCommon;
 
 
 export type PendingRegistration = {
@@ -184,16 +187,16 @@ export default class AuthManager {
         ]);
 
         const player = datas[0];
-        const user = datas[1];
+        const webUser = datas[1];
 
-        if (!user) {
+        if (!webUser) {
             return null;
         }
 
-        return {
-            ...user,
-            player
-        };
+        const user: User & { password?: string } = { ...webUser, player };
+        delete user.password;
+
+        return user;
     }
 
     public async checkIP(ip: string): Promise<boolean> {

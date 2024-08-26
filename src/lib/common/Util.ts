@@ -100,4 +100,29 @@ export default class Util {
         }
         return pin;
     }
+
+    public static slugify(str: string) {
+        return str
+            .toString() // String'e çevir
+            .normalize('NFD') // Unicode normalizasyonu (Türkçe karakterler için)
+            .replace(/[\u0300-\u036f]/g, '') // Diakritik işaretlerini kaldır
+            .replace(/ç/g, 'c') // Türkçe karakterleri dönüştür
+            .replace(/ğ/g, 'g')
+            .replace(/ı/g, 'i')
+            .replace(/ö/g, 'o')
+            .replace(/ş/g, 's')
+            .replace(/ü/g, 'u')
+            .replace(/Ç/g, 'C')
+            .replace(/Ğ/g, 'G')
+            .replace(/İ/g, 'I')
+            .replace(/Ö/g, 'O')
+            .replace(/Ş/g, 'S')
+            .replace(/Ü/g, 'U')
+            .replace(/\s+/g, '-') // Boşlukları tire ile değiştir
+            .replace(/[^\w\-]+/g, '') // Alfanumerik olmayan karakterleri kaldır
+            .replace(/\-\-+/g, '-') // Birden fazla tireyi teke indir
+            .replace(/^-+/, '') // Baştaki tireleri kaldır
+            .replace(/-+$/, '') // Sondaki tireleri kaldır
+            .toLowerCase(); // Hepsini küçük harfe çevir
+    }
 }

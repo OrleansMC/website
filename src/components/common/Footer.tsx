@@ -29,12 +29,12 @@ export default function Footer() {
             name: "Hakkımızda",
             links: [
                 {
-                    name: "Hakkımızda",
-                    url: "#"
+                    name: "Neden Biz?",
+                    url: "/rehber/neden-biz"
                 },
                 {
                     name: "Kurallar",
-                    url: "#"
+                    url: "/rehber/kurallar"
                 },
                 {
                     name: "Kullanım Şartları",

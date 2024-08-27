@@ -62,9 +62,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
 
   try {
-    await AuthManager.getInstance().register(email, username, password, pin, req.socket.remoteAddress);
-    const token = await AuthManager.getInstance().login(username, password, req.socket.remoteAddress || "unknown");
-    res.setHeader("Set-Cookie", AuthManager.getInstance().generateCookie(token));
+    const registered = await AuthManager.getInstance().register(email, username, password, pin, req.socket.remoteAddress);
+    if (registered) {
+      const token = await AuthManager.getInstance().login(username, password, req.socket.remoteAddress || "unknown");
+      res.setHeader("Set-Cookie", AuthManager.getInstance().generateCookie(token));
+    }
     return res.status(200).json({ name: "success" });
   } catch (error) {
     return res.status(400).json({ name: (error as Error).message });

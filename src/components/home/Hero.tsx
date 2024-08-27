@@ -34,7 +34,7 @@ export default function Hero() {
             >
                 <div className="flex justify-center items-center flex-col">
                     <p className="text-lg text-center w-3/4 pb-4 text-zinc-400">
-                        Sunucumuza dilediğiniz launcher üzerinden giriş yapabilirsiniz!
+                        Sunucumuza dilediğiniz launcher üzerinden 1.20.6 sürümüyle giriş yapabilirsiniz.
                     </p>
                     <Image
                         src="/uploads/orleansip_0a181de93f.gif"

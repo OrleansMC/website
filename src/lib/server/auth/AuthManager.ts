@@ -21,8 +21,8 @@ type UserCommon = {
     _id: string;
     email: string;
     username: string;
-    created_at: Date;
-    updated_at: Date;
+    created_at: string;
+    updated_at: string;
 }
 
 export type WebUser = {
@@ -84,7 +84,7 @@ export default class AuthManager {
         return JWT;
     }
 
-    public async register(email: string, username: string, password: string, pin?: string, ip?: string): Promise<void> {
+    public async register(email: string, username: string, password: string, pin?: string, ip?: string): Promise<boolean> {
         if (!Util.isValidEmail(email)) {
             throw new Error("Geçersiz email adresi.");
         }
@@ -130,9 +130,9 @@ export default class AuthManager {
             this.pendingRegistrations.delete(username);
             const pendingRegistrationsBelongsToEmail = Array.from(this.pendingRegistrations.values()).filter(pr => pr.email === email);
             pendingRegistrationsBelongsToEmail.forEach(pr => this.pendingRegistrations.delete(pr.username));
-            this.forceRegister(email, username, password, ip);
+            await this.forceRegister(email, username, password, ip);
             ConsoleManager.info("AuthManager", "Kullanıcı kaydedildi: " + username);
-            return;
+            return true;
         }
 
         if (!pin) {
@@ -149,8 +149,9 @@ export default class AuthManager {
                 undefined,
                 pinMailTemplate.replace('{PIN}', pin)
             );
-            return;
+            return false;
         }
+        return false;
     }
 
     public async forceRegister(email: string, username: string, password: string, ip?: string): Promise<void> {
@@ -162,8 +163,8 @@ export default class AuthManager {
             email,
             username,
             password: hashedPassword,
-            created_at: new Date(),
-            updated_at: new Date()
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
         };
 
         await MysqlManager.getInstance().registerToLimboAuth(username, hashedPassword, ip);

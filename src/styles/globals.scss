@@ -98,12 +98,12 @@ td,
 th,
 tr,
 input {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .material-symbols-rounded {
   font-variation-settings:
-  'FILL' 1,
+    'FILL' 1,
 }
 
 .glow {
@@ -116,4 +116,46 @@ input {
   mask: radial-gradient(circle at 50% 0%, black 0%, transparent 70%);
   right: 0;
   top: 0;
+}
+
+.strike {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'%3e%3cline x1='0' y1='100' x2='100' y2='0' stroke-width='6' stroke='%2384868c'/%3e%3c/svg%3e");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.scroller {
+  &::-webkit-scrollbar {
+    width: 70px;
+    outline: none;
+    border: none;
+    background: 0 0;
+    padding: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-bottom: 6px solid rgb(108, 107, 118);
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 7px;
+  }
+}
+/* Yatay scroll ve scrollbar gizleme */
+.scroll-container {
+  display: flex;
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch; /* iOS için momentum scroll */
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, Opera */
 }

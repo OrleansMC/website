@@ -125,4 +125,20 @@ export default class Util {
             .replace(/-+$/, '') // Sondaki tireleri kaldır
             .toLowerCase(); // Hepsini küçük harfe çevir
     }
+
+    public static msToTime(ms: number) {
+        const sec_num = ms / 1000;
+        const days = Math.floor(sec_num / 86400);
+        const hours = Math.floor((sec_num - (days * 86400)) / 3600);
+        const minutes = Math.floor((sec_num - (days * 86400) - (hours * 3600)) / 60);
+        const seconds = sec_num - (days * 86400) - (hours * 3600) - (minutes * 60);
+    
+        let result = [];
+        if (days > 0) result.push(`${days} Gün`);
+        if (hours > 0) result.push(`${hours} Saat`);
+        if ((minutes > 0) && (!days || !hours)) result.push(`${minutes} Dakika`);
+        if ((seconds > 0) && (!hours || !minutes)) result.push(`${minutes} Saniye`);
+    
+        return result.map((d) => `${d}`).join(", ");
+    };
 }

@@ -37,18 +37,18 @@ export default function Button(props: ButtonProps) {
         return (
             <Link
                 href={href}
-                className={classNames + (href.includes("buymeacoffee") ? " lg:ml-6" : "")}
+                className={classNames + (href.includes("kredi-yukle") ? " lg:ml-6" : "")}
                 target={href.includes("http") ? "_blank" : props.blank ? "_blank" : "_self"}
                 onMouseEnter={
                     () => {
-                        if (href.includes("buymeacoffee")) {
+                        if (href.includes("kredi-yukle")) {
                             const lottiePlayer = coinRef.current as any;
                             lottiePlayer?.play();
                         }
                     }
                 } onMouseLeave={
                     () => {
-                        if (href.includes("buymeacoffee")) {
+                        if (href.includes("kredi-yukle")) {
                             const lottiePlayer = coinRef.current as any;
                             lottiePlayer?.pause();
                         }
@@ -57,7 +57,7 @@ export default function Button(props: ButtonProps) {
             >
                 {children}
                 {
-                    href.includes("buymeacoffee") ?
+                    href.includes("kredi-yukle") ?
                         <span className="w-8 h-8 ml-2">
                             {lottie}
                         </span> : null

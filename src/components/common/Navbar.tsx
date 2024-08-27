@@ -34,7 +34,7 @@ export default function Navbar(navbarProps: {
         },
         {
             name: "Mağaza",
-            url: "#",
+            url: "/magaza",
             bg: "bg-purple-500"
         }
     ]
@@ -42,7 +42,7 @@ export default function Navbar(navbarProps: {
     if (navbarProps.user) {
         navigators.push({
             name: "Kredi Yükle",
-            url: "https://buymeacoffee.com/orleansmc/extras",
+            url: "/kredi-yukle",
             bg: "bg-purple-500"
         });
     }
@@ -103,6 +103,7 @@ export default function Navbar(navbarProps: {
                                 <li key={index} className="flex items-center relative">
                                     <Button
                                         type="link" href={navigator.url}
+                                        blank={navigator.url.startsWith("http") || navigator.url.includes("kredi-yukle")}
                                         className={((navigator.url == "/" && router.pathname == "/") ||
                                             (navigator.url != "/" && router.pathname.startsWith(navigator.url))
                                             ? `${navigator.bg} ` : "") + `hover:${navigator.bg} lg:!text-2xl lg:px-10 lg:py-2`}>

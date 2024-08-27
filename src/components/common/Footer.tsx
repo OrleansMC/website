@@ -38,11 +38,11 @@ export default function Footer() {
                 },
                 {
                     name: "Kullanım Şartları",
-                    url: "#"
+                    url: "/kullanim-sartlari"
                 },
                 {
                     name: "Gizlilik Politikası",
-                    url: "#"
+                    url: "/gizlilik-politikasi"
                 }
             ]
         },

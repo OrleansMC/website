@@ -85,6 +85,11 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: "/kredi-yukle",
+        destination: "https://buymeacoffee.com/orleansmc/extras",
+        permanent: true,
+      },
+      {
         source: '/discord',
         destination: 'https://discord.gg/BZvA97B6UZ',
         permanent: true,

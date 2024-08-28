@@ -1,4 +1,5 @@
 import Button from '@/components/common/Button'
+import PopUp from '@/components/common/PopUp'
 import GuideCard from '@/components/guides/GuideCard'
 import CategoryCard from '@/components/store/CategoryCard'
 import Layout from '@/layouts/Layout'
@@ -14,6 +15,7 @@ type GuidesProps = InferGetServerSidePropsType<typeof getServerSideProps> & Page
 
 export default function StorePage({ user }: GuidesProps) {
     const router = useRouter();
+    const [showPopup, setShowPopup] = React.useState(false);
 
     return (
         <Layout
@@ -45,9 +47,32 @@ export default function StorePage({ user }: GuidesProps) {
                     icon="/uploads/legend_a15c6c37af.png"
                     button_text='Rütbeleri İncele'
                 />
-
+                <PopUp
+                    show={showPopup}
+                    title="KASALAR"
+                    footer={
+                        <Button
+                            type="button"
+                            onClick={() => {
+                                setShowPopup(false);
+                            }}
+                            className="bg-blue-500 hover:bg-blue-400 w-fit"
+                        >
+                            Tamam
+                        </Button>
+                    }
+                >
+                    <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-2 p-4">
+                            <p className="text-lg text-zinc-200 max-w-[28rem] text-center">
+                                Kasaları oyun içerisinde inceleyebilir ve <br/>/kredi-market menüsünden satın alabilirsiniz.
+                            </p>
+                        </div>
+                    </div>
+                </PopUp>
                 <CategoryCard
                     title="Kasalar"
+                    setShowPopup={setShowPopup}
                     href='/magaza'
                     description="Sunucumuzda bulunan kasaları inceleyin ve içeriklerini keşfedin."
                     icon="/uploads/chest_99cad35421.png"

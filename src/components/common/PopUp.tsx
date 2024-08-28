@@ -6,6 +6,8 @@ type PopUpProps = {
     footer?: JSX.Element;
     title?: string;
     onClose?: () => void;
+    onMouseEnter?: () => void;
+    onMouseLeave?: () => void;
     children: JSX.Element;
 };
 
@@ -29,7 +31,7 @@ export default function PopUp(popUpProps: PopUpProps) {
 
     return (
         <div className={"popup z-50" + (popUpProps.show ? " active" : "") + (outing ? " outing" : "")}>
-            <div className={"popup__content"}>
+            <div className={"popup__content"} onMouseEnter={popUpProps.onMouseEnter} onMouseLeave={popUpProps.onMouseLeave}>
                 <div className={"popup__content__header"}>
                     <h3 className="font-semibold text-2xl"
                     >{popUpProps.title}</h3>

@@ -13,15 +13,15 @@ export default function Footer() {
                 },
                 {
                     name: "Haberler",
-                    url: "#"
+                    url: "/haberler"
                 },
                 {
                     name: "Rehber",
-                    url: "#"
+                    url: "/rehber"
                 },
                 {
                     name: "Mağaza",
-                    url: "#"
+                    url: "/magaza"
                 }
             ]
         },
@@ -51,15 +51,15 @@ export default function Footer() {
             links: [
                 {
                     name: "Destek",
-                    url: "#"
+                    url: "/destek"
                 },
                 {
                     name: "İletişim",
-                    url: "#"
+                    url: "/discord"
                 },
                 {
                     name: "Sponsorluk",
-                    url: "#"
+                    url: "mailto:iletisim@orleansmc.com"
                 }
             ]
         }

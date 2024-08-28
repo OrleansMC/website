@@ -95,7 +95,7 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: '/support',
+        source: '/destek',
         destination: 'https://discord.gg/BZvA97B6UZ',
         permanent: true,
       },

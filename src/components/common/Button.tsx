@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 
 export type ButtonProps = {
+    id?: string;
     children: React.ReactNode;
     className?: string;
 } & (
@@ -37,6 +38,7 @@ export default function Button(props: ButtonProps) {
         return (
             <Link
                 href={href}
+                id={props.id}
                 className={classNames + (href.includes("kredi-yukle") ? " lg:ml-6" : "")}
                 target={href.includes("http") ? "_blank" : props.blank ? "_blank" : "_self"}
                 onMouseEnter={
@@ -69,6 +71,7 @@ export default function Button(props: ButtonProps) {
         return (
             <button
                 onClick={onClick}
+                id={props.id}
                 className={classNames}
             >
                 {children}

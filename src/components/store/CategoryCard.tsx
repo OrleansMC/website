@@ -8,6 +8,7 @@ export default function CategoryCard(props: {
     icon: string
     href: string
     button_text: string
+    setShowPopup?: React.Dispatch<React.SetStateAction<boolean>>
 }) {
     return (
         <div className='flex-[1_0_0%] min-w-[250px]' data-aos="zoom-in">
@@ -26,7 +27,8 @@ export default function CategoryCard(props: {
                     </p>
                     <div onClick={(e) => {
                         if (props.href !== "/magaza/rutbeler") {
-                            alert("Kasaları oyun içerisinde inceleyebilir ve /kredi-market menüsünden satın alabilirsiniz.")
+                            if (!props.setShowPopup) return;
+                            props.setShowPopup(true);
                             e.preventDefault()
                         }
                     }}>

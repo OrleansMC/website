@@ -1,6 +1,7 @@
 import Button from '@/components/common/Button'
 import RankCard from '@/components/store/RankCard'
 import Layout from '@/layouts/Layout'
+import Util from '@/lib/common/Util'
 import AuthManager, { User } from '@/lib/server/auth/AuthManager'
 import RanksManager, { PublicRank } from '@/lib/server/store/RanksManager'
 import { PageProps } from '@/types'
@@ -8,9 +9,9 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
 import React, { useRef } from 'react'
 
-type GuidesProps = InferGetServerSidePropsType<typeof getServerSideProps> & PageProps
+type RanksProps = InferGetServerSidePropsType<typeof getServerSideProps> & PageProps
 
-export default function GuidesPage({ user, ranks }: GuidesProps) {
+export default function RanksPage({ user, ranks }: RanksProps) {
     const router = useRouter();
 
     const containerRef = useRef<HTMLDivElement>(null);
@@ -39,7 +40,12 @@ export default function GuidesPage({ user, ranks }: GuidesProps) {
         }
     };
 
-    const privileges = ranks.map(rank => rank.attributes.privileges);
+    const privileges = ranks.map(rank => {
+        return {
+            ...rank.attributes.privileges,
+            buttonId: Util.slugify(rank.attributes.title) + "_buy"
+        }
+    });
 
     return (
         <Layout
@@ -75,6 +81,7 @@ export default function GuidesPage({ user, ranks }: GuidesProps) {
                             key={index}
                             title={rank.attributes.title}
                             price={rank.attributes.price!}
+                            user={user}
                             discount={
                                 !rank.attributes.discount_percentage || !rank.attributes.discount_end_date
                                     ? undefined :
@@ -98,8 +105,8 @@ export default function GuidesPage({ user, ranks }: GuidesProps) {
                     ref={containerRef}
                     onWheel={handleScroll}
                 >
-                    {privileges.map((privilege, index) =>
-                        <div key={index} className='flex flex-col gap-4 !min-w-[320px] lg:w-full flex-[1_0_0%] lg:min-w-52 bg-dark-850 p-6 rounded-lg'>
+                    {privileges.map((privilege, index) => {
+                        return <div key={index} className='flex flex-col gap-4 !min-w-[320px] lg:w-full flex-[1_0_0%] lg:min-w-52 bg-dark-850 p-6 rounded-lg'>
                             <h3 className='text-2xl font-semibold' style={{ color: privilege.color }}>
                                 {privilege.rank}
                             </h3>
@@ -130,14 +137,19 @@ export default function GuidesPage({ user, ranks }: GuidesProps) {
                             {index !== 0 &&
                                 <Button
                                     type="button"
-                                    onClick={() => router.push("/kredi-yukle")}
+                                    onClick={() => {
+                                        const button = document.getElementById(privilege.buttonId);
+                                        if (button) {
+                                            button.click();
+                                        }
+                                    }}
                                     className="bg-blue-500 hover:bg-blue-400 w-full mt-4"
                                 >
                                     Satın Al
                                 </Button>
                             }
                         </div>
-                    )}
+                    })}
                 </div>
             </div>
         </Layout >

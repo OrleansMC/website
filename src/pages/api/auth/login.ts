@@ -3,6 +3,7 @@ import axios from "axios";
 import AuthManager from "@/lib/server/auth/AuthManager";
 import Util from "@/lib/common/Util";
 import ConsoleManager from "@/lib/server/logs/ConsoleManager";
+import WebhookManager from "@/lib/server/logs/WebhookManager";
 
 type Data = {
     name: string;
@@ -18,9 +19,9 @@ export const config = {
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
-    const username = req.body.username;
-    const password = req.body.password;
-    const captcha = req.body.captcha;
+    const username = req.body.username as string;
+    const password = req.body.password as string;
+    const captcha = req.body.captcha as string;
 
     if (!username || !password || !captcha) {
         ConsoleManager.warn("Login", "Missing fields from " + req.socket.remoteAddress);
@@ -46,7 +47,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     try {
         const token = await AuthManager.getInstance().login(username, password, req.socket.remoteAddress || "unknown");
         res.setHeader("Set-Cookie", AuthManager.getInstance().generateCookie(token));
-        return res.status(200).json({ name: "success" });
+        res.status(200).json({ name: "success" });
+        const user = await AuthManager.getInstance().getUser(username);
+        if (user) WebhookManager.sendLoginWebhook(user, req.socket.remoteAddress || "unknown");
     } catch (error) {
         return res.status(400).json({ name: (error as Error).message });
     }

@@ -2,6 +2,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import ConsoleManager from "@/lib/server/logs/ConsoleManager";
 import JWTManager from "@/lib/server/auth/JWTManager";
 import SessionManager from "@/lib/server/auth/SessionManager";
+import AuthManager from "@/lib/server/auth/AuthManager";
+import WebhookManager from "@/lib/server/logs/WebhookManager";
 
 type Data = {
     name: string;
@@ -31,5 +33,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     );
 
     ConsoleManager.info("Logout", "User logged out from " + req.socket.remoteAddress);
+
+    const user = await AuthManager.getInstance().getUserFromSessionToken(sessionToken);
+    if (user) {
+        WebhookManager.sendLogoutWebhook(user, req.socket.remoteAddress || "unknown");
+    }
+
     res.status(200).json({ name: "Logged out" });
 }

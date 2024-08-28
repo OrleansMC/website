@@ -173,6 +173,15 @@ export default class AuthManager {
         ConsoleManager.info("AuthManager", "Kullanıcı kaydedildi: " + username);
     }
 
+    public async getUserFromSessionToken(sessionToken: string): Promise<User | null> {
+        const session = await SessionManager.getInstance().getSession(sessionToken);
+        if (!session) {
+            return null;
+        }
+
+        return await this.getUser(session.username);
+    }
+
     public async getWebUser(username: string): Promise<WebUser | null> {
         return this.userCollection.findOne({ _id: username.toLocaleLowerCase() });
     }

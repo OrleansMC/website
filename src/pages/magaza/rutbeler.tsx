@@ -2,6 +2,7 @@ import Button from '@/components/common/Button'
 import RankCard from '@/components/store/RankCard'
 import Layout from '@/layouts/Layout'
 import AuthManager, { User } from '@/lib/server/auth/AuthManager'
+import RanksManager, { PublicRank } from '@/lib/server/store/RanksManager'
 import { PageProps } from '@/types'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
@@ -9,7 +10,7 @@ import React, { useRef } from 'react'
 
 type GuidesProps = InferGetServerSidePropsType<typeof getServerSideProps> & PageProps
 
-export default function GuidesPage({ user }: GuidesProps) {
+export default function GuidesPage({ user, ranks }: GuidesProps) {
     const router = useRouter();
 
     const containerRef = useRef<HTMLDivElement>(null);
@@ -38,166 +39,7 @@ export default function GuidesPage({ user }: GuidesProps) {
         }
     };
 
-    const privileges = [
-        {
-            rank: "Oyuncu",
-            color: "#9CA3AF",
-            groups: [
-                {
-                    title: "Diyar",
-                    privileges: [
-                        {
-                            icon_id: "open_with",
-                            text: "Genişlik 150x150",
-                        },
-                        {
-                            icon_id: "swords",
-                            text: "Yaratıklar Doğar",
-                        },
-                        {
-                            icon_id: "person",
-                            text: "Üye Sayısı 3"
-                        }
-                    ]
-                },
-                {
-                    title: "Evler",
-                    privileges: [
-                        {
-                            icon_id: "home",
-                            text: "Ev Sayısı 1"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            rank: "LORD",
-            color: "#F59E0B",
-            groups: [
-                {
-                    title: "Diyar",
-                    privileges: [
-                        {
-                            icon_id: "open_with",
-                            text: "Genişlik 300x300",
-                        },
-                        {
-                            icon_id: "swords",
-                            text: "Yaratıkları Aç/Kapat",
-                        },
-                        {
-                            icon_id: "person",
-                            text: "Üye Sayısı 5"
-                        }
-                    ]
-                },
-                {
-                    title: "Evler",
-                    privileges: [
-                        {
-                            icon_id: "home",
-                            text: "Ev Sayısı 2"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            rank: "TITAN",
-            color: "#10B981",
-            groups: [
-                {
-                    title: "Diyar",
-                    privileges: [
-                        {
-                            icon_id: "open_with",
-                            text: "Genişlik 500x500",
-                        },
-                        {
-                            icon_id: "swords",
-                            text: "Yaratıkları Aç/Kapat",
-                        },
-                        {
-                            icon_id: "person",
-                            text: "Üye Sayısı 10"
-                        }
-                    ]
-                },
-                {
-                    title: "Evler",
-                    privileges: [
-                        {
-                            icon_id: "home",
-                            text: "Ev Sayısı 3"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            rank: "YÜCE",
-            color: "#3B82F6",
-            groups: [{
-                title: "Diyar",
-                privileges: [
-                    {
-                        icon_id: "open_with",
-                        text: "Genişlik 500x500",
-                    },
-                    {
-                        icon_id: "swords",
-                        text: "Yaratıkları Aç/Kapat",
-                    },
-                    {
-                        icon_id: "person",
-                        text: "Üye Sayısı 15"
-                    }
-                ]
-            },
-            {
-                title: "Evler",
-                privileges: [
-                    {
-                        icon_id: "home",
-                        text: "Ev Sayısı 5"
-                    }
-                ]
-            }
-            ]
-        },
-        {
-            rank: "EFSANE",
-            color: "#EF4444",
-            groups: [{
-                title: "Diyar",
-                privileges: [
-                    {
-                        icon_id: "open_with",
-                        text: "Genişlik 1000x1000",
-                    },
-                    {
-                        icon_id: "swords",
-                        text: "Yaratıklar Doğar",
-                    },
-                    {
-                        icon_id: "person",
-                        text: "Üye Sayısı 20"
-                    }
-                ]
-            },
-            {
-                title: "Evler",
-                privileges: [
-                    {
-                        icon_id: "home",
-                        text: "Ev Sayısı 10"
-                    }
-                ]
-            }
-            ]
-        }
-    ]
+    const privileges = ranks.map(rank => rank.attributes.privileges);
 
     return (
         <Layout
@@ -227,38 +69,23 @@ export default function GuidesPage({ user }: GuidesProps) {
             </div>
 
             <div className='mt-12 flex flex-wrap gap-8'>
-                <RankCard
-                    title="LORD RÜTBESİ"
-                    price={2000}
-                    discount={{
-                        percentage: 20,
-                        end_date: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 7)
-                    }}
-                    icon="/uploads/lord_56daa1a0e9.png"
-                />
-                <RankCard
-                    title="TITAN RÜTBESİ"
-                    price={2000}
-                    discount={{
-                        percentage: 20,
-                        end_date: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 7)
-                    }}
-                    icon="/uploads/titan_d3cab575e3.png"
-                />
-                <RankCard
-                    title="YÜCE RÜTBESİ"
-                    price={2000}
-                    discount={{
-                        percentage: 20,
-                        end_date: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 7)
-                    }}
-                    icon="/uploads/yuce_dc6862e76a.png"
-                />
-                <RankCard
-                    title="EFSANE RÜTBESİ"
-                    price={2000}
-                    icon="/uploads/legend_a15c6c37af.png"
-                />
+                {
+                    ranks.filter(rank => rank.attributes.credit_market_id !== "player").map((rank, index) =>
+                        <RankCard
+                            key={index}
+                            title={rank.attributes.title}
+                            price={rank.attributes.price!}
+                            discount={
+                                !rank.attributes.discount_percentage || !rank.attributes.discount_end_date
+                                    ? undefined :
+                                    {
+                                        percentage: rank.attributes.discount_percentage,
+                                        end_date: rank.attributes.discount_end_date
+                                    }}
+                            icon={rank.attributes.icon.data.attributes.url}
+                        />
+                    )
+                }
             </div>
             <div data-aos="fade-up">
                 <h2 className='text-3xl font-semibold mt-16 text-center'>
@@ -288,12 +115,12 @@ export default function GuidesPage({ user }: GuidesProps) {
                                                     style={
                                                         groupIndex === 0 && index === 0 ? { transform: "rotate(-45deg)" } : {}
                                                     }
-                                                    className='material-symbols-rounded text-zinc-400'>
+                                                    className='material-symbols-rounded text-zinc-400 select-none'>
                                                     {privilege.icon_id}
                                                 </span>
-                                                <span className='text-lg text-zinc-200'>
+                                                <p className='text-lg text-zinc-200'>
                                                     {privilege.text}
-                                                </span>
+                                                </p>
                                             </div>
                                         )}
                                     </div>
@@ -321,7 +148,8 @@ export default function GuidesPage({ user }: GuidesProps) {
 export const getServerSideProps = (async (ctx) => {
     return {
         props: {
-            user: await AuthManager.getInstance().getUserFromContext(ctx)
+            user: await AuthManager.getInstance().getUserFromContext(ctx),
+            ranks: RanksManager.getInstance().getPublicRanks()
         }
     }
-}) satisfies GetServerSideProps<{ user: User | null }>
+}) satisfies GetServerSideProps<{ user: User | null, ranks: PublicRank[] }>

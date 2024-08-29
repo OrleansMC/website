@@ -142,7 +142,9 @@ export default function Navbar(navbarProps: {
                                             <span>{navbarProps.user.username}</span>
                                         </div>
                                         <div className="flex items-center justify-end gap-1 text-base text-zinc-300">
-                                            <span>{navbarProps.user.player.credit}</span>
+                                            <span>
+                                                {new Intl.NumberFormat().format(navbarProps.user.player.credit).replaceAll(",", ".")}
+                                            </span>
                                             <span
                                                 className="w-6 h-6"
                                             >{lottie}</span>

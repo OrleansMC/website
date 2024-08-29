@@ -89,6 +89,10 @@ export default class RankManager {
         });
     }
 
+    public getRankByCreditMarketId(creditMarketId: string): Rank | null {
+        return this.ranks.find((rank) => rank.attributes.credit_market_id === creditMarketId) || null;
+    }
+
     public async fetchRanks(): Promise<Rank[]> {
         try {
             const result = await axios.get(process.env.STRAPI_URL + "/api/ranks?populate=*",

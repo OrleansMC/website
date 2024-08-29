@@ -2,6 +2,7 @@
 import { Collection } from 'mongodb';
 import MongoManager from '../database/mongo/MongoManager';
 import RedisManager from '../database/redis/RedisManager';
+import ConsoleManager from '../logs/ConsoleManager';
 
 declare global {
     var playerManager: PlayerManager;
@@ -32,6 +33,15 @@ export default class PlayerManager {
         }
 
         return global.playerManager;
+    }
+
+    public async setCredit(name: string, amount: number): Promise<void> {
+        const redis = RedisManager.getInstance();
+        const uuid = await redis.getClient().hGet("rediseco:nameuuid", name);
+
+        if (uuid) {
+            await redis.getClient().zAdd("rediseco:balances_CREDIT", { value: uuid, score: amount });
+        }
     }
 
     public async getPlayer(name: string): Promise<Player> {

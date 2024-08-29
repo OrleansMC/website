@@ -137,7 +137,7 @@ export default class Util {
         if (days > 0) result.push(`${days} Gün`);
         if (hours > 0) result.push(`${hours} Saat`);
         if ((minutes > 0) && (!days || !hours)) result.push(`${minutes} Dakika`);
-        if ((seconds > 0) && (!hours || !minutes)) result.push(`${minutes} Saniye`);
+        //if ((seconds > 0) && (!hours || !minutes)) result.push(`${minutes} Saniye`);
     
         return result.map((d) => `${d}`).join(", ");
     };

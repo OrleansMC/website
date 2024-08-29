@@ -123,4 +123,41 @@ export default class WebhookManager {
         webhook.addEmbed(embed);
         global.pendingWebhooks.push(webhook);
     }
+
+    static sendCreditMarketPurchaseWebhook(user: User, ip: string, product: string, price: number) {
+        const webhook = new Webhook(
+            "https://discord.com/api/webhooks/1275387372384817164/hM1GUoWpIgP10saM-kTOZKZuIKg6RzwEhzop1j-7CDnZaruLirElNI-u_Xd8ZX_ZOPy2"
+        );
+        const embed = new Embed()
+            .setTitle("Bir Oyuncu Web Marketten Ürün Satın Aldı!")
+            .addField({
+                name: "Kullanıcı",
+                value: user.username,
+                inline: true
+            })
+            .addField({
+                name: "IP",
+                value: "||" + ip + "||",
+                inline: true
+            })
+            .addField({
+                name: "Ürün",
+                value: product,
+                inline: false
+            })
+            .addField({
+                name: "Fiyat",
+                value: price + " kredi",
+                inline: true
+            })
+            .addField({
+                name: "Tarih",
+                value: "<t:" + Math.floor(Date.now() / 1000) + ":F>",
+                inline: true
+            })
+            .setColor("#00FF00");
+
+        webhook.addEmbed(embed);
+        global.pendingWebhooks.push(webhook);
+    }
 }

@@ -81,6 +81,7 @@ export default function RanksPage({ user, ranks }: RanksProps) {
                             key={index}
                             title={rank.attributes.title}
                             price={rank.attributes.price!}
+                            credit_market_id={rank.attributes.credit_market_id}
                             user={user}
                             discount={
                                 !rank.attributes.discount_percentage || !rank.attributes.discount_end_date

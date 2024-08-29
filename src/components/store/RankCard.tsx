@@ -11,6 +11,7 @@ export default function RankCard(props: {
     user?: User;
     title: string;
     price: number;
+    credit_market_id: string;
     discount?: {
         percentage: number;
         end_date: string | Date;
@@ -18,6 +19,7 @@ export default function RankCard(props: {
     icon: string;
 }) {
     const [showPopup, setShowPopup] = React.useState(false);
+    const [purchasing, setPurchasing] = React.useState(false);
     const coinRef = React.useRef<HTMLTemplateElement>(null);
     const coinRef2 = React.useRef<HTMLTemplateElement>(null);
 
@@ -58,6 +60,8 @@ export default function RankCard(props: {
 
     const randomId = Math.random().toString(36).substring(7);
     const iconId = "rank_card_" + randomId;
+    const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = React.useState<string | null>(null);
 
     const router = useRouter();
 
@@ -72,7 +76,7 @@ export default function RankCard(props: {
                         const lottiePlayer = coinRef2.current as any;
                         lottiePlayer?.play();
                     }
-                } 
+                }
                 onMouseLeave={
                     () => {
                         const lottiePlayer = coinRef2.current as any;
@@ -80,43 +84,96 @@ export default function RankCard(props: {
                     }
                 }
                 footer={
-                    props.user ?
-                    <Button
-                        type="button"
-                        onClick={() => setShowPopup(false)}
-                        className="bg-blue-500 hover:bg-blue-400 w-fit"
-                    >
-                        Onayla
-                    </Button>
-
-                    : <Button
+                    successMessage ? <Button
                         type="button"
                         onClick={() => {
                             setShowPopup(false);
-                            router.push("/giris-yap");
+                            setSuccessMessage(null);
+                            router.replace("/magaza/rutbeler", undefined, { shallow: false });
                         }}
-                        className="bg-blue-500 hover:bg-blue-400 w-fit"
+                        className="bg-green-500 hover:bg-green-400 w-fit"
                     >
-                        Giriş Yap
+                        Tamam
                     </Button>
+                        :
+                        errorMessage ? <Button
+                            type="button"
+                            onClick={() => {
+                                setShowPopup(false);
+                                setErrorMessage(null);
+                                router.push("/magaza/rutbeler");
+                            }}
+                            className="bg-red-500 hover:bg-red-400 w-fit"
+                        >
+                            Tamam
+                        </Button>
+                            :
+                            props.user ?
+                                <Button
+                                    type="button"
+                                    onClick={async () => {
+                                        if (purchasing) return;
+                                        setPurchasing(true);
+                                        const response = await fetch("/api/store/purchase/rank/" + Util.slugify(props.credit_market_id), {
+                                            method: "POST",
+                                            headers: {
+                                                "Content-Type": "application/json"
+                                            },
+                                            body: JSON.stringify({})
+                                        });
+
+                                        if (response.status === 200) {
+                                            setSuccessMessage("Satın alma işlemi başarılı!");
+                                        } else {
+                                            const data = await response.json();
+                                            setErrorMessage(data.name);
+                                        }
+                                        setPurchasing(false);
+                                    }}
+                                    className="bg-blue-500 hover:bg-blue-400 w-fit"
+                                >
+                                    {purchasing ? "Satın Alınıyor..." : "Onayla"}
+                                </Button>
+
+                                : <Button
+                                    type="button"
+                                    onClick={() => {
+                                        setShowPopup(false);
+                                        router.push("/giris-yap");
+                                    }}
+                                    className="bg-blue-500 hover:bg-blue-400 w-fit"
+                                >
+                                    Giriş Yap
+                                </Button>
                 }
             >
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-col gap-2 p-4">
-                        {props.user? <p className="text-lg text-zinc-200 max-w-[28rem] text-center">
-                            Bu rütbeyi <span className="text-yellow-400 font-semibold inline-block">
-                                <span>
-                                    {new Intl.NumberFormat().format(price).replaceAll(",", ".")}
-                                </span>
-                                <span className="inline-block w-6 h-6 top-1 relative">
-                                    {lottie2}
-                                </span>
-                            </span> karşılığında satın almayı
-                            onaylıyor musunuz?
-                        </p> 
-                        : <p className="text-lg text-zinc-200 max-w-[28rem] text-center">
-                            Bu rütbeyi satın alabilmek için giriş yapmalısınız.
-                        </p>}
+                        {
+                            successMessage ?
+                                <div className="bg-green-500 text-white p-2 rounded-lg">
+                                    {successMessage}
+                                </div>
+                                :
+                                errorMessage ?
+                                    <div className="bg-red-500 text-white p-2 rounded-lg">
+                                        {errorMessage}
+                                    </div>
+                                    :
+                                    props.user ? <p className="text-lg text-zinc-200 max-w-[28rem] text-center">
+                                        Bu rütbeyi <span className="text-yellow-400 font-semibold inline-block">
+                                            <span>
+                                                {new Intl.NumberFormat().format(price).replaceAll(",", ".")}
+                                            </span>
+                                            <span className="inline-block w-6 h-6 top-1 relative">
+                                                {lottie2}
+                                            </span>
+                                        </span> karşılığında satın almayı
+                                        onaylıyor musunuz?
+                                    </p>
+                                        : <p className="text-lg text-zinc-200 max-w-[28rem] text-center">
+                                            Bu rütbeyi satın alabilmek için giriş yapmalısınız.
+                                        </p>}
                     </div>
                 </div>
             </PopUp>
@@ -179,10 +236,10 @@ export default function RankCard(props: {
                                     timer
                                 </span>
                                 <span>
-                                    {
+                                    Son {
                                         Util.msToTime(new Date(discount.end_date).getTime() - new Date().getTime())
                                             .replace(/,/g, "")
-                                    } Kaldı!
+                                    }!
                                 </span>
                             </div>
                         }

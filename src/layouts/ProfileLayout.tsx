@@ -8,14 +8,9 @@ export default function ProfileLayout({ user, children }: PageProps) {
     if (!user) return null;
 
     return (
-        <Layout
-            title="OrleansMC - Profil"
-            description="OrleansMC sunucusundaki profilinizi yönetin."
-            ogDescription="OrleansMC sunucusundaki profilinizi yönetin."
-            user={user}
-        >
+        <>
             <ProfileHeader user={user} />
             <Selector user={user}>{children}</Selector>
-        </Layout >
+        </>
     )
 }

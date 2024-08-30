@@ -4,13 +4,18 @@ import { PageProps } from '@/types'
 import { GetServerSideProps } from 'next'
 import React from 'react'
 import "@/styles/blog.module.scss"
-import ProfileLayout from '@/layouts/ProfileLayout'
+import Layout from '@/layouts/Layout'
 
 ProfilePage.getLayout = function getLayout(page: React.ReactNode, pageProps: any) {
     return (
-        <ProfileLayout user={pageProps.user}>
+        <Layout profile
+            user={pageProps.user}
+            title="OrleansMC - Profil"
+            description="OrleansMC sunucusundaki profilinizi yönetin."
+            ogDescription="OrleansMC sunucusundaki profilinizi yönetin."
+        >
             {page}
-        </ProfileLayout>
+        </Layout>
     )
 }
 
@@ -28,7 +33,7 @@ export default function ProfilePage({ user }: PageProps) {
                     <p>
                         OrleansMC'de oynadığın için teşekkür ederiz!
                         Buradan profilini yönetebilirsin.
-                        Eğer kafana takılan bir şey olursa destek almak için bize ulaşabilirsin!
+                        Eğer kafana takılan bir şey olursa destek almak için bize ulaşmaktan çekinme!
                     </p>
                 </blockquote>
             </div>

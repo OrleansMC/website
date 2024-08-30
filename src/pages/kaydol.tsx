@@ -108,6 +108,9 @@ export default function RegisterPage(props: PageProps) {
 
             if (pinRequested) {
                 router.back();
+                setTimeout(() => {
+                    router.reload();
+                }, 1000);
                 return;
             }
             setPinRequested(true);

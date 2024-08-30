@@ -23,7 +23,7 @@ export default function Selector({ user, children }: PageProps) {
     ];
 
     return (
-        <div className='flex gap-4 w-full mt-8' data-aos='fade-up' >
+        <div className='flex gap-4 w-full mt-8' data-aos='fade-up' data-aos-delay="500">
             <div className='bg-dark-950 p-6 rounded-lg' style={{ width: '520px' }}>
                 <h3 className='text-2xl font-semibold text-white mb-4'>Menü</h3>
                 <ul className='space-y-3 w-full'>

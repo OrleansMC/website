@@ -63,7 +63,7 @@ export default function ProfileHeader({ user }: { user: User }) {
                 >
                 <div className='flex flex-col md:flex-row items-center justify-between z-20'>
                     <div className='flex flex-row items-center justify-center gap-4'>
-                        <div data-aos="fade-right" data-aos-delay="500">
+                        <div data-aos="fade-right" data-aos-delay="1000">
                             <Image
                                 loading='eager'
                                 className='mr-6'
@@ -74,7 +74,7 @@ export default function ProfileHeader({ user }: { user: User }) {
                                 alt='Avatar'
                             />
                         </div>
-                        <div className='flex flex-col items-start' data-aos="fade-left" data-aos-delay="500">
+                        <div className='flex flex-col items-start' data-aos="fade-left" data-aos-delay="1000">
                             <h1 className='text-4xl font-semibold text-zinc-200 mt-8'>
                                 {user.player.name}
                             </h1>

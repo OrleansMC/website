@@ -12,6 +12,8 @@
     "permissions": [
       "group.yuce",
       "group.titan",
+      "group.legend",
+      "group.lord",
       "group.legend"
     ]
   }

@@ -60,7 +60,6 @@ export default function GuidePage({ guide, user }: GuideProps) {
 }
 
 export const getServerSideProps = (async (ctx) => {
-    console.log(ctx.params?.guide);
     const guide = GuideManager.getInstance().guides.find(guide => guide.attributes.path === ctx.params?.guide);
     if (!guide) {
         return {

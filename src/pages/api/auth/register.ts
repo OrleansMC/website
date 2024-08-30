@@ -55,7 +55,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     ).then((res) => res.data).catch(() => { });
 
     if (!captchaResponse?.success) {
-      console.log(captchaResponse);
       ConsoleManager.warn("Register", "Invalid recaptcha token from " + req.socket.remoteAddress);
       return res.status(400).json({ name: 'invalid recaptcha token' });
     };

@@ -77,7 +77,6 @@ export default class PermsManager {
 
                 if (addedPermissions.length > 0 || removedPermissions.length > 0) {
                     const player = await PlayerManager.getInstance().getPlayerByUUID(uuid);
-                    console.log(player);
                     if (!player || !player.uuid) continue;
                     const playerName = player.name;
                     const discordAccount = await DiscordOauth2Manager.getInstance().getAccount(playerName);

@@ -1,6 +1,7 @@
 import { Db, MongoClient } from "mongodb";
 import ConsoleManager from "../../logs/ConsoleManager";
 import RedisManager from "../redis/RedisManager";
+import MysqlManager from "../mysql/MysqlManager";
 
 declare global {
     var mongoManager: MongoManager;
@@ -19,6 +20,7 @@ export default class MongoManager {
         this.websiteDatabase = this.client.db("website");
         this.minecraftDatabase = this.client.db("minecraft");
         RedisManager.getInstance();
+        MysqlManager.getInstance();
     }
 
     public static getInstance(): MongoManager {

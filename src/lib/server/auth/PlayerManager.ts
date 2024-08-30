@@ -2,7 +2,6 @@
 import { Collection } from 'mongodb';
 import MongoManager from '../database/mongo/MongoManager';
 import RedisManager from '../database/redis/RedisManager';
-import ConsoleManager from '../logs/ConsoleManager';
 
 declare global {
     var playerManager: PlayerManager;
@@ -18,6 +17,7 @@ export type Player = {
     name: string;
     credit: number;
     gem: number;
+    uuid: string;
 }
 
 export default class PlayerManager {
@@ -44,6 +44,26 @@ export default class PlayerManager {
         }
     }
 
+    public async getPlayerByUUID(uuid: string) {
+        const player = await this.collection.findOne({ uuid: uuid });
+        const redis = RedisManager.getInstance();
+        const amounts = await Promise.all([
+            redis.getClient().zScore("rediseco:balances_CREDIT", uuid),
+            redis.getClient().zScore("rediseco:balances_GEM", uuid)
+        ]);
+
+        if (player) {
+            return {
+                name: player.name,
+                credit: amounts[0] || 0,
+                gem: amounts[1] || 0,
+                uuid: player.uuid
+            };
+        }
+
+        return null;
+    }
+
     public async getPlayer(name: string): Promise<Player> {
         const redis = RedisManager.getInstance();
         const uuid = await redis.getClient().hGet("rediseco:nameuuid", name);
@@ -62,7 +82,8 @@ export default class PlayerManager {
         return {
             name: name,
             credit: credit,
-            gem: gem
+            gem: gem,
+            uuid: uuid || ''
         };
     }
 }

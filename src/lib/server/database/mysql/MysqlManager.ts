@@ -1,11 +1,14 @@
 import ConsoleManager from '../../logs/ConsoleManager';
 import AuthModel from './AuthModel';
+import PermsManager from './PermsManager';
 
 declare global {
     var mysqlManager: MysqlManager;
 }
 
 export default class MysqlManager {
+    public permsManager = PermsManager.getInstance();
+    
     public static getInstance(): MysqlManager {
         if (!global.mysqlManager) {
             global.mysqlManager = new MysqlManager();

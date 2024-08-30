@@ -1,7 +1,8 @@
 import AuthManager from "@/lib/server/auth/AuthManager";
 import JWTManager from "@/lib/server/auth/JWTManager";
 import DiscordOauth2Manager from "@/lib/server/discord/DiscordOauth2Manager";
-import { pushMetadata } from "@/lib/server/discord/MetadataUtil";
+import { getMetadata, pushMetadata } from "@/lib/server/discord/MetadataUtil";
+import ConsoleManager from "@/lib/server/logs/ConsoleManager";
 import { NextApiRequest, NextApiResponse } from "next/types";
 
 export const config = {
@@ -32,7 +33,7 @@ export default async function DiscordCallback(req: NextApiRequest, res: NextApiR
         const oldAccount = await DiscordOauth2Manager.getInstance().getAccount(user.username.toLocaleLowerCase());
 
         if (oldAccount) {
-            await pushMetadata(oldAccount.access_token, { });
+            await pushMetadata(oldAccount.access_token, {});
         }
 
         const discordOauth2Manager = DiscordOauth2Manager.getInstance();
@@ -68,9 +69,13 @@ export default async function DiscordCallback(req: NextApiRequest, res: NextApiR
             }
         );
 
-        await pushMetadata(account.access_token, {
-            oyuncu: 1
-        });
+        const metaDatas = await getMetadata(account.access_token);
+        if (!metaDatas.metadata.oyuncu) {
+            ConsoleManager.info("DiscordCallback", "Pushing metadata");
+            await pushMetadata(account.access_token, {
+                oyuncu: 1
+            });
+        };
 
         res.redirect("/");
     } catch (error) {

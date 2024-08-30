@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "uuid": "a998af73-3d91-3c84-b616-a80a0fd258a5",
+    "permissions": [
+      "group.lord",
+      "group.legend",
+      "group.titan"
+    ]
+  },
+  {
+    "uuid": "d025cda8-2b5c-3acc-9178-52afdc6a0bc9",
+    "permissions": [
+      "group.yuce",
+      "group.titan",
+      "group.legend"
+    ]
+  }
+]

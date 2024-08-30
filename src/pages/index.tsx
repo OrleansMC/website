@@ -1,4 +1,4 @@
-import Hero from '@/components/home/Hero'
+import Hero from '@/components/home/Header'
 import News from '@/components/home/News'
 import Section from '@/components/home/Section'
 import Layout from '@/layouts/Layout'
@@ -14,14 +14,22 @@ type HomeProps = {
     lastBlog: Blog
 } & PageProps
 
-export default function Home({ lastBlog, user }: HomeProps) {
+Home.getLayout = function getLayout(page: React.ReactNode, pageProps: PageProps) {
     return (
         <Layout
             title="OrleansMC - Minecraft Sunucusu"
             description="OrleansMC sunucusunda ikliminizi seçin ve dünyanızı inşa edin! Vahşi dünyada yaratıklarla savaşın!"
             ogDescription="OrleansMC sunucusunda ikliminizi seçin ve dünyanızı inşa edin! Vahşi dünyada yaratıklarla savaşın!"
-            user={user}
+            user={pageProps.user}
         >
+            {page}
+        </Layout>
+    )
+}
+
+export default function Home({ lastBlog }: HomeProps) {
+    return (
+        <>
             <Hero />
             <div className="flex flex-col gap-48 mb-44">
                 <News lastBlog={lastBlog} />
@@ -52,7 +60,7 @@ export default function Home({ lastBlog, user }: HomeProps) {
                     buttonUrl="/rehber"
                 />
             </div>
-        </Layout>
+        </>
     )
 }
 

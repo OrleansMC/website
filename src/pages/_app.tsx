@@ -15,7 +15,6 @@ import 'aos/dist/aos.css';
 import 'material-symbols/rounded.css';
 import { useEffect, useState } from 'react';
 import { PageProps } from '@/types';
-import Script from 'next/script';
 import Loading from '@/components/common/Loading';
 import { useRouter } from 'next/router';
 
@@ -39,6 +38,9 @@ export default function App({ Component, pageProps }: PageProps & AppProps) {
     router.events.on("routeChangeError", handleComplete);
   }, []);
 
+
+  //@ts-ignore
+  const getLayout = Component.getLayout ?? ((page) => page)
   return (
     <>
       <Head>
@@ -73,7 +75,7 @@ export default function App({ Component, pageProps }: PageProps & AppProps) {
       }
     `}</style>
       {loading != null && <Loading loading={loading} />}
-      <Component {...pageProps} />
+      {getLayout(<Component {...pageProps} />, pageProps)}
     </>
   );
 }

@@ -3,7 +3,7 @@ import ConsoleManager from "../../logs/ConsoleManager";
 import RedisManager from "../redis/RedisManager";
 
 declare global {
-    var MongoManager: MongoManager;
+    var mongoManager: MongoManager;
 }
 
 export default class MongoManager {
@@ -22,10 +22,10 @@ export default class MongoManager {
     }
 
     public static getInstance(): MongoManager {
-        if (!global.MongoManager) {
-            global.MongoManager = new MongoManager();
+        if (!global.mongoManager) {
+            global.mongoManager = new MongoManager();
         }
 
-        return global.MongoManager;
+        return global.mongoManager;
     }
 }

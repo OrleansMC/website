@@ -12,6 +12,7 @@ import { GetServerSidePropsContext, PreviewData } from "next";
 import { ParsedUrlQuery } from "querystring";
 import ConsoleManager from "../logs/ConsoleManager";
 import PlayerManager, { Player } from "./PlayerManager";
+import DiscordOauth2Manager, { DiscordUser } from "../discord/DiscordOauth2Manager";
 
 declare global {
     var authManager: AuthManager;
@@ -31,6 +32,7 @@ export type WebUser = {
 
 export type User = {
     player: Player;
+    discord: DiscordUser | null;
 } & UserCommon;
 
 
@@ -193,17 +195,19 @@ export default class AuthManager {
     public async getUser(username: string): Promise<User | null> {
         const datas = await Promise.all([
             PlayerManager.getInstance().getPlayer(username),
-            this.getWebUser(username)
+            this.getWebUser(username),
+            DiscordOauth2Manager.getInstance().getUser(username)
         ]);
 
         const player = datas[0];
         const webUser = datas[1];
+        const discord = datas[2];
 
         if (!webUser) {
             return null;
         }
 
-        const user: User & { password?: string } = { ...webUser, player };
+        const user: User & { password?: string } = { ...webUser, player, discord };
         delete user.password;
 
         return user;

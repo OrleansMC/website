@@ -1,4 +1,5 @@
 import { Collection } from "mongodb";
+import MongoManager from "./MongoManager";
 
 declare global {
     var actionManager: ActionManager;
@@ -16,7 +17,7 @@ export default class ActionManager {
     private collection: Collection<Action>;
 
     private constructor() {
-        this.collection = global.MongoManager.minecraftDatabase.collection<Action>("pending_actions");
+        this.collection = MongoManager.getInstance().minecraftDatabase.collection<Action>("pending_actions");
     }
 
     public static getInstance(): ActionManager {

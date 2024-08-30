@@ -1,5 +1,5 @@
 import BlogManager from "@/lib/server/blog/BlogManager";
-import { WebUser } from "@/lib/server/auth/AuthManager";
+import { User } from "@/lib/server/auth/AuthManager";
 
 declare namespace JSX {
     interface IntrinsicElements {
@@ -17,9 +17,12 @@ declare namespace NodeJS {
         MYSQL_AUTH_URI: string;
         MAILGUN_PASSWORD: string;
         RECAPTCHA_SECRET_KEY: string;
+        CLIENT_SECRET: string;
+        CLIENT_ID: string;
+        BOT_TOKEN: string;
     }
 }
 
 export type PageProps = {
-    user: WebUser;
+    user: User;
 } & React.HTMLProps<HTMLDivElement>;

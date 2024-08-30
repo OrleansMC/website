@@ -1,5 +1,6 @@
 
 import { Collection } from "mongodb";
+import MongoManager from "../database/mongo/MongoManager";
 declare global {
     var storeHistoryManager: StoreHistoryManager;
 }
@@ -17,7 +18,7 @@ export default class StoreHistoryManager {
     private collection: Collection<StoreHistory>;
 
     private constructor() {
-        this.collection = global.MongoManager.minecraftDatabase.collection<StoreHistory>("credit_market_history");
+        this.collection = MongoManager.getInstance().minecraftDatabase.collection<StoreHistory>("credit_market_history");
     }
 
     public static getInstance(): StoreHistoryManager {

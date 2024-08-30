@@ -3,13 +3,13 @@ import React, { HTMLProps } from "react";
 import Navbar from "../components/common/Navbar";
 import Footer from "@/components/common/Footer";
 import Head from "next/head";
-import { WebUser } from "@/lib/server/auth/AuthManager";
+import { User } from "@/lib/server/auth/AuthManager";
 
 type LayoutProps = {
   title: string;
   description: string;
   ogDescription: string;
-  user: WebUser | null;
+  user: User | null;
 } & HTMLProps<HTMLDivElement>;
 
 export default function Layout({ title, description, ogDescription, children, user }: LayoutProps) {

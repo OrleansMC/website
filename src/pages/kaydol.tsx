@@ -12,6 +12,20 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import ReCAPTCHA from "react-google-recaptcha";
 
+
+RegisterPage.getLayout = function getLayout(page: React.ReactNode, pageProps: PageProps) {
+    return (
+        <Layout
+            user={pageProps.user}
+            title="OrleansMC - Kaydol"
+            description="OrleansMC Minecraft sunucusuna kaydolun."
+            ogDescription="OrleansMC Minecraft sunucusuna kaydolun."
+        >
+            {page}
+        </Layout>
+    )
+}
+
 export default function RegisterPage(props: PageProps) {
     const router = useRouter();
     const recaptchaRef = React.createRef<ReCAPTCHA>();
@@ -120,118 +134,111 @@ export default function RegisterPage(props: PageProps) {
     }
 
     return (
-        <Layout
-            title="OrleansMC - Kaydol"
-            description="OrleansMC Minecraft sunucusuna kaydolun."
-            ogDescription="OrleansMC Minecraft sunucusuna kaydolun."
-            user={props.user}
-        >
-            <div className='w-full flex justify-between items-center mt-36 mb-36 gap-28 flex-wrap' data-aos="fade-up">
-                <div className='flex-[5_0_0%] flex justify-end items-end min-w-[23rem]'>
-                    <Image
-                        src="/uploads/wizard_90f703e5a7.png"
-                        alt="Register Image"
-                        placeholder='blur'
-                        blurDataURL='/uploads/thumbnail_wizard_94979b4765.png'
-                        width={480}
-                        height={480}
-                    />
-                </div>
-                <div className='flex-[9_0_0%]' >
-                    <h1 className='text-4xl font-semibold'>Kaydol</h1>
-                    {
-                        submitting &&
-                        <p className='text-zinc-400 mt-4'>İşlem yapılıyor...</p>
-                    }
-                    {!errorMessage && !submitting && <p className='text-zinc-400 mt-4'>
-                        {
-                            pinRequested ?
-                                'E-posta adresinize gönderilen pin kodunu girin' :
-                                'Büyük küçük harflere dikkat ederek doğru bilgileri giriniz!'
-                        }
-                    </p>}
-                    {
-                        errorMessage && !submitting &&
-                        <p className='text-red-500 mt-4'>{errorMessage}</p>
-                    }
-                    <form className='mt-4 flex flex-col gap-4' onSubmit={onSubmit}>
-                        {!pinRequested ? <>
-                            <Input
-                                id='username'
-                                type="text"
-                                placeholder="Minecraft Adı"
-                            />
-                            <Input
-                                id='email'
-                                type="email"
-                                placeholder="E-Posta Adresi"
-                            />
-                            <Input
-                                id='password'
-                                type="password"
-                                placeholder="Şifre"
-                            />
-                            <Input
-                                id='password-again'
-                                type="password"
-                                placeholder="Şifre Tekrar"
-                            />
-                        </> : <>
-                            <div className='flex gap-2'>
-                                {
-                                    Array.from({ length: 3 }).map((_, index) => getPinInput(index))
-                                }
-                                <span className='text-zinc-400 text-lg flex items-center mx-2'>
-                                    -
-                                </span>
-                                {
-                                    Array.from({ length: 3 }).map((_, index) => getPinInput(index + 3))
-                                }
-                            </div>
-                        </>}
-                        <ReCAPTCHA
-                            style={{ display: recaptchaVisible ? 'block' : 'none' }}
-                            ref={recaptchaRef}
-                            className='mt-2 w-min'
-                            sitekey="6LfqPi4qAAAAAIK5m2YK_iSDStqsCzU1FPBwLcK8"
-                        />
-                        <label className='flex items-center m-1'>
-                            <input
-                                required
-                                type="checkbox"
-                                className='rounded-lg w-5 h-5 accent-purple-500 duration-300 hover:accent-[#a950fa]'
-                            />
-                            <span className='ml-2 text-base text-zinc-400'>
-                                <a href="/rules" className='text-purple-400 hover:text-purple-300 duration-300'>
-                                    Kurallar
-                                </a>, <a href="/terms" className='text-purple-400 hover:text-purple-300 duration-300'>
-                                    Kullanım Şartları
-                                </a> ve <a href="/privacy" className='text-purple-400 hover:text-purple-300 duration-300'>
-                                    Gizlilik Politikası
-                                </a>
-                                'nı okudum ve kabul ediyorum
-                            </span>
-                        </label>
-                        <button
-                            type="submit"
-                            className='p-4 bg-purple-500 text-zinc-200 rounded-lg hover:bg-purple-400 duration-300'
-                        >
-                            Kaydol
-                        </button>
-                    </form>
-                    <div className='mt-6'>
-                        <span className='text-zinc-400'>Hesabınız var mı?</span>
-                        <Link
-                            href={'/giris-yap'}
-                            className='ml-2 text-purple-400 hover:text-purple-300'
-                        >
-                            Giriş Yap
-                        </Link>
-                    </div>
-
-                </div>
+        <div className='w-full flex justify-between items-center mt-36 mb-36 gap-28 flex-wrap' data-aos="fade-up">
+            <div className='flex-[5_0_0%] flex justify-end items-end min-w-[23rem]'>
+                <Image
+                    src="/uploads/wizard_90f703e5a7.png"
+                    alt="Register Image"
+                    placeholder='blur'
+                    blurDataURL='/uploads/thumbnail_wizard_94979b4765.png'
+                    width={480}
+                    height={480}
+                />
             </div>
-        </Layout >
+            <div className='flex-[9_0_0%]' >
+                <h1 className='text-4xl font-semibold'>Kaydol</h1>
+                {
+                    submitting &&
+                    <p className='text-zinc-400 mt-4'>İşlem yapılıyor...</p>
+                }
+                {!errorMessage && !submitting && <p className='text-zinc-400 mt-4'>
+                    {
+                        pinRequested ?
+                            'E-posta adresinize gönderilen pin kodunu girin' :
+                            'Büyük küçük harflere dikkat ederek doğru bilgileri giriniz!'
+                    }
+                </p>}
+                {
+                    errorMessage && !submitting &&
+                    <p className='text-red-500 mt-4'>{errorMessage}</p>
+                }
+                <form className='mt-4 flex flex-col gap-4' onSubmit={onSubmit}>
+                    {!pinRequested ? <>
+                        <Input
+                            id='username'
+                            type="text"
+                            placeholder="Minecraft Adı"
+                        />
+                        <Input
+                            id='email'
+                            type="email"
+                            placeholder="E-Posta Adresi"
+                        />
+                        <Input
+                            id='password'
+                            type="password"
+                            placeholder="Şifre"
+                        />
+                        <Input
+                            id='password-again'
+                            type="password"
+                            placeholder="Şifre Tekrar"
+                        />
+                    </> : <>
+                        <div className='flex gap-2'>
+                            {
+                                Array.from({ length: 3 }).map((_, index) => getPinInput(index))
+                            }
+                            <span className='text-zinc-400 text-lg flex items-center mx-2'>
+                                -
+                            </span>
+                            {
+                                Array.from({ length: 3 }).map((_, index) => getPinInput(index + 3))
+                            }
+                        </div>
+                    </>}
+                    <ReCAPTCHA
+                        style={{ display: recaptchaVisible ? 'block' : 'none' }}
+                        ref={recaptchaRef}
+                        className='mt-2 w-min'
+                        sitekey="6LfqPi4qAAAAAIK5m2YK_iSDStqsCzU1FPBwLcK8"
+                    />
+                    <label className='flex items-center m-1'>
+                        <input
+                            required
+                            type="checkbox"
+                            className='rounded-lg w-5 h-5 accent-purple-500 duration-300 hover:accent-[#a950fa]'
+                        />
+                        <span className='ml-2 text-base text-zinc-400'>
+                            <a href="/rules" className='text-purple-400 hover:text-purple-300 duration-300'>
+                                Kurallar
+                            </a>, <a href="/terms" className='text-purple-400 hover:text-purple-300 duration-300'>
+                                Kullanım Şartları
+                            </a> ve <a href="/privacy" className='text-purple-400 hover:text-purple-300 duration-300'>
+                                Gizlilik Politikası
+                            </a>
+                            'nı okudum ve kabul ediyorum
+                        </span>
+                    </label>
+                    <button
+                        type="submit"
+                        className='p-4 bg-purple-500 text-zinc-200 rounded-lg hover:bg-purple-400 duration-300'
+                    >
+                        Kaydol
+                    </button>
+                </form>
+                <div className='mt-6'>
+                    <span className='text-zinc-400'>Hesabınız var mı?</span>
+                    <Link
+                        href={'/giris-yap'}
+                        className='ml-2 text-purple-400 hover:text-purple-300'
+                    >
+                        Giriş Yap
+                    </Link>
+                </div>
+
+            </div>
+        </div>
     )
 }
 

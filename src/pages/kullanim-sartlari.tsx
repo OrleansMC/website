@@ -5,14 +5,23 @@ import { GetServerSideProps } from "next";
 import Layout from "@/layouts/Layout";
 import styles from "@/styles/blog.module.scss";
 
-export default function UserAgament(props: PageProps) {
+
+UserAgament.getLayout = function getLayout(page: React.ReactNode, pageProps: PageProps) {
     return (
         <Layout
             title="OrleansMC - Kullanım Şartları"
             description="OrleansMC kullanım şartları sayfası."
             ogDescription="OrleansMC kullanım şartları sayfası."
-            user={props.user}
+            user={pageProps.user}
         >
+            {page}
+        </Layout>
+    )
+}
+
+export default function UserAgament() {
+    return (
+        <>
             <div className='mt-28'>
                 <div
                     data-aos="fade-down"
@@ -124,7 +133,7 @@ export default function UserAgament(props: PageProps) {
                     Diyarbakır Adliyesi Mahkemeleri ve İcra Daireleri yetkilidir.
                 </p>
             </div>
-        </Layout>
+        </>
     )
 }
 

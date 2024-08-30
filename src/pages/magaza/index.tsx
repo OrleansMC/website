@@ -11,19 +11,28 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React from 'react'
 
-type GuidesProps = InferGetServerSidePropsType<typeof getServerSideProps> & PageProps
+type StoreProps = InferGetServerSidePropsType<typeof getServerSideProps> & PageProps
 
-export default function StorePage({ user }: GuidesProps) {
-    const router = useRouter();
-    const [showPopup, setShowPopup] = React.useState(false);
 
+StorePage.getLayout = function getLayout(page: React.ReactNode, pageProps: StoreProps) {
     return (
         <Layout
             title="OrleansMC - Mağaza"
             description="Ayrıcalıklarımızı keşfedin, kredi yükleyin ve mağazamızdan alışveriş yapın!"
             ogDescription="Ayrıcalıklarımızı keşfedin, kredi yükleyin ve mağazamızdan alışveriş yapın!"
-            user={user}
+            user={pageProps.user}
         >
+            {page}
+        </Layout>
+    )
+}
+
+export default function StorePage({ user }: StoreProps) {
+    const router = useRouter();
+    const [showPopup, setShowPopup] = React.useState(false);
+
+    return (
+        <>
             <div className='mt-28' data-aos="fade-down">
                 <div
                     className='flex flex-col relative py-16 px-12 md:p-12 rounded-lg shadow-lg 
@@ -65,7 +74,7 @@ export default function StorePage({ user }: GuidesProps) {
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2 p-4">
                             <p className="text-lg text-zinc-200 max-w-[28rem] text-center">
-                                Kasaları oyun içerisinde inceleyebilir ve <br/>/kredi-market menüsünden satın alabilirsiniz.
+                                Kasaları oyun içerisinde inceleyebilir ve <br />/kredi-market menüsünden satın alabilirsiniz.
                             </p>
                         </div>
                     </div>
@@ -79,7 +88,7 @@ export default function StorePage({ user }: GuidesProps) {
                     button_text='Kasaları İncele'
                 />
             </div>
-        </Layout>
+        </>
     )
 }
 

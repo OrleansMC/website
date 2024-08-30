@@ -10,6 +10,19 @@ import React from 'react'
 
 type BlogsProps = InferGetServerSidePropsType<typeof getServerSideProps> & PageProps
 
+BlogsPage.getLayout = function getLayout(page: React.ReactNode, pageProps: BlogsProps) {
+    return (
+        <Layout
+            title="OrleansMC - Haberler"
+            description="OrleansMC sunucusundaki en son güncellemeleri, etkinlikleri ve daha fazlasını buradan takip edebilirsiniz."
+            ogDescription="OrleansMC sunucusundaki en son güncellemeleri, etkinlikleri ve daha fazlasını buradan takip edebilirsiniz."
+            user={pageProps.user}
+        >
+            {page}
+        </Layout>
+    )
+}
+
 export default function BlogsPage({ blogs, page, lastPage, user }: BlogsProps) {
     const router = useRouter();
     const [currentPage, setCurrentPage] = React.useState(page);
@@ -18,12 +31,7 @@ export default function BlogsPage({ blogs, page, lastPage, user }: BlogsProps) {
         setCurrentPage(page);
     }, [page]);
     return (
-        <Layout
-            title="OrleansMC - Haberler"
-            description="OrleansMC sunucusundaki en son güncellemeleri, etkinlikleri ve daha fazlasını buradan takip edebilirsiniz."
-            ogDescription="OrleansMC sunucusundaki en son güncellemeleri, etkinlikleri ve daha fazlasını buradan takip edebilirsiniz."
-            user={user}
-        >
+        <>
             <div className='mt-28 grid grid-cols-2 md:grid-cols-1 gap-12'>
                 {
                     blogs.map((blog, index) => (
@@ -72,7 +80,7 @@ export default function BlogsPage({ blogs, page, lastPage, user }: BlogsProps) {
                     İleri
                 </button>
             </div>
-        </Layout>
+        </>
     )
 }
 

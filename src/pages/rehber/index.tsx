@@ -4,21 +4,27 @@ import AuthManager, { User } from '@/lib/server/auth/AuthManager'
 import GuideManager, { Guide } from '@/lib/server/guides/GuideManager'
 import { PageProps } from '@/types'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import { useRouter } from 'next/router'
 import React from 'react'
 
 type GuidesProps = InferGetServerSidePropsType<typeof getServerSideProps> & PageProps
 
-export default function GuidesPage({ guides, user }: GuidesProps) {
-    const router = useRouter();
 
+GuidesPage.getLayout = function getLayout(page: React.ReactNode, pageProps: PageProps) {
     return (
         <Layout
             title="OrleansMC - Rehber"
             description="Minecraft sunucumuz hakkında bilgi alabileceğiniz rehber sayfası."
             ogDescription="Minecraft sunucumuz hakkında bilgi alabileceğiniz rehber sayfası."
-            user={user}
+            user={pageProps.user}
         >
+            {page}
+        </Layout>
+    )
+}
+
+export default function GuidesPage({ guides, user }: GuidesProps) {
+    return (
+        <>
             <div className='mt-28'>
                 <div
                     data-aos="fade-down"
@@ -40,7 +46,7 @@ export default function GuidesPage({ guides, user }: GuidesProps) {
                     }
                 </div>
             </div>
-        </Layout>
+        </>
     )
 }
 

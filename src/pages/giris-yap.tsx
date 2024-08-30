@@ -12,6 +12,19 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import ReCAPTCHA from "react-google-recaptcha";
 
+LoginPage.getLayout = function getLayout(page: React.ReactNode, pageProps: PageProps) {
+    return (
+        <Layout
+            title="OrleansMC - Giriş Yap"
+            description="OrleansMC'nin web sitesine giriş yapın."
+            ogDescription="OrleansMC'nin web sitesine giriş yapın."
+            user={pageProps.user}
+        >
+            {page}
+        </Layout>
+    )
+}
+
 export default function LoginPage(props: PageProps) {
     const router = useRouter();
     const recaptchaRef = React.createRef<ReCAPTCHA>();
@@ -65,12 +78,7 @@ export default function LoginPage(props: PageProps) {
     }
 
     return (
-        <Layout
-            title="OrleansMC - Giriş Yap"
-            description="OrleansMC'nin web sitesine giriş yapın."
-            ogDescription="OrleansMC'nin web sitesine giriş yapın."
-            user={props.user}
-        >
+        <>
             <div className='w-full flex justify-between items-center mt-36 mb-36 gap-28 flex-wrap' data-aos="fade-down">
                 <div className='flex-[5_0_0%] flex justify-end items-end min-w-[23rem]'>
                     <Image
@@ -140,7 +148,7 @@ export default function LoginPage(props: PageProps) {
 
                 </div>
             </div>
-        </Layout >
+        </>
     )
 }
 

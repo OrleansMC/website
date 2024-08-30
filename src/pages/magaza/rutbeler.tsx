@@ -11,6 +11,19 @@ import React, { useRef } from 'react'
 
 type RanksProps = InferGetServerSidePropsType<typeof getServerSideProps> & PageProps
 
+RanksPage.getLayout = function getLayout(page: React.ReactNode, pageProps: RanksProps) {
+    return (
+        <Layout
+            title="OrleansMC - Rütbeler"
+            description='Sunucumuzda bulunan rütbeleri inceleyin ve avantajları keşfedin.'
+            ogDescription="Sunucumuzda bulunan rütbeleri inceleyin ve avantajları keşfedin."
+            user={pageProps.user}
+        >
+            {page}
+        </Layout>
+    )
+}
+
 export default function RanksPage({ user, ranks }: RanksProps) {
     const router = useRouter();
 
@@ -48,12 +61,7 @@ export default function RanksPage({ user, ranks }: RanksProps) {
     });
 
     return (
-        <Layout
-            title="OrleansMC - Rütbeler"
-            description='Sunucumuzda bulunan rütbeleri inceleyin ve avantajları keşfedin.'
-            ogDescription="Sunucumuzda bulunan rütbeleri inceleyin ve avantajları keşfedin."
-            user={user}
-        >
+        <>
             <div className='mt-28' data-aos="fade-down">
                 <div
                     className='flex flex-col relative py-16 px-12 md:p-12 rounded-lg shadow-lg 
@@ -153,7 +161,7 @@ export default function RanksPage({ user, ranks }: RanksProps) {
                     })}
                 </div>
             </div>
-        </Layout >
+        </>
     )
 }
 

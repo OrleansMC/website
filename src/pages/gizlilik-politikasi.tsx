@@ -5,14 +5,22 @@ import { GetServerSideProps } from "next";
 import Layout from "@/layouts/Layout";
 import styles from "@/styles/blog.module.scss";
 
-export default function PrivacyPolicy(props: PageProps) {
+PrivacyPolicy.getLayout = function getLayout(page: React.ReactNode, pageProps: PageProps) {
     return (
         <Layout
             title="OrleansMC - Gizlilik Politikası"
             description="OrleansMC Gizlilik Politikası"
             ogDescription="OrleansMC Gizlilik Politikası"
-            user={props.user}
+            user={pageProps.user}
         >
+            {page}
+        </Layout>
+    )
+}
+
+export default function PrivacyPolicy(props: PageProps) {
+    return (
+        <>
             <div className='mt-28'>
                 <div
                     data-aos="fade-down"
@@ -90,9 +98,8 @@ export default function PrivacyPolicy(props: PageProps) {
                     takdirde kabul etmiş olduğunuz tarafımızca varsayılacak olup, daha ayrıntılı bilgi
                     için bizimle iletisim@orleansmc.com e-mail adresi üzerinden iletişime geçmekten lütfen çekinmeyiniz.
                 </p>
-
             </div>
-        </Layout>
+        </>
     )
 }
 

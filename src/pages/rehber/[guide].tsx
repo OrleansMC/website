@@ -16,46 +16,52 @@ type GuideProps = {
     user: User
 } & PageProps;
 
-export default function GuidePage({ guide, user }: GuideProps) {
+GuidePage.getLayout = function getLayout(page: React.ReactNode, pageProps: GuideProps) {
     return (
         <Layout
-            title={"OrleansMC - " + guide.attributes.title}
-            description={Util.cleanMarkdown(guide.attributes.description).slice(0, 150)}
-            ogDescription={Util.cleanMarkdown(guide.attributes.description).slice(0, 150)}
-            user={user}
+            title={"OrleansMC - " + pageProps.guide.attributes.title}
+            description={Util.cleanMarkdown(pageProps.guide.attributes.description).slice(0, 150)}
+            ogDescription={Util.cleanMarkdown(pageProps.guide.attributes.description).slice(0, 150)}
+            user={pageProps.user}
         >
-            <div className="mt-28">
-                <div data-aos="fade-down" className="flex items-center bg-dark-800 p-8 md:p-6 rounded-lg shadow-lg md:flex-col md:gap-8">
-                    <div style={{ backgroundColor: guide.attributes.background }}
-                        className="rounded-lg p-6 w-56 h-56 flex justify-center items-center lg:h-full">
-                        <Image
-                            className="w-fit h-48"
-                            src={guide.attributes.icon.data.attributes.url}
-                            alt={guide.attributes.title + " Icon"}
-                            width={480}
-                            height={480}
-                            quality={100}
-                            placeholder='empty'
-                        />
-                    </div>
-                    <div className="ml-8 md:flex md:flex-col md:items-center md:gap-4 md:ml-0">
-                        <div>
-                            <h2 className="text-xl font-semibold uppercase text-zinc-400 md:text-center">{guide.attributes.sub_title}</h2>
-                            <h1 className="text-4xl tracking-wider font-semibold mt-2 md:text-center">{guide.attributes.title}</h1>
-                        </div>
-                        <Button href={"/discord"}
-                            blank
-                            type="link"
-                            className="bg-dark-200 hover:bg-dark-100 text-white !mt-3 w-fit absolute right-8 bottom-8 md:relative md:right-0 md:bottom-0">
-                            Daha Fazla Bilgi
-                        </Button>
-                    </div>
+            {page}
+        </Layout>
+    )
+}
+
+export default function GuidePage({ guide, user }: GuideProps) {
+    return (
+        <div className="mt-28">
+            <div data-aos="fade-down" className="flex items-center bg-dark-800 p-8 md:p-6 rounded-lg shadow-lg md:flex-col md:gap-8">
+                <div style={{ backgroundColor: guide.attributes.background }}
+                    className="rounded-lg p-6 w-56 h-56 flex justify-center items-center lg:h-full">
+                    <Image
+                        className="w-fit h-48"
+                        src={guide.attributes.icon.data.attributes.url}
+                        alt={guide.attributes.title + " Icon"}
+                        width={480}
+                        height={480}
+                        quality={100}
+                        placeholder='empty'
+                    />
                 </div>
-                <div id="guide" className={styles.blog} data-aos="fade-up">
-                    <Markdown>{guide.attributes.description}</Markdown>
+                <div className="ml-8 md:flex md:flex-col md:items-center md:gap-4 md:ml-0">
+                    <div>
+                        <h2 className="text-xl font-semibold uppercase text-zinc-400 md:text-center">{guide.attributes.sub_title}</h2>
+                        <h1 className="text-4xl tracking-wider font-semibold mt-2 md:text-center">{guide.attributes.title}</h1>
+                    </div>
+                    <Button href={"/discord"}
+                        blank
+                        type="link"
+                        className="bg-dark-200 hover:bg-dark-100 text-white !mt-3 w-fit absolute right-8 bottom-8 md:relative md:right-0 md:bottom-0">
+                        Daha Fazla Bilgi
+                    </Button>
                 </div>
             </div>
-        </Layout >
+            <div id="guide" className={styles.blog} data-aos="fade-up">
+                <Markdown>{guide.attributes.description}</Markdown>
+            </div>
+        </div>
     )
 }
 

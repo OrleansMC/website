@@ -1,9 +1,10 @@
 import PopUp from '@/components/common/PopUp'
 import Layout from '@/layouts/Layout'
+import UUIDManager from '@/lib/client/UUIDManager'
 import { User } from '@/lib/server/auth/AuthManager'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 
 export default function ProfileHeader({ user }: { user: User }) {
@@ -19,6 +20,13 @@ export default function ProfileHeader({ user }: { user: User }) {
 
     const randomAvatar = avatarTemplates[Math.floor(Math.random() * avatarTemplates.length)];
     const [avatar, setAvatar] = React.useState<string>(randomAvatar.replace("{uuid}", user.player.name));
+
+    useEffect(() => {
+        (async () => {
+            const uuid = await UUIDManager.getInstance().getUUID(user.username);
+            setAvatar(randomAvatar.replace("{uuid}", uuid));
+        })();
+    }, [user]);
 
     const [isPopupBlocked, setIsPopupBlocked] = React.useState<boolean>(false);
 

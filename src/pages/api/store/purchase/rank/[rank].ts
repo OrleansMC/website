@@ -87,5 +87,5 @@ export default async function PurchaseHandler(req: NextApiRequest, res: NextApiR
         rank.attributes.title,
         rank.attributes.price
     );
-    await StoreHistoryManager.getInstance().addHistory(user.player.name, 1, rank.attributes.price, rank.attributes.title);
+    await StoreHistoryManager.getInstance().addHistory(user.player.name, rank.attributes.title, 1, rank.attributes.price, rank.attributes.title);
 }

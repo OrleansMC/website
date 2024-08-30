@@ -5,13 +5,18 @@ declare global {
     var storeHistoryManager: StoreHistoryManager;
 }
 
-export type StoreHistory = {
-    _id: string;
+type StoreHistoryItem = {
     date: Date;
     name: string;
     amount: number;
     price: number;
     item: string;
+}
+
+export type StoreHistory = {
+    _id: string;
+    history: StoreHistoryItem[];
+    player_name: string;
 }
 
 export default class StoreHistoryManager {
@@ -29,14 +34,18 @@ export default class StoreHistoryManager {
         return global.storeHistoryManager;
     }
 
-    public async addHistory(playerName: string, amount: number, price: number, item: string) {
+    public async addHistory(playerName: string, name: string, amount: number, price: number, item: string) {
         return this.collection.updateOne(
             { _id: playerName.toLowerCase() },
             {
-                $push: { history: { date: new Date(), amount, price, item } },
+                $push: { history: { date: new Date(), name, amount, price, item } },
                 $setOnInsert: { player_name: playerName }
             },
             { upsert: true }
         );
+    }
+
+    public async getHistory(playerName: string) {
+        return this.collection.findOne({ _id: playerName.toLowerCase() });
     }
 }

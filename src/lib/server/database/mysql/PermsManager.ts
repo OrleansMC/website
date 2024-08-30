@@ -41,6 +41,21 @@ export default class PermsManager {
         return global.permsManager;
     }
 
+    getPlayerPrimaryGroupByUUID(uuid: string) {
+        const permissions = userPermissionsMap.get(uuid) || [];
+        if (permissions.includes('group.legend')) {
+            return 'legend';
+        } else if (permissions.includes('group.yuce')) {
+            return 'yuce';
+        } else if (permissions.includes('group.titan')) {
+            return 'titan';
+        } else if (permissions.includes('group.lord')) {
+            return 'lord';
+        } else {
+            return null;
+        }
+    }
+
     // İzinleri kontrol eden fonksiyon
     async checkPermissions() {
         try {

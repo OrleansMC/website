@@ -5,6 +5,7 @@ import { GetServerSideProps } from 'next'
 import React from 'react'
 import "@/styles/blog.module.scss"
 import Layout from '@/layouts/Layout'
+import PermsManager from '@/lib/server/database/mysql/PermsManager'
 
 ProfilePage.getLayout = function getLayout(page: React.ReactNode, pageProps: any) {
     return (
@@ -19,12 +20,59 @@ ProfilePage.getLayout = function getLayout(page: React.ReactNode, pageProps: any
     )
 }
 
-export default function ProfilePage({ user }: PageProps) {
+export default function ProfilePage({ user, primaryGroup }: PageProps & { primaryGroup: string | null }) {
     if (!user) return null;
+
+    let groupDisplayName;
+
+    switch (primaryGroup) {
+        case "legend":
+            groupDisplayName = "Efsane";
+            break;
+        case "yuce":
+            groupDisplayName = "Yüce";
+            break;
+        case "titan":
+            groupDisplayName = "Titan";
+            break;
+        case "legend":
+            groupDisplayName = "Efsane";
+            break;
+        default:
+            groupDisplayName = "Oyuncu";
+            break;
+    }
+
+    let rankColor;
+    switch (primaryGroup) {
+        case "legend":
+            rankColor = "#8A6ADA";
+            break;
+        case "yuce":
+            rankColor = "#da7fdb";
+            break;
+        case "titan":
+            rankColor = "#d4a935";
+            break;
+        case "lord":
+            rankColor = "#4A69D9";
+            break;
+        default:
+            rankColor = "#949aa6";
+            break;
+    }
 
     return (
         <div data-aos="fade">
-            <h2 className='text-3xl font-semibold text-white'>Profil</h2>
+            <div className='flex items-start justify-between'>
+                <h2 className='text-3xl font-semibold text-white'>Profil</h2>
+                <span className={
+                    `text-base font-semibold text-white inline-block px-3 py-2 rounded-md`}
+                    style={{ backgroundColor: rankColor }}
+                >
+                    Rütbeniz: {groupDisplayName}
+                </span>
+            </div>
             <p className='text-zinc-300 mt-2'>
                 {user.username}, Seni Aramızda Görmek Ne Güzel!
             </p>
@@ -62,7 +110,8 @@ export const getServerSideProps = (async (ctx) => {
     }
     return {
         props: {
-            user
+            user,
+            primaryGroup: PermsManager.getInstance().getPlayerPrimaryGroupByUUID(user.player.uuid)
         }
     }
-}) satisfies GetServerSideProps<{ user: User | null }>
+}) satisfies GetServerSideProps<{ user: User | null, primaryGroup: string | null }>

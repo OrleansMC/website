@@ -132,13 +132,57 @@ export default class Util {
         const hours = Math.floor((sec_num - (days * 86400)) / 3600);
         const minutes = Math.floor((sec_num - (days * 86400) - (hours * 3600)) / 60);
         const seconds = sec_num - (days * 86400) - (hours * 3600) - (minutes * 60);
-    
+
         let result = [];
         if (days > 0) result.push(`${days} Gün`);
         if (hours > 0) result.push(`${hours} Saat`);
         if ((minutes > 0) && (!days || !hours)) result.push(`${minutes} Dakika`);
         //if ((seconds > 0) && (!hours || !minutes)) result.push(`${minutes} Saniye`);
-    
+
         return result.map((d) => `${d}`).join(", ");
     };
+
+    public static getRankDisplayName(rank: string) {
+        let rankDisplayName;
+        switch (rank) {
+            case "legend":
+                rankDisplayName = "Efsane";
+                break;
+            case "yuce":
+                rankDisplayName = "Yüce";
+                break;
+            case "titan":
+                rankDisplayName = "Titan";
+                break;
+            case "legend":
+                rankDisplayName = "Efsane";
+                break;
+            default:
+                rankDisplayName = "Oyuncu";
+                break;
+        }
+        return rankDisplayName;
+    }
+
+    static getRankColor(rank: string) {
+        let rankColor;
+        switch (rank) {
+            case "legend":
+                rankColor = "#8A6ADA";
+                break;
+            case "yuce":
+                rankColor = "#da7fdb";
+                break;
+            case "titan":
+                rankColor = "#d4a935";
+                break;
+            case "lord":
+                rankColor = "#4A69D9";
+                break;
+            default:
+                rankColor = "#949aa6";
+                break;
+        }
+        return rankColor;
+    }
 }

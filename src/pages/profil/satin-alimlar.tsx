@@ -6,6 +6,7 @@ import React from 'react'
 import "@/styles/blog.module.scss"
 import Layout from '@/layouts/Layout'
 import StoreHistoryManager, { StoreHistory } from '@/lib/server/logs/StoreHistoryManager'
+import Util from '@/lib/common/Util'
 
 PurchasesPage.getLayout = function getLayout(page: React.ReactNode, pageProps: any) {
     return (
@@ -41,7 +42,15 @@ export default function PurchasesPage({ user, marketHistory }: PurchasesPageProp
 
     return (
         <div data-aos="fade">
-            <h2 className='text-3xl font-semibold text-white'>Satın Alımlar</h2>
+            <div className='flex items-start justify-between'>
+                <h2 className='text-3xl font-semibold text-white'>Satın Alımlar</h2>
+                <span className={
+                    `text-base font-semibold text-white inline-block px-3 py-2 rounded-md`}
+                    style={{ backgroundColor: Util.getRankColor(user.player.rank) }}
+                >
+                    Rütbeniz: {Util.getRankDisplayName(user.player.rank)}
+                </span>
+            </div>
             <p className='text-zinc-300 mt-2'>
                 Buradan satın alımlarınızı görebilirsiniz.
             </p>

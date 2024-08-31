@@ -2,6 +2,7 @@
 import { Collection } from 'mongodb';
 import MongoManager from '../database/mongo/MongoManager';
 import RedisManager from '../database/redis/RedisManager';
+import PermsManager from '../database/mysql/PermsManager';
 
 declare global {
     var playerManager: PlayerManager;
@@ -18,6 +19,7 @@ export type Player = {
     credit: number;
     gem: number;
     uuid: string;
+    rank: string;
 }
 
 export default class PlayerManager {
@@ -83,7 +85,8 @@ export default class PlayerManager {
             name: name,
             credit: credit,
             gem: gem,
-            uuid: uuid || ''
+            uuid: uuid || '',
+            rank: PermsManager.getInstance().getPlayerPrimaryGroupByUUID(uuid || '') || 'player'
         };
     }
 }

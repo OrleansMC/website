@@ -92,10 +92,10 @@ export default function Navbar(navbarProps: {
             <nav className="flex justify-between backdrop-blur items-center py-5 fixed z-30 container">
                 <div>
                     {menuButton}
-                    <div className={`flex items-center space-x-4 lg:absolute lg:left-1/2 lg:transform lg:-translate-x-1/2 
-                        lg:z-50 lg:bg-black/90 lg:rounded-lg lg:py-8 lg:px-8 lg:top-0 lg:w-full lg:h-screen
-                        lg:flex-col lg:justify-start lg:items-center lg:space-y-4 lg:gap-4 navbar-mobile-menu
-                        ` + `${menuOpen ? " active" : ""}`}>
+                    <div className={`flex items-center space-x-4 lg:absolute lg:left-1/2 lg:transform lg:-translate-x-1/2 ` +
+                        `lg:z-50 lg:bg-black/90 lg:rounded-lg lg:py-8 lg:px-8 lg:top-0 lg:w-full lg:h-screen ` +
+                        `lg:flex-col lg:justify-start lg:items-center lg:space-y-4 lg:gap-4 navbar-mobile-menu ` +
+                        `${menuOpen ? " active" : ""}`}>
                         {menuButton}
                         <ul className="flex space-x-4 font-semibold items-center lg:w-full 
                         lg:flex-col lg:space-y-4 lg:space-x-0 lg:absolute lg:top-1/2 lg:left-1/2 lg:transform lg:-translate-x-1/2 lg:-translate-y-1/2">

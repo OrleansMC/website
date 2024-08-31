@@ -6,6 +6,7 @@ import React from 'react'
 import "@/styles/blog.module.scss"
 import Layout from '@/layouts/Layout'
 import PermsManager from '@/lib/server/database/mysql/PermsManager'
+import Util from '@/lib/common/Util'
 
 ProfilePage.getLayout = function getLayout(page: React.ReactNode, pageProps: any) {
     return (
@@ -20,47 +21,8 @@ ProfilePage.getLayout = function getLayout(page: React.ReactNode, pageProps: any
     )
 }
 
-export default function ProfilePage({ user, primaryGroup }: PageProps & { primaryGroup: string | null }) {
+export default function ProfilePage({ user }: PageProps) {
     if (!user) return null;
-
-    let groupDisplayName;
-
-    switch (primaryGroup) {
-        case "legend":
-            groupDisplayName = "Efsane";
-            break;
-        case "yuce":
-            groupDisplayName = "Yüce";
-            break;
-        case "titan":
-            groupDisplayName = "Titan";
-            break;
-        case "legend":
-            groupDisplayName = "Efsane";
-            break;
-        default:
-            groupDisplayName = "Oyuncu";
-            break;
-    }
-
-    let rankColor;
-    switch (primaryGroup) {
-        case "legend":
-            rankColor = "#8A6ADA";
-            break;
-        case "yuce":
-            rankColor = "#da7fdb";
-            break;
-        case "titan":
-            rankColor = "#d4a935";
-            break;
-        case "lord":
-            rankColor = "#4A69D9";
-            break;
-        default:
-            rankColor = "#949aa6";
-            break;
-    }
 
     return (
         <div data-aos="fade">
@@ -68,9 +30,9 @@ export default function ProfilePage({ user, primaryGroup }: PageProps & { primar
                 <h2 className='text-3xl font-semibold text-white'>Profil</h2>
                 <span className={
                     `text-base font-semibold text-white inline-block px-3 py-2 rounded-md`}
-                    style={{ backgroundColor: rankColor }}
+                    style={{ backgroundColor: Util.getRankColor(user.player.rank) }}
                 >
-                    Rütbeniz: {groupDisplayName}
+                    Rütbeniz: {Util.getRankDisplayName(user.player.rank)}
                 </span>
             </div>
             <p className='text-zinc-300 mt-2'>
@@ -110,8 +72,7 @@ export const getServerSideProps = (async (ctx) => {
     }
     return {
         props: {
-            user,
-            primaryGroup: PermsManager.getInstance().getPlayerPrimaryGroupByUUID(user.player.uuid)
+            user
         }
     }
-}) satisfies GetServerSideProps<{ user: User | null, primaryGroup: string | null }>
+}) satisfies GetServerSideProps<{ user: User | null }>

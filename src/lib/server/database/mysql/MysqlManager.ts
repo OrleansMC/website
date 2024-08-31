@@ -34,4 +34,16 @@ export default class MysqlManager {
 
         ConsoleManager.info('MysqlManager', `Registered user ${username} to LimboAuth`);
     }
+
+    public async changePassword(username: string, hashedPassword: string): Promise<void> {
+        await AuthModel.update({
+            HASH: hashedPassword
+        }, {
+            where: {
+                NICKNAME: username
+            }
+        });
+
+        ConsoleManager.info('MysqlManager', `Changed password for user ${username}`);
+    }
 }

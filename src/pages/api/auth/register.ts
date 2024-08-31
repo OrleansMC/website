@@ -35,6 +35,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     return res.status(400).json({ name: (error as Error).message });
   }
 
+  try {
+    Util.validatePassword(password);
+  } catch (error) {
+    return res.status(400).json({ name: (error as Error).message });
+  }
+
   if (!Util.isValidEmail(email)) {
     return res.status(400).json({ name: "Invalid email" });
   }

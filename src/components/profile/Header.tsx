@@ -108,8 +108,6 @@ export default function ProfileHeader({ user }: { user: User }) {
                                         </button>
                                     ) : (
                                         <button
-                                            onMouseEnter={() => setResyncHover(true)}
-                                            onMouseLeave={() => setResyncHover(false)}
                                             onClick={openLoginPopUp}
                                             className='flex mt-4 gap-2 items-center justify-center bg-blue-500 px-4 py-2
                                     rounded-md shadow-lg backdrop-blur-md hover:bg-blue-400 duration-300'>

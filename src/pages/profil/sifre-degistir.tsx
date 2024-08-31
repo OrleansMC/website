@@ -1,13 +1,13 @@
-import Button from '@/components/common/Button'
 import AuthManager, { User } from '@/lib/server/auth/AuthManager'
 import { PageProps } from '@/types'
 import { GetServerSideProps } from 'next'
 import React from 'react'
 import "@/styles/blog.module.scss"
 import Layout from '@/layouts/Layout'
-import PermsManager from '@/lib/server/database/mysql/PermsManager'
 import Util from '@/lib/common/Util'
 import Input from '@/components/register/Input'
+import axios from 'axios'
+import { useRouter } from 'next/router'
 
 ProfilePage.getLayout = function getLayout(page: React.ReactNode, pageProps: any) {
     return (
@@ -25,6 +25,54 @@ ProfilePage.getLayout = function getLayout(page: React.ReactNode, pageProps: any
 export default function ProfilePage({ user }: PageProps) {
     if (!user) return null;
 
+    const [submitting, setSubmitting] = React.useState(false);
+    const [errorMessage, setErrorMessage] = React.useState('');
+    const [successMessage, setSuccessMessage] = React.useState('');
+    const router = useRouter();
+
+
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (submitting) {
+            return;
+        }
+
+        const oldPassword = (e.currentTarget.elements.namedItem('old-password') as HTMLInputElement).value;
+        const newPassword = (e.currentTarget.elements.namedItem('new-password') as HTMLInputElement).value;
+        const newPasswordAgain = (e.currentTarget.elements.namedItem('new-password-again') as HTMLInputElement).value;
+
+        if (!oldPassword || !newPassword || !newPasswordAgain) {
+            setErrorMessage('Tüm alanları doldurun.');
+            return;
+        }
+
+        if (newPassword !== newPasswordAgain) {
+            setErrorMessage('Yeni şifreler uyuşmuyor.');
+            return;
+        }
+        setSubmitting(true);
+
+
+        try {
+            await axios.post('/api/auth/change-password', {
+                oldPassword,
+                newPassword
+            });
+
+            setErrorMessage('');
+            setSubmitting(false);
+            setSuccessMessage('Şifreniz başarıyla değiştirildi.');
+        } catch (error) {
+            setErrorMessage((error as any).response.data.name);
+            setSubmitting(false);
+        }
+
+        setTimeout(() => {
+            setSuccessMessage('');
+            setErrorMessage('');
+        }, 5000);
+    }
+
     return (
         <div data-aos="fade">
             <div className='flex items-start justify-between'>
@@ -36,17 +84,19 @@ export default function ProfilePage({ user }: PageProps) {
                     Rütbeniz: {Util.getRankDisplayName(user.player.rank)}
                 </span>
             </div>
-            <p className='text-zinc-300 mt-2'>
+            {!errorMessage && !successMessage && <p className='text-zinc-300 mt-2'>
                 Buradan şifrenizi değiştirebilirsiniz.
-            </p>
+            </p>}
+            {errorMessage && <p className='text-red-500 mt-2'>{errorMessage}</p>}
+            {successMessage && <p className='text-green-500 mt-2'>{successMessage}</p>}
             <div>
-                <form className='mt-6'>
+                <form className='mt-6' onSubmit={onSubmit}>
                     <div className='flex flex-col gap-2'>
                         <label htmlFor='old-password' className='text-zinc-300'>Eski Şifre</label>
                         <Input
                             type='password'
                             id='old-password'
-                            className='bg-dark-750 p-2 rounded-md text-zinc-300 hover:bg-dark-650'
+                            className='!bg-dark-750 p-2 rounded-md text-zinc-300 hover:bg-dark-650'
                             placeholder='Eski şifrenizi girin'
                         />
                     </div>
@@ -55,7 +105,7 @@ export default function ProfilePage({ user }: PageProps) {
                         <Input
                             type='password'
                             id='new-password'
-                            className='bg-dark-750 p-2 rounded-md text-zinc-300 hover:bg-dark-650'
+                            className='!bg-dark-750 p-2 rounded-md text-zinc-300 hover:bg-dark-650'
                             placeholder='Yeni şifrenizi girin'
                         />
                     </div>
@@ -64,7 +114,7 @@ export default function ProfilePage({ user }: PageProps) {
                         <Input
                             type='password'
                             id='new-password-again'
-                            className='bg-dark-750 p-2 rounded-md text-zinc-300 hover:bg-dark-650'
+                            className='!bg-dark-750 p-2 rounded-md text-zinc-300 hover:bg-dark-650'
                             placeholder='Yeni şifrenizi tekrar girin'
                         />
                     </div>

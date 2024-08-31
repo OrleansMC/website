@@ -3,7 +3,7 @@ import nodemailer from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 declare global {
-    var EmailManager: EmailManager;
+    var emailManager: EmailManager;
 }
 
 export default class EmailManager {
@@ -22,11 +22,11 @@ export default class EmailManager {
     }
 
     public static getInstance(): EmailManager {
-        if (!global.EmailManager) {
-            global.EmailManager = new EmailManager();
+        if (!global.emailManager) {
+            global.emailManager = new EmailManager();
         }
 
-        return global.EmailManager;
+        return global.emailManager;
     }
 
     public async sendEmail(to: string, subject: string, text?: string, html?: string): Promise<void> {

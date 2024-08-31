@@ -65,6 +65,42 @@ export default class Util {
         return false;
     }
 
+    public static validatePassword(password: string) {
+        if (!password) {
+            throw new Error("Şifre boş olamaz.");
+        }
+
+        if (password.includes(" ") || password.includes("\t") || password.includes("\n")) {
+            throw new Error("Şifre boşluk içeremez.");
+        }
+
+        if (password.length > 50) {
+            throw new Error("Şifre çok uzun! En fazla 50 karakter olmalı.");
+        }
+        // Uzunluk kontrolü (En az 6 karakter)
+        if (password.length < 6) {
+            throw new Error("Şifre çok kısa! En az 6 karakter olmalı.");
+        }
+
+        /*// Büyük harf kontrolü
+        const uppercasePattern = /[A-Z]/;
+        if (!uppercasePattern.test(password)) {
+            throw new Error("Şifre en az bir büyük harf içermelidir.");
+        }
+
+        // Küçük harf kontrolü
+        const lowercasePattern = /[a-z]/;
+        if (!lowercasePattern.test(password)) {
+            throw new Error("Şifre en az bir küçük harf içermelidir.");
+        }*/
+
+        // Sayı kontrolü
+        const numberPattern = /[0-9]/;
+        if (!numberPattern.test(password)) {
+            throw new Error("Şifre en az bir rakam içermelidir.");
+        }
+    }
+
     public static validateMinecraftNickname(nickname: string) {
         // Uzunluk kontrolü (En az 3, en fazla 16 karakter)
         if (nickname.length < 3) {

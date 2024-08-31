@@ -71,4 +71,13 @@ export default class SessionManager {
     public async deleteSession(token: string): Promise<void> {
         await this.collection.deleteOne({ token });
     }
+
+    public async deleteSessionsByUsername(username: string, ignoredToken?: string): Promise<void> {
+        await this.collection.deleteMany({
+            username,
+            token: {
+                $ne: ignoredToken
+            }
+        });
+    }
 }

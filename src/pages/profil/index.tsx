@@ -5,7 +5,6 @@ import { GetServerSideProps } from 'next'
 import React from 'react'
 import "@/styles/blog.module.scss"
 import Layout from '@/layouts/Layout'
-import PermsManager from '@/lib/server/database/mysql/PermsManager'
 import Util from '@/lib/common/Util'
 
 ProfilePage.getLayout = function getLayout(page: React.ReactNode, pageProps: any) {

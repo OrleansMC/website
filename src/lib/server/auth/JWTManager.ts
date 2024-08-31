@@ -31,4 +31,19 @@ export default class JWTManager {
             return null;  // Doğrulama başarısız
         }
     }
+
+    public generateResetPasswordToken(key: string): string {
+        const payload = { key };
+
+        return jwt.sign(payload, process.env.JWT_SECRET as string, { expiresIn: '5m' });
+    }
+
+    public getKeyFromForgotPasswordToken(token: string): string | null {
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { key: string };
+            return decoded.key;  // Doğrulama başarılı, key döndür
+        } catch (error) {
+            return null;  // Doğrulama başarısız
+        }
+    }
 }

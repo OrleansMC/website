@@ -10,14 +10,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router'
 import React from 'react'
-import ReCAPTCHA from "react-google-recaptcha";
 
-LoginPage.getLayout = function getLayout(page: React.ReactNode, pageProps: PageProps) {
+ResetPasswordTokenPage.getLayout = function getLayout(page: React.ReactNode, pageProps: PageProps) {
     return (
         <Layout
-            title="OrleansMC - Giriş Yap"
-            description="OrleansMC'nin web sitesine giriş yapın."
-            ogDescription="OrleansMC'nin web sitesine giriş yapın."
+            title="OrleansMC - Şifre Sıfırla"
+            description="OrleansMC sunucusundaki şifrenizi sıfırlayın."
+            ogDescription="OrleansMC sunucusundaki şifrenizi sıfırlayın."
             user={pageProps.user}
         >
             {page}
@@ -25,12 +24,10 @@ LoginPage.getLayout = function getLayout(page: React.ReactNode, pageProps: PageP
     )
 }
 
-export default function LoginPage(props: PageProps) {
+export default function ResetPasswordTokenPage(props: PageProps & { token: string }) {
     const router = useRouter();
-    const recaptchaRef = React.createRef<ReCAPTCHA>();
-
     const [errorMessage, setErrorMessage] = React.useState<string>('');
-    const [recaptchaVisible, setRecaptchaVisible] = React.useState<boolean>(false);
+    const [successMessage, setSuccessMessage] = React.useState<string>('');
     const [submitting, setSubmitting] = React.useState<boolean>(false);
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -40,39 +37,35 @@ export default function LoginPage(props: PageProps) {
             return;
         }
 
-        const token = recaptchaRef.current?.getValue();
-        if (!token) {
-            setRecaptchaVisible(true);
+        const password = (e.currentTarget.querySelector('#password') as HTMLInputElement).value;
+        const passwordAgain = (e.currentTarget.querySelector('#password-again') as HTMLInputElement).value;
+
+        if (!password || !passwordAgain) {
+            setErrorMessage('Tüm alanları doldurun.');
             return;
         }
 
-        recaptchaRef.current?.reset();
-        setRecaptchaVisible(false);
-
-        const username = (e.currentTarget.querySelector('#username') as HTMLInputElement).value;
-        const password = (e.currentTarget.querySelector('#password') as HTMLInputElement).value;
-
         try {
-            Util.validateMinecraftNickname(username);
+            Util.validatePassword(password);
         } catch (error) {
-            setErrorMessage("Minecraft adı geçersiz.");
+            setErrorMessage((error as Error).message);
+            return;
+        }
+
+        if (password !== passwordAgain) {
+            setErrorMessage('Şifreler uyuşmuyor.');
             return;
         }
         setSubmitting(true);
 
 
         try {
-            await axios.post('/api/auth/login', {
-                username,
-                password,
-                captcha: token
+            await axios.post(`/api/auth/reset-password/${props.token}`, {
+                newPassword: password
             });
 
-            router.back();
-            setTimeout(() => {
-                router.reload();
-            }, 1000);
             setErrorMessage('');
+            setSuccessMessage('Şifreniz başarıyla değiştirildi.');
             setSubmitting(false);
         } catch (error) {
             setErrorMessage((error as any).response.data.name);
@@ -94,58 +87,47 @@ export default function LoginPage(props: PageProps) {
                     />
                 </div>
                 <div className='flex-[9_0_0%]' >
-                    <h1 className='text-4xl font-semibold'>Giriş Yap</h1>
+                    <h1 className='text-4xl font-semibold'>Şifreni Sıfırla</h1>
                     {
                         submitting &&
                         <p className='text-zinc-400 mt-4'>İşlem yapılıyor...</p>
                     }
-                    {!errorMessage && !submitting && <p className='text-zinc-400 mt-4'>
-                        Hesabınıza giriş yapmak için aşağıdaki bilgileri doldurun.
+                    {!errorMessage && !submitting && !successMessage && <p className='text-zinc-400 mt-4'>
+                        Yeni şifrenizi belirleyin.
                     </p>}
                     {
-                        errorMessage && !submitting &&
+                        errorMessage && !successMessage && !submitting &&
                         <p className='text-red-500 mt-4'>{errorMessage}</p>
+                    }
+                    {
+                        successMessage && !errorMessage && !submitting &&
+                        <p className='text-green-500 mt-4'>{successMessage}</p>
                     }
                     <form className='mt-4 flex flex-col gap-4' onSubmit={onSubmit}>
                         <Input
-                            id='username'
-                            type="text"
-                            placeholder="Minecraft Adı"
-                        />
-                        <Input
                             id='password'
                             type="password"
-                            placeholder="Şifre"
+                            placeholder="Yeni Şifre"
                         />
-                        <label className='flex items-center m-1 cursor-pointer w-fit'>
-                            <input
-                                type="checkbox"
-                                className='rounded-lg w-5 h-5 accent-purple-500 duration-300 hover:accent-[#a950fa]'
-                            />
-                            <span className='ml-2 text-base text-zinc-400'>
-                                Beni Hatırla
-                            </span>
-                        </label>
-                        <ReCAPTCHA
-                            style={{ display: recaptchaVisible ? 'block' : 'none' }}
-                            ref={recaptchaRef}
-                            className='mt-2 w-min'
-                            sitekey="6LfqPi4qAAAAAIK5m2YK_iSDStqsCzU1FPBwLcK8"
+                        <Input
+                            id='password-again'
+                            type="password"
+                            placeholder="Yeni Şifre Tekrar"
                         />
                         <button
                             type="submit"
                             className='p-4 bg-purple-500 text-zinc-200 rounded-lg hover:bg-purple-400 duration-300'
                         >
-                            Giriş Yap
+                            Şifremi Değiştir
                         </button>
                     </form>
                     <div className='mt-6'>
-                        <span className='text-zinc-400'>Şifrenizi mi unuttunuz?</span>
+                        <span className='text-zinc-400'>Hesabın yok mu?</span>
                         <Link
-                            href={'/sifre-sifirla'}
+                            href={'/kaydol'}
                             className='ml-2 text-purple-400 hover:text-purple-300'
                         >
-                            Şifreni Sıfırla
+                            Kaydol
                         </Link>
                     </div>
 
@@ -156,9 +138,19 @@ export default function LoginPage(props: PageProps) {
 }
 
 export const getServerSideProps = (async (ctx) => {
+    const token = ctx.params?.token as string;
+    if (!token || !await AuthManager.getInstance().validateResetPasswordToken(token)) {
+        return {
+            redirect: {
+                destination: "/sifre-sifirla",
+                permanent: false
+            }
+        }
+    }
     return {
         props: {
-            user: await AuthManager.getInstance().getUserFromContext(ctx)
+            user: await AuthManager.getInstance().getUserFromContext(ctx),
+            token
         }
     }
 }) satisfies GetServerSideProps<{ user: User | null }>

@@ -24,7 +24,7 @@ export default class DiscordOauth2Manager {
     private accounts: Collection<DiscordAccount>;
     private updateInterval: number = 1000 * 60 * 60 * 24;
     public scopes: string[] = ["identify", "guilds.join", "email", "role_connections.write"];
-    public redirectUri: string = process.env.URL + "/api/discord/callback";
+    public redirectUri: string = process.env.WEBSITE_URL + "/api/discord/callback";
 
     private constructor() {
         this.oauth = new DiscordOauth2({
@@ -58,7 +58,7 @@ export default class DiscordOauth2Manager {
     };
 
     public async getUser(playerName: string) {
-        const _id = playerName.toLocaleLowerCase();
+        const _id = playerName.toLowerCase();
 
         const user = await this.users.findOne<DiscordUser>({ _id });
 
@@ -77,7 +77,7 @@ export default class DiscordOauth2Manager {
     public async refreshUser(user: DiscordUser): Promise<DiscordUser | null> {
         const oauth = DiscordOauth2Manager.getInstance().getOAuth();
 
-        const account = await this.getAccount(user.id);
+        const account = await this.getAccount(user._id);
         if (!account) {
             return null;
         };
@@ -90,7 +90,7 @@ export default class DiscordOauth2Manager {
 
         await this.updateUser(newUser);
 
-        ConsoleManager.log("DiscordOauth2Manager", "User updated: " + newUser.id);
+        ConsoleManager.log("DiscordOauth2Manager", "User updated: " + newUser._id);
         return newUser;
     }
 

@@ -13,6 +13,7 @@ import { ParsedUrlQuery } from "querystring";
 import ConsoleManager from "../logs/ConsoleManager";
 import PlayerManager, { Player } from "./PlayerManager";
 import DiscordOauth2Manager, { DiscordUser } from "../discord/DiscordOauth2Manager";
+import crypto from "crypto";
 
 declare global {
     var authManager: AuthManager;
@@ -43,17 +44,36 @@ export type PendingRegistration = {
     username: string;
 }
 
+export type ResetPasswordRequest = {
+    username: string;
+    key: string;
+    created_at: Date;
+}
 
 const pinMailTemplate: string = fs.readFileSync('src/lib/server/email/PINTemplate.html', { encoding: 'utf-8' });
 
 export default class AuthManager {
     public userCollection: Collection<WebUser>;
+    public resetPasswordRequests: Collection<ResetPasswordRequest>;
     public pendingRegistrations: Map<string, PendingRegistration>;
 
     private constructor() {
         ConsoleManager.info("AuthManager", "AuthManager initialized.");
         this.userCollection = MongoManager.getInstance().websiteDatabase.collection<WebUser>("users");
+        this.resetPasswordRequests = MongoManager.getInstance().websiteDatabase.collection("reset_password_requests");
         this.pendingRegistrations = new Map();
+
+        setInterval(async () => {
+            const resetPasswordRequests = await this.resetPasswordRequests.find({
+                created_at: {
+                    $lt: new Date(Date.now() - 1000 * 60 * 5)
+                }
+            }).toArray();
+
+            for (const resetPasswordRequest of resetPasswordRequests) {
+                await this.resetPasswordRequests.deleteOne({ username: resetPasswordRequest.username });
+            }
+        }, 1000 * 60);
     }
 
     public static getInstance(): AuthManager {
@@ -84,6 +104,71 @@ export default class AuthManager {
         const JWT = JWTManager.getInstance().generateToken(session.token);
         ConsoleManager.info("AuthManager", "Kullanıcı giriş yaptı: " + username);
         return JWT;
+    }
+
+    public async changePassword(username: string, oldPassword: string, newPassword: string): Promise<void> {
+        const user = await this.getWebUser(username);
+        if (!user) {
+            throw new Error("Kullanıcı bulunamadı.");
+        }
+
+        const passwordMatch = await bcrypt.compare(oldPassword, user.password);
+        if (!passwordMatch) {
+            throw new Error("Eski şifre yanlış.");
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        await MysqlManager.getInstance().changePassword(username, hashedPassword);
+        await this.userCollection.updateOne({ _id: username }, { $set: { password: hashedPassword } });
+        ConsoleManager.info("AuthManager", "Kullanıcı şifresi değiştirildi: " + username);
+    }
+
+    public async generateResetPasswordToken(username: string): Promise<string> {
+        const user = await this.getWebUser(username);
+        if (!user) {
+            throw new Error("Kullanıcı bulunamadı.");
+        }
+
+        const key = crypto.randomBytes(32).toString('hex');
+        await this.resetPasswordRequests.insertOne({
+            username,
+            key,
+            created_at: new Date()
+        });
+
+        return JWTManager.getInstance().generateResetPasswordToken(key);
+    }
+
+    public async resetPassword(token: string, newPassword: string): Promise<void> {
+        const key = JWTManager.getInstance().getKeyFromForgotPasswordToken(token);
+        if (!key) {
+            throw new Error("Geçersiz token.");
+        }
+
+        const resetPasswordRequest = await this.resetPasswordRequests.findOne({ key });
+        if (!resetPasswordRequest) {
+            throw new Error("Geçersiz token.");
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        await MysqlManager.getInstance().changePassword(resetPasswordRequest.username, hashedPassword);
+        await this.userCollection.updateOne({ _id: resetPasswordRequest.username }, { $set: { password: hashedPassword } });
+        await this.resetPasswordRequests.deleteOne({ key });
+        ConsoleManager.info("AuthManager", "Kullanıcı şifresi sıfırlandı: " + resetPasswordRequest.username);
+    }
+
+    public async validateResetPasswordToken(token: string): Promise<boolean> {
+        const key = JWTManager.getInstance().getKeyFromForgotPasswordToken(token);
+        if (!key) {
+            return false;
+        }
+
+        const resetPasswordRequest = await this.resetPasswordRequests.findOne({ key });
+        if (!resetPasswordRequest) {
+            return false;
+        }
+
+        return true;
     }
 
     public async register(email: string, username: string, password: string, pin?: string, ip?: string): Promise<boolean> {

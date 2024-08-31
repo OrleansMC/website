@@ -8,12 +8,13 @@ import bcrypt from 'bcrypt';
 import Util from "@/lib/common/Util";
 import axios from "axios";
 import fs from 'fs';
-import { GetServerSidePropsContext, PreviewData } from "next";
+import { GetServerSidePropsContext, NextApiRequest, PreviewData } from "next";
 import { ParsedUrlQuery } from "querystring";
 import ConsoleManager from "../logs/ConsoleManager";
 import PlayerManager, { Player } from "./PlayerManager";
 import DiscordOauth2Manager, { DiscordUser } from "../discord/DiscordOauth2Manager";
 import crypto from "crypto";
+import requestIp from 'request-ip';
 
 declare global {
     var authManager: AuthManager;
@@ -324,7 +325,7 @@ export default class AuthManager {
 
                 const session = await SessionManager.getInstance().getSession(sessionId);
                 if (session) {
-                    const ip = ctx.req.headers['CF-Connecting-IP'] as string || ctx.req.headers['x-real-ip'] as string || ctx.req.socket.remoteAddress || "";
+                    const ip = AuthManager.getInstance().getIpFromRequest(ctx.req as any) || "unknown";
 
                     if (!session.ips.includes(ip)) {
                         session.ips.push(ip);
@@ -336,5 +337,9 @@ export default class AuthManager {
             }
         }
         return user;
+    }
+
+    public getIpFromRequest(req: NextApiRequest) {
+        return requestIp.getClientIp(req);
     }
 }

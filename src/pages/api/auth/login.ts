@@ -23,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const password = req.body.password as string;
     const captcha = req.body.captcha as string;
 
-    const ip = req.headers['CF-Connecting-IP'] as string || req.headers['x-real-ip'] as string || req.socket.remoteAddress;
+    const ip = AuthManager.getInstance().getIpFromRequest(req) || "unknown";
     if (!username || !password || !captcha) {
         ConsoleManager.warn("Login", "Missing fields from " + ip);
         return res.status(400).json({ name: "Missing fields" });

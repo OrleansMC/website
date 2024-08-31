@@ -32,7 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         } Max-Age=0; Path=/api`
     );
 
-    const ip = req.headers['CF-Connecting-IP'] as string || req.headers['x-real-ip'] as string || req.socket.remoteAddress;
+    const ip = AuthManager.getInstance().getIpFromRequest(req) || "unknown";
 
     ConsoleManager.info("Logout", "User logged out from " + ip);
 

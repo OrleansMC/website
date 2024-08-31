@@ -32,11 +32,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         } Max-Age=0; Path=/api`
     );
 
-    ConsoleManager.info("Logout", "User logged out from " + req.socket.remoteAddress);
+    const ip = req.headers['x-real-ip'] as string || req.socket.remoteAddress;
+
+    ConsoleManager.info("Logout", "User logged out from " + ip);
 
     const user = await AuthManager.getInstance().getUserFromSessionToken(sessionToken);
     if (user) {
-        WebhookManager.sendLogoutWebhook(user, req.socket.remoteAddress || "unknown");
+        WebhookManager.sendLogoutWebhook(user, ip || "unknown");
     }
 
     res.status(200).json({ name: "Logged out" });

@@ -5,6 +5,7 @@
     color: #cacad1;
     @media screen and (max-width: 576px) {
         margin: 3rem auto 5rem auto;
+        padding: 0;
     }
 
     h1 {
@@ -15,7 +16,6 @@
         color: #f2f2f8;
         @media screen and (max-width: 576px) {
             font-size: 1.5rem;
-            text-align: center;
             line-height: 1.5;
         }
     }

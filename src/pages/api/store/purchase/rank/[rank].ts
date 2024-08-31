@@ -81,9 +81,10 @@ export default async function PurchaseHandler(req: NextApiRequest, res: NextApiR
     ConsoleManager.info("Purchase", `Player ${user.player.name} purchased rank ${rank.attributes.title}`);
 
     res.status(200).json({ name: "success" });
+    const ip = req.headers['x-real-ip'] as string || req.socket.remoteAddress;
     WebhookManager.sendCreditMarketPurchaseWebhook(
         user,
-        req.socket.remoteAddress || "unknown",
+        ip || "unknown",
         rank.attributes.title,
         rank.attributes.price
     );

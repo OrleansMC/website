@@ -23,8 +23,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const password = req.body.password as string;
     const captcha = req.body.captcha as string;
 
+    const ip = req.headers['x-real-ip'] as string || req.socket.remoteAddress;
     if (!username || !password || !captcha) {
-        ConsoleManager.warn("Login", "Missing fields from " + req.socket.remoteAddress);
+        ConsoleManager.warn("Login", "Missing fields from " + ip);
         return res.status(400).json({ name: "Missing fields" });
     }
 
@@ -37,18 +38,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const captchaResponse = await axios.get(
         `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${encodeURIComponent(captcha)}`
     ).then((res) => res.data).catch(() => { });
-
     if (!captchaResponse?.success) {
-        ConsoleManager.warn("Login", "Invalid recaptcha token from " + req.socket.remoteAddress);
+        ConsoleManager.warn("Login", "Invalid recaptcha token from " + ip);
         return res.status(400).json({ name: 'invalid recaptcha token' });
     };
 
     try {
-        const token = await AuthManager.getInstance().login(username, password, req.socket.remoteAddress || "unknown");
+        const token = await AuthManager.getInstance().login(username, password, ip || "unknown");
         res.setHeader("Set-Cookie", AuthManager.getInstance().generateCookie(token));
-        res.status(200).json({ name: "success" });
         const user = await AuthManager.getInstance().getUser(username);
-        if (user) WebhookManager.sendLoginWebhook(user, req.socket.remoteAddress || "unknown");
+        if (user) WebhookManager.sendLoginWebhook(user, ip || "unknown");
+        res.status(200).json({ name: "success" });
     } catch (error) {
         return res.status(400).json({ name: (error as Error).message });
     }

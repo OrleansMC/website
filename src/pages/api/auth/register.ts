@@ -24,8 +24,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   const username = req.body.username;
   const captcha = req.body.captcha;
 
+  const ip = req.headers['x-real-ip'] as string || req.socket.remoteAddress;
   if (!email || !password || !username) {
-    ConsoleManager.warn("Register", "Missing fields from " + req.socket.remoteAddress);
+    ConsoleManager.warn("Register", "Missing fields from " + ip);
     return res.status(400).json({ name: "Missing fields" });
   }
 
@@ -61,15 +62,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     ).then((res) => res.data).catch(() => { });
 
     if (!captchaResponse?.success) {
-      ConsoleManager.warn("Register", "Invalid recaptcha token from " + req.socket.remoteAddress);
+      ConsoleManager.warn("Register", "Invalid recaptcha token from " + ip);
       return res.status(400).json({ name: 'invalid recaptcha token' });
     };
   }
 
   try {
-    const registered = await AuthManager.getInstance().register(email, username, password, pin, req.socket.remoteAddress);
+    const registered = await AuthManager.getInstance().register(email, username, password, pin, ip || "unknown");
     if (registered) {
-      const token = await AuthManager.getInstance().login(username, password, req.socket.remoteAddress || "unknown");
+      const token = await AuthManager.getInstance().login(username, password, ip || "unknown");
       res.setHeader("Set-Cookie", AuthManager.getInstance().generateCookie(token));
     }
     return res.status(200).json({ name: "success" });

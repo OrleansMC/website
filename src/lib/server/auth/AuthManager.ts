@@ -18,6 +18,7 @@ import requestIp from 'request-ip';
 
 declare global {
     var authManager: AuthManager;
+    var pendingRegistrations: Map<string, PendingRegistration>;
 }
 
 type UserCommon = {
@@ -56,13 +57,14 @@ const pinMailTemplate: string = fs.readFileSync('src/lib/server/email/PINTemplat
 export default class AuthManager {
     public userCollection: Collection<WebUser>;
     public resetPasswordRequests: Collection<ResetPasswordRequest>;
-    public pendingRegistrations: Map<string, PendingRegistration>;
 
     private constructor() {
         ConsoleManager.info("AuthManager", "AuthManager initialized.");
         this.userCollection = MongoManager.getInstance().websiteDatabase.collection<WebUser>("users");
         this.resetPasswordRequests = MongoManager.getInstance().websiteDatabase.collection("reset_password_requests");
-        this.pendingRegistrations = new Map();
+        if (!global.pendingRegistrations) {
+            global.pendingRegistrations = new Map();
+        }
 
         setInterval(async () => {
             const resetPasswordRequests = await this.resetPasswordRequests.find({
@@ -198,26 +200,28 @@ export default class AuthManager {
             }
         }
 
-        const pendingRegistration = this.pendingRegistrations.get(username);
+        const pendingRegistration = pendingRegistrations.get(username);
         if (pendingRegistration && !pin) {
             ConsoleManager.warn("AuthManager", "Kullanıcı zaten kayıt olmaya çalışıyordu ama pin yoktu. Pin yeniden gönderildi: " + username);
-            this.pendingRegistrations.delete(username);
+            pendingRegistrations.delete(username);
+        }
+
+
+        if (!pendingRegistration && pin) {
+            ConsoleManager.warn("AuthManager", "Kullanıcının pin bilgisi yoktu: " + username);
+            throw new Error("Pininizin süresi doldu. Lütfen tekrar deneyin.");
         }
 
         if (pendingRegistration && pin) {
-            if (!pendingRegistration) {
-                ConsoleManager.warn("AuthManager", "Kullanıcının pin bilgisi yoktu: " + username);
+            if (pendingRegistration.pin !== pin) {
+                ConsoleManager.warn("AuthManager", "Kullanıcının pin bilgisi yanlıştı: " + username
+                    + " - " + pin + " - " + pendingRegistration.pin);
                 throw new Error("Pininizin süresi doldu. Lütfen tekrar deneyin.");
             }
 
-            if (!pendingRegistration || pendingRegistration.pin !== pin) {
-                ConsoleManager.warn("AuthManager", "Kullanıcının pin bilgisi yanlıştı: " + username);
-                throw new Error("Geçersiz pin. Lütfen tekrar deneyin.");
-            }
-
-            this.pendingRegistrations.delete(username);
-            const pendingRegistrationsBelongsToEmail = Array.from(this.pendingRegistrations.values()).filter(pr => pr.email === email);
-            pendingRegistrationsBelongsToEmail.forEach(pr => this.pendingRegistrations.delete(pr.username));
+            pendingRegistrations.delete(username);
+            const pendingRegistrationsBelongsToEmail = Array.from(pendingRegistrations.values()).filter(pr => pr.email === email);
+            pendingRegistrationsBelongsToEmail.forEach(pr => pendingRegistrations.delete(pr.username));
             await this.forceRegister(email, username, password, ip);
             ConsoleManager.info("AuthManager", "Kullanıcı kaydedildi: " + username);
             return true;
@@ -229,7 +233,7 @@ export default class AuthManager {
                 throw new Error("Proxy veya VPN kullanarak kayıt olamazsınız.");
             }
             const pin = Util.generateNumericPin();
-            this.pendingRegistrations.set(username, { pin, email, password, username });
+            pendingRegistrations.set(username, { pin, email, password, username });
 
             EmailManager.getInstance().sendEmail(
                 email,

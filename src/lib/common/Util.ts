@@ -125,7 +125,7 @@ export default class Util {
             throw new Error("Kullanıcı adı yalnızca harfler, sayılar ve alt çizgi (_) içerebilir.");
         }
 
-        // Harf veya sayı ile başlamalı
+        /*// Harf veya sayı ile başlamalı
         const validStart = /^[a-zA-Z0-9]/;
         if (!validStart.test(nickname)) {
             throw new Error("Kullanıcı adı bir harf veya sayı ile başlamalı.");
@@ -135,7 +135,7 @@ export default class Util {
         const validEnd = /[a-zA-Z0-9]$/;
         if (!validEnd.test(nickname)) {
             throw new Error("Kullanıcı adı bir harf veya sayı ile bitmeli.");
-        }
+        }*/
     }
 
     public static generateNumericPin() {

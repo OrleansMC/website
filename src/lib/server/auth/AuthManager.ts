@@ -324,7 +324,7 @@ export default class AuthManager {
 
                 const session = await SessionManager.getInstance().getSession(sessionId);
                 if (session) {
-                    const ip = (ctx.req.headers['x-real-ip'] || ctx.req.socket.remoteAddress) as string;
+                    const ip = ctx.req.headers['CF-Connecting-IP'] as string || ctx.req.headers['x-real-ip'] as string || ctx.req.socket.remoteAddress || "";
 
                     if (!session.ips.includes(ip)) {
                         session.ips.push(ip);

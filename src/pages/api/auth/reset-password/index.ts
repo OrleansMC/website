@@ -37,7 +37,7 @@ export default async function ResetPasswordHandler(req: NextApiRequest, res: Nex
         `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${encodeURIComponent(captcha)}`
     ).then((res) => res.data).catch(() => { });
 
-    const ip = req.headers['x-real-ip'] as string || req.socket.remoteAddress;
+    const ip = req.headers['CF-Connecting-IP'] as string || req.headers['x-real-ip'] as string || req.socket.remoteAddress;
     if (!captchaResponse?.success) {
         ConsoleManager.warn("Login", "Invalid recaptcha token from " + ip);
         return res.status(400).json({ name: 'invalid recaptcha token' });

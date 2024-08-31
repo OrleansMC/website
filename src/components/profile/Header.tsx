@@ -63,13 +63,13 @@ export default function ProfileHeader({ user }: { user: User }) {
                 <p>Popup engellendi. Lütfen engellemeyi kaldırın ve tekrar deneyin.</p>
             </PopUp>
             <div className='
-                flex flex-col relative p-12 md:p-12 rounded-lg 
+                flex flex-col relative p-12 md:px-0 md:py-8 rounded-lg 
                 shadow-lg bg-[url("/uploads/lake_56a90cdd03.png")] bg-cover bg-center 
                 bg-no-repeat bg-opacity-90 h-96 md:h-full 
                 before:bg-black before:bg-opacity-60 before:absolute before:inset-0 z-10
                 ' data-aos="fade-down"
             >
-                <div className='flex flex-row items-center justify-center gap-4 md:flex-col'>
+                <div className='flex flex-row items-center justify-center gap-4 md:flex-col overflow-x-hidden'>
                     <div data-aos="fade-right" data-aos-delay="1000">
                         <Image
                             loading='eager'
@@ -82,7 +82,7 @@ export default function ProfileHeader({ user }: { user: User }) {
                         />
                     </div>
                     <div className='flex flex-col items-start md:items-center' data-aos="fade-left" data-aos-delay="1000">
-                        <h1 className='text-4xl font-semibold text-zinc-200 mt-8'>
+                        <h1 className='text-4xl font-semibold text-zinc-200 mt-8 md:mt-2'>
                             {user.player.name}
                         </h1>
                         <div className='flex gap-1 mt-1 items-center text-zinc-400'>
@@ -108,8 +108,7 @@ export default function ProfileHeader({ user }: { user: User }) {
                                 ) : (
                                     <button
                                         onClick={openLoginPopUp}
-                                        className='flex mt-4 gap-2 items-center justify-center bg-blue-500 px-4 py-2
-                                    rounded-md shadow-lg backdrop-blur-md hover:bg-blue-400 duration-300'>
+                                        className='flex mt-4 gap-2 items-center justify-center bg-blue-500 px-4 py-2 rounded-md shadow-lg backdrop-blur-md hover:bg-blue-400 duration-300'>
                                         {
                                             resyncHover ?
                                                 <span className="material-symbols-rounded w-7 h-7 text-2xl">

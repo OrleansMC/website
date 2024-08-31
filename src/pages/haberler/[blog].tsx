@@ -44,7 +44,7 @@ export default function BlogPage({ blog, user }: BlogProps) {
                 />
             </div>
             <div className="mt-4 flex flex-col items-center space-y-4" data-aos="fade-up">
-                <h1 className="text-4xl font-semibold mt-8">{blog.attributes.title}</h1>
+                <h1 className="text-4xl font-semibold mt-8 md:text-center">{blog.attributes.title}</h1>
                 <span className="text-zinc-500 text-lg">
                     <span className={"font-semibold"} style={{ color: Util.getBlogCategoryColor(blog.attributes.category) }}>
                         {blog.attributes.category}
@@ -53,7 +53,7 @@ export default function BlogPage({ blog, user }: BlogProps) {
                         -
                     </span>
                     <span>
-                        {new Date(blog.attributes.publishedAt).toLocaleDateString("tr-TR").replace(/\//g, ".")}
+                        {Util.dateToString(blog?.attributes.publishedAt ?? new Date())}
                     </span>
                 </span>
             </div>

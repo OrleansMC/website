@@ -28,6 +28,10 @@ body {
   padding-right: 2rem;
   padding-left: 2rem;
 
+  section {
+    overflow-x: hidden;
+  }
+
   @media screen and (min-width: 1200px) {
     max-width: 1200px;
   }
@@ -143,21 +147,26 @@ input {
     border-radius: 7px;
   }
 }
+
 /* Yatay scroll ve scrollbar gizleme */
 .scroll-container {
   display: flex;
   overflow-x: scroll;
   scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch; /* iOS için momentum scroll */
+  -webkit-overflow-scrolling: touch;
+  /* iOS için momentum scroll */
 }
 
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .scrollbar-hide::-webkit-scrollbar {
-  display: none;  /* Chrome, Safari, Opera */
+  display: none;
+  /* Chrome, Safari, Opera */
 }
 
 img {

@@ -3,26 +3,43 @@
     max-width: 960px;
     padding: 0 1rem;
     color: #cacad1;
+    @media screen and (max-width: 576px) {
+        margin: 3rem auto 5rem auto;
+    }
 
     h1 {
         margin: 0rem 0 1.5rem;
         font-size: 2rem;
+        line-height: 1.5;
         font-weight: bold;
         color: #f2f2f8;
+        @media screen and (max-width: 576px) {
+            font-size: 1.5rem;
+            text-align: center;
+            line-height: 1.5;
+        }
     }
 
     h2 {
         margin: 3.5rem 0 1rem;
+        line-height: 1.5;
         font-size: 1.5rem;
         font-weight: bold;
         color: #f2f2f8;
+        @media screen and (max-width: 576px) {
+            font-size: 1.25rem;
+        }
     }
 
     h3 {
         margin: 1.5rem 0 0.5rem;
         font-size: 1.25rem;
+        line-height: 1.5;
         font-weight: bold;
         color: #f2f2f8;
+        @media screen and (max-width: 576px) {
+            font-size: 1rem;
+        }
     }
 
     p {

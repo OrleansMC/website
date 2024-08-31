@@ -2,16 +2,25 @@ export default class Util {
     public static getBlogCategoryColor(tag: string): string {
         switch (tag) {
             case "Dev":
-                return "#FFD700";
+                return "#69a2ff";
             case "Duyuru":
-                return "#FF4500";
+                return "#faff5c";
             case "Güncelleme":
-                return "#00FF00";
+                return "#54ff60";
             case "Etkinlik":
-                return "#1E90FF";
+                return "#ff5cc3";
             default:
                 return "#000000";
         }
+    }
+
+    public static dateToString(date: Date | string) {
+        return `${new Date(
+            date
+        ).getDate()} ${new Date(date).toLocaleDateString(
+            'tr-TR',
+            { month: 'long' }
+        )}, ${new Date(date).getFullYear()}`
     }
 
     public static cleanMarkdown(text: string) {

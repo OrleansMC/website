@@ -83,7 +83,7 @@ export default function LoginPage(props: PageProps) {
     return (
         <>
             <div className='w-full flex justify-between items-center mt-36 mb-36 gap-28 flex-wrap' data-aos="fade-down">
-                <div className='flex-[5_0_0%] flex justify-end items-end min-w-[23rem]'>
+                <div className='flex-[5_0_0%] flex justify-end items-end min-w-[23rem] md:min-w-0'>
                     <Image
                         src="/uploads/wizard_90f703e5a7.png"
                         alt="Register Image"

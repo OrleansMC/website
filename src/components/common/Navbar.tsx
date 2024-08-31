@@ -97,10 +97,12 @@ export default function Navbar(navbarProps: {
                         `lg:flex-col lg:justify-start lg:items-center lg:space-y-4 lg:gap-4 navbar-mobile-menu ` +
                         `${menuOpen ? " active" : ""}`}>
                         {menuButton}
-                        <ul className="flex space-x-4 font-semibold items-center lg:w-full 
+                        <ul className="flex space-x-4 font-semibold items-center lg:w-full lg:!m-0 
                         lg:flex-col lg:space-y-4 lg:space-x-0 lg:absolute lg:top-1/2 lg:left-1/2 lg:transform lg:-translate-x-1/2 lg:-translate-y-1/2">
                             {navigators.map((navigator, index) => (
-                                <li key={index} className="flex items-center relative">
+                                <li key={index} className="flex items-center relative" onClick={() => {
+                                    setMenuOpen(false);
+                                }}>
                                     <Button
                                         type="link" href={navigator.url}
                                         blank={navigator.url.startsWith("http") || navigator.url.includes("kredi-yukle")}

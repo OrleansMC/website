@@ -138,7 +138,7 @@ export default function RegisterPage(props: PageProps) {
 
     return (
         <div className='w-full flex justify-between items-center mt-36 mb-36 gap-28 flex-wrap' data-aos="fade-up">
-            <div className='flex-[5_0_0%] flex justify-end items-end min-w-[23rem]'>
+            <div className='flex-[5_0_0%] flex justify-end items-end min-w-[23rem] md:min-w-0'>
                 <Image
                     src="/uploads/wizard_90f703e5a7.png"
                     alt="Register Image"
@@ -213,11 +213,11 @@ export default function RegisterPage(props: PageProps) {
                             className='rounded-lg w-5 h-5 accent-purple-500 duration-300 hover:accent-[#a950fa]'
                         />
                         <span className='ml-2 text-base text-zinc-400'>
-                            <a href="/rules" className='text-purple-400 hover:text-purple-300 duration-300'>
+                            <a href="/rehber/kurallar" className='text-purple-400 hover:text-purple-300 duration-300'>
                                 Kurallar
-                            </a>, <a href="/terms" className='text-purple-400 hover:text-purple-300 duration-300'>
+                            </a>, <a href="/kullanim-sartlari" className='text-purple-400 hover:text-purple-300 duration-300'>
                                 Kullanım Şartları
-                            </a> ve <a href="/privacy" className='text-purple-400 hover:text-purple-300 duration-300'>
+                            </a> ve <a href="/gizlilik-politakasi" className='text-purple-400 hover:text-purple-300 duration-300'>
                                 Gizlilik Politikası
                             </a>
                             'nı okudum ve kabul ediyorum

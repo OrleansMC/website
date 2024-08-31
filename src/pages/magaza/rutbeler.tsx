@@ -115,7 +115,9 @@ export default function RanksPage({ user, ranks }: RanksProps) {
                     onWheel={handleScroll}
                 >
                     {privileges.map((privilege, index) => {
-                        return <div key={index} className='flex flex-col gap-4 !min-w-[320px] lg:w-full flex-[1_0_0%] lg:min-w-52 bg-dark-850 p-6 rounded-lg'>
+                        return <div key={index} className='flex flex-col gap-4 !min-w-[320px] lg:w-full 
+                        flex-[1_0_0%] bg-dark-850 p-6 rounded-lg md:!min-w-[280px] md:gap-2 md:p-4
+                        '>
                             <h3 className='text-2xl font-semibold' style={{ color: privilege.color }}>
                                 {privilege.rank}
                             </h3>

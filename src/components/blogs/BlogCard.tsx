@@ -36,7 +36,7 @@ export default function BlogCard({ blog }: BlogCardProp) {
                             -
                         </span>
                         <span>
-                            {new Date(blog.attributes.publishedAt).toLocaleDateString("tr-TR").replace(/\//g, ".")}
+                            {Util.dateToString(blog?.attributes.publishedAt ?? new Date())}
                         </span>
                     </span>
                     <p className="text-lg text-zinc-400 mt-2 leading-8 text-pretty">

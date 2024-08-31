@@ -104,10 +104,10 @@ export default function Footer() {
 
             <div className="rounded-bl-lg rounded-br-lg bg-dark-800 px-12 py-3 md:px-6">
                 <div className="flex items-center justify-between md:flex-col md:space-y-1">
-                    <p className="text-zinc-400 text-base">
+                    <p className="text-zinc-400 text-base md:text-center">
                         © 2024 OrleansMC. Tüm hakları saklıdır.
                     </p>
-                    <p className="text-zinc-400 text-base">
+                    <p className="text-zinc-400 text-base md:text-center">
                         Mustafa Can tarafından geliştirildi.
                     </p>
                 </div>

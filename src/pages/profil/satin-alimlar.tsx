@@ -42,7 +42,7 @@ export default function PurchasesPage({ user, marketHistory }: PurchasesPageProp
 
     return (
         <div data-aos="fade">
-            <div className='flex items-start justify-between'>
+            <div className='flex items-start justify-between md:flex-col-reverse md:gap-6'>
                 <h2 className='text-3xl font-semibold text-white'>Satın Alımlar</h2>
                 <span className={
                     `text-base font-semibold text-white inline-block px-3 py-2 rounded-md`}

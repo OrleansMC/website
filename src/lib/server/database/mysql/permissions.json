@@ -10,10 +10,6 @@
   {
     "uuid": "d025cda8-2b5c-3acc-9178-52afdc6a0bc9",
     "permissions": [
-      "group.yuce",
-      "group.titan",
-      "group.legend",
-      "group.lord",
       "group.legend"
     ]
   }

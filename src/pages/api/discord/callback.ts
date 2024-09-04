@@ -31,10 +31,7 @@ export default async function DiscordCallback(req: NextApiRequest, res: NextApiR
         }
 
         const oldAccount = await DiscordOauth2Manager.getInstance().getAccount(user.username.toLocaleLowerCase());
-
-        if (oldAccount) {
-            pushMetadata(oldAccount.access_token, undefined);
-        }
+        const oldDiscordUser = await DiscordOauth2Manager.getInstance().getUser(user.username.toLocaleLowerCase());
 
         const discordOauth2Manager = DiscordOauth2Manager.getInstance();
         const discordOauth2 = discordOauth2Manager.getOAuth();
@@ -48,6 +45,11 @@ export default async function DiscordCallback(req: NextApiRequest, res: NextApiR
         );
 
         const discordUser = await discordOauth2.getUser(account.access_token);
+
+        if (oldAccount && oldDiscordUser && oldDiscordUser.id !== discordUser.id) {
+            pushMetadata(oldAccount.access_token, undefined);
+        }
+
         await discordOauth2Manager.updateAccount({
             _id: user.username.toLocaleLowerCase(),
             ...account,

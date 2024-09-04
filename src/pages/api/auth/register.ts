@@ -3,6 +3,7 @@ import axios from "axios";
 import AuthManager from "@/lib/server/auth/AuthManager";
 import Util from "@/lib/common/Util";
 import ConsoleManager from "@/lib/server/logs/ConsoleManager";
+import WebhookManager from "@/lib/server/logs/WebhookManager";
 
 type Data = {
   name: string;
@@ -73,6 +74,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     if (registered) {
       const token = await AuthManager.getInstance().login(username, password, ip || "unknown");
       res.setHeader("Set-Cookie", AuthManager.getInstance().generateCookie(token));
+      WebhookManager.sendRegisterWebhook(username, ip);
     }
     return res.status(200).json({ name: "success" });
   } catch (error) {

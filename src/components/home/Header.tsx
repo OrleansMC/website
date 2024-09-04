@@ -59,7 +59,7 @@ export default function Hero() {
                         setPopUp(true);
                     }}
                         className="bg-gray-500/85 hover:bg-gray-500 mt-10">
-                        <span className="material-symbols-rounded !text-4xl">
+                        <span className="material-symbols-rounded !text-4xl !max-w-[36px]">
                             sports_esports
                         </span>
                         <span>Oyna.OrleansMC.Com</span>

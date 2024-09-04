@@ -1,5 +1,6 @@
 import { Embed, Webhook } from '@vermaysha/discord-webhook'
-import { User } from '../auth/AuthManager';
+import { User, WebUser } from '../auth/AuthManager';
+import { BuyMeACoffeeData, BuyMeACoffeeExtra } from '@/pages/api/payment/buymeacoffee';
 
 declare global {
     var pendingWebhooks: Webhook[];
@@ -148,6 +149,80 @@ export default class WebhookManager {
             .addField({
                 name: "Fiyat",
                 value: price + " kredi",
+                inline: true
+            })
+            .addField({
+                name: "Tarih",
+                value: "<t:" + Math.floor(Date.now() / 1000) + ":F>",
+                inline: true
+            })
+            .setColor("#00FF00");
+
+        webhook.addEmbed(embed);
+        global.pendingWebhooks.push(webhook);
+    }
+
+    static sendCreditPurchaseFailedWebhook(product: BuyMeACoffeeData) {
+        const webhook = new Webhook(
+            "https://discord.com/api/webhooks/1280952460327915520/R3Kz-JoqKMb4i-7ilhTGCGwLl-v6FNbJdRV6A0waLrMJ5KK3rqBqTiObZUCBpmO558Q8"
+        );
+        const embed = new Embed()
+            .setTitle("Kredi Satın Alan Oyuncu Bulunamadı!")
+            .addField({
+                name: "Kullanıcı",
+                value: product.supporter_name,
+                inline: true
+            })
+            .addField({
+                name: "E-Posta",
+                value: product.supporter_email,
+                inline: true
+            })
+            .addField({
+                name: "Satın Alınan Ürünler",
+                value: product.extras.map((extra: BuyMeACoffeeExtra) => extra.title).join(", "),
+                inline: false
+            })
+            .addField({
+                name: "Toplam Ödeme",
+                value: product.total_amount_charged + " USD",
+                inline: true
+            })
+            .addField({
+                name: "Tarih",
+                value: "<t:" + Math.floor(Date.now() / 1000) + ":F>",
+                inline: true
+            })
+            .setColor("#FF0000");
+
+        webhook.addEmbed(embed);
+        global.pendingWebhooks.push(webhook);
+    }
+
+    static sendCreditPurchaseWebhook(product: BuyMeACoffeeData, user: WebUser) {
+        const webhook = new Webhook(
+            "https://discord.com/api/webhooks/1280952460327915520/R3Kz-JoqKMb4i-7ilhTGCGwLl-v6FNbJdRV6A0waLrMJ5KK3rqBqTiObZUCBpmO558Q8"
+        );
+        const embed = new Embed()
+            .setTitle("Kredi Satın Alan Oyuncu Bulundu!")
+            .addField({
+                name: "Kullanıcı",
+                value: `${user.username} (${product.supporter_name})`,
+                inline: true
+            })
+            .addField({
+                name: "E-Posta",
+                value: product.supporter_email,
+                inline: true
+            })
+            .addField({
+                name: "Satın Alınan Ürünler",
+                value: product.extras.map((extra: BuyMeACoffeeExtra) => extra.title).join(", "),
+                inline: false
+            })
+            .addField({
+                name: "Toplam Ödeme",
+                value: product.total_amount_charged + " USD",
                 inline: true
             })
             .addField({

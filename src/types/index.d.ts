@@ -20,6 +20,8 @@ declare namespace NodeJS {
         CLIENT_SECRET: string;
         CLIENT_ID: string;
         BOT_TOKEN: string;
+        BUYMEACOFFEE_SECRET: string;
+        BUYMEACOFFEE_API_TOKEN: string;
     }
 }
 

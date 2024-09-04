@@ -122,7 +122,7 @@ export default class AuthManager {
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         await MysqlManager.getInstance().changePassword(username, hashedPassword);
-        await this.userCollection.updateOne({ _id: username }, { $set: { password: hashedPassword } });
+        await this.userCollection.updateOne({ _id: username.toLowerCase() }, { $set: { password: hashedPassword } });
         ConsoleManager.info("AuthManager", "Kullanıcı şifresi değiştirildi: " + username);
     }
 
@@ -155,7 +155,7 @@ export default class AuthManager {
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         await MysqlManager.getInstance().changePassword(resetPasswordRequest.username, hashedPassword);
-        await this.userCollection.updateOne({ _id: resetPasswordRequest.username }, { $set: { password: hashedPassword } });
+        await this.userCollection.updateOne({ _id: resetPasswordRequest.username.toLowerCase() }, { $set: { password: hashedPassword } });
         await this.resetPasswordRequests.deleteOne({ key });
         ConsoleManager.info("AuthManager", "Kullanıcı şifresi sıfırlandı: " + resetPasswordRequest.username);
     }

@@ -100,7 +100,7 @@ export default function Navbar(navbarProps: {
                         <ul className="flex space-x-4 font-semibold items-center lg:w-full !m-0 
                         lg:flex-col lg:space-y-4 lg:space-x-0 lg:absolute lg:top-1/2 lg:left-1/2 lg:transform lg:-translate-x-1/2 lg:-translate-y-1/2">
                             {navigators.map((navigator, index) => (
-                                <li key={index} className="flex items-center relative" onClick={() => {
+                                <li key={index} className="flex items-center" onClick={() => {
                                     setMenuOpen(false);
                                 }}>
                                     <Button

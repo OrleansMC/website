@@ -83,7 +83,8 @@ export default async function DiscordCallback(req: NextApiRequest, res: NextApiR
         if (playerRank === "player") {
             playerRank = "oyuncu";
         }
-        if (newMetaData[playerRank]) {
+        
+        if (!newMetaData[playerRank]) {
             newMetaData[playerRank] = 1;
         }
 

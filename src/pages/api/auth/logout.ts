@@ -25,13 +25,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         return res.status(200).json({ name: "Already logged out" });
     }
 
-    await SessionManager.getInstance().deleteSession(sessionToken);
-
-    res.setHeader('Set-Cookie',
-        `orleans.token=; HttpOnly;${process.env.NODE_ENV === 'production' ? " Secure;" : ""
-        } Max-Age=0; Path=/api`
-    );
-
     const ip = AuthManager.getInstance().getIpFromRequest(req) || "unknown";
 
     ConsoleManager.info("Logout", "User logged out from " + ip);
@@ -40,6 +33,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     if (user) {
         WebhookManager.sendLogoutWebhook(user, ip || "unknown");
     }
+
+    res.setHeader('Set-Cookie',
+        `orleans.token=; HttpOnly;${process.env.NODE_ENV === 'production' ? " Secure;" : ""
+        } Max-Age=0; Path=/api`
+    );
+
+    await SessionManager.getInstance().deleteSession(sessionToken);
 
     res.status(200).json({ name: "Logged out" });
 }

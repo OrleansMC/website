@@ -42,11 +42,17 @@ if (!global.pendingMetadatasInterval) {
  * Given metadata that matches the schema, push that data to Discord on behalf
  * of the current user.
  */
-export async function pushMetadata(accessToken: string, metadata: any) {
+export function pushMetadata(accessToken: string, metadata?: {
+    oyuncu: number;
+    lord: number;
+    titan: number;
+    yuce: number;
+    legend: number;
+}) {
     // PUT /users/@me/applications/:id/role-connection
     const body = {
         platform_name: 'OrleansMC Role Connection',
-        metadata,
+        metadata: metadata || {}
     };
     global.pendingMetadatas.push({ accessToken, body });
 }
@@ -55,7 +61,15 @@ export async function pushMetadata(accessToken: string, metadata: any) {
  * Fetch the metadata currently pushed to Discord for the currently logged
  * in user, for this specific bot.
  */
-export async function getMetadata(accessToken: string) {
+export async function getMetadata(accessToken: string): Promise<{
+    metadata: {
+        oyuncu: number;
+        lord: number;
+        titan: number;
+        yuce: number;
+        legend: number;
+    };
+}> {
     // GET /users/@me/applications/:id/role-connection
     const url = `https://discord.com/api/users/@me/applications/${process.env.CLIENT_ID}/role-connection`;
 

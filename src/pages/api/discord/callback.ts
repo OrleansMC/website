@@ -33,7 +33,7 @@ export default async function DiscordCallback(req: NextApiRequest, res: NextApiR
         const oldAccount = await DiscordOauth2Manager.getInstance().getAccount(user.username.toLocaleLowerCase());
 
         if (oldAccount) {
-            await pushMetadata(oldAccount.access_token, {});
+            pushMetadata(oldAccount.access_token, undefined);
         }
 
         const discordOauth2Manager = DiscordOauth2Manager.getInstance();
@@ -69,12 +69,25 @@ export default async function DiscordCallback(req: NextApiRequest, res: NextApiR
             }
         );
 
-        const metaDatas = await getMetadata(account.access_token);
-        if (!metaDatas.metadata.oyuncu) {
+        const oldMetaDatas = await getMetadata(account.access_token);
+        const newMetaData = {
+            oyuncu: 1,
+            lord: 0,
+            titan: 0,
+            yuce: 0,
+            legend: 0
+        };
+        let playerRank = user.player.rank;
+        if (playerRank === "player") {
+            playerRank = "oyuncu";
+        }
+        if (newMetaData[playerRank]) {
+            newMetaData[playerRank] = 1;
+        }
+
+        if (oldMetaDatas.metadata !== newMetaData) {
             ConsoleManager.info("DiscordCallback", "Pushing metadata");
-            await pushMetadata(account.access_token, {
-                oyuncu: 1
-            });
+            pushMetadata(account.access_token, newMetaData);
         };
 
         res.redirect("/");

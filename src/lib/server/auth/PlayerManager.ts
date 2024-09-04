@@ -19,7 +19,7 @@ export type Player = {
     credit: number;
     gem: number;
     uuid: string;
-    rank: string;
+    rank: 'player' | 'oyuncu' | 'lord' | 'titan' | 'yuce' | 'legend';
 }
 
 export default class PlayerManager {

@@ -10,7 +10,9 @@ export const config = {
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const token = req.headers.authorization;
+    const authorization = req.headers.authorization;
+    const token = authorization?.split("Bearer ")[1];
+    
     if (token !== process.env.DASHBOARD_API_TOKEN) {
         return res.status(401).json({ error: "Unauthorized" });
     }

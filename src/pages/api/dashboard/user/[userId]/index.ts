@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const ip = AuthManager.getInstance().getIpFromRequest(req) || "unknown";
-    if (!ip.startsWith("172.") && ip !== "::1") {
+    if (!ip.startsWith("::ffff:") && ip !== "::1") {
         return res.status(403).json({ error: "Forbidden" });
     }
     

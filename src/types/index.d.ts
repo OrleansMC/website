@@ -22,6 +22,7 @@ declare namespace NodeJS {
         BOT_TOKEN: string;
         BUYMEACOFFEE_SECRET: string;
         BUYMEACOFFEE_API_TOKEN: string;
+        DASHBOARD_API_TOKEN: string;
     }
 }
 

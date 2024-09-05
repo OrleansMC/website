@@ -62,6 +62,7 @@ export default function RankCard(props: {
     const iconId = "rank_card_" + randomId;
     const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
     const [successMessage, setSuccessMessage] = React.useState<string | null>(null);
+    const [alreadyHasARank, setAlreadyHasARank] = React.useState<boolean>(false);
 
     const router = useRouter();
 
@@ -84,96 +85,113 @@ export default function RankCard(props: {
                     }
                 }
                 footer={
-                    successMessage ? <Button
+                    alreadyHasARank ? <Button
                         type="button"
                         onClick={() => {
                             setShowPopup(false);
-                            setSuccessMessage(null);
-                            router.replace("/magaza/rutbeler", undefined, { shallow: false });
+                            setAlreadyHasARank(false);
+                            window.open("/destek", "_blank");
                         }}
-                        className="bg-green-500 hover:bg-green-400 w-fit"
+                        className="bg-blue-500 hover:bg-blue-400 w-fit"
                     >
-                        Tamam
-                    </Button>
-                        :
-                        errorMessage ? <Button
+                        Destek Ekibine Ulaş
+                    </Button> :
+                        successMessage ? <Button
                             type="button"
                             onClick={() => {
                                 setShowPopup(false);
-                                setErrorMessage(null);
-                                router.push("/magaza/rutbeler");
+                                setSuccessMessage(null);
+                                router.replace("/magaza/rutbeler", undefined, { shallow: false });
                             }}
-                            className="bg-red-500 hover:bg-red-400 w-fit"
+                            className="bg-green-500 hover:bg-green-400 w-fit"
                         >
                             Tamam
                         </Button>
                             :
-                            props.user ?
-                                <Button
-                                    type="button"
-                                    onClick={async () => {
-                                        if (purchasing) return;
-                                        setPurchasing(true);
-                                        const response = await fetch("/api/store/purchase/rank/" + Util.slugify(props.credit_market_id), {
-                                            method: "POST",
-                                            headers: {
-                                                "Content-Type": "application/json"
-                                            },
-                                            body: JSON.stringify({})
-                                        });
+                            errorMessage ? <Button
+                                type="button"
+                                onClick={() => {
+                                    setShowPopup(false);
+                                    setErrorMessage(null);
+                                    router.push("/magaza/rutbeler");
+                                }}
+                                className="bg-red-500 hover:bg-red-400 w-fit"
+                            >
+                                Tamam
+                            </Button>
+                                :
+                                props.user ?
+                                    <Button
+                                        type="button"
+                                        onClick={async () => {
+                                            if (purchasing) return;
+                                            setPurchasing(true);
+                                            const response = await fetch("/api/store/purchase/rank/" + Util.slugify(props.credit_market_id), {
+                                                method: "POST",
+                                                headers: {
+                                                    "Content-Type": "application/json"
+                                                },
+                                                body: JSON.stringify({})
+                                            });
 
-                                        if (response.status === 200) {
-                                            setSuccessMessage("Satın alma işlemi başarılı!");
-                                        } else {
-                                            const data = await response.json();
-                                            setErrorMessage(data.name);
-                                        }
-                                        setPurchasing(false);
-                                    }}
-                                    className="bg-blue-500 hover:bg-blue-400 w-fit"
-                                >
-                                    {purchasing ? "Satın Alınıyor..." : "Onayla"}
-                                </Button>
+                                            if (response.status === 200) {
+                                                setSuccessMessage("Satın alma işlemi başarılı!");
+                                            } else {
+                                                const data = await response.json();
+                                                setErrorMessage(data.name);
+                                            }
+                                            setPurchasing(false);
+                                        }}
+                                        className="bg-blue-500 hover:bg-blue-400 w-fit"
+                                    >
+                                        {purchasing ? "Satın Alınıyor..." : "Onayla"}
+                                    </Button>
 
-                                : <Button
-                                    type="button"
-                                    onClick={() => {
-                                        setShowPopup(false);
-                                        router.push("/giris-yap");
-                                    }}
-                                    className="bg-blue-500 hover:bg-blue-400 w-fit"
-                                >
-                                    Giriş Yap
-                                </Button>
+                                    : <Button
+                                        type="button"
+                                        onClick={() => {
+                                            setShowPopup(false);
+                                            router.push("/giris-yap");
+                                        }}
+                                        className="bg-blue-500 hover:bg-blue-400 w-fit"
+                                    >
+                                        Giriş Yap
+                                    </Button>
                 }
             >
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-col gap-2 p-4">
                         {
-                            successMessage ?
-                                <div className="bg-green-500 text-white p-2 rounded-lg">
-                                    {successMessage}
+                            alreadyHasARank ?
+                                <div className="text-zinc-200 rounded-lg max-w-[28rem] text-center text-lg">
+                                    Zaten bir rütbe sahibisiniz! Eğer bunu değiştirmek
+                                    istiyorsanız destek ekibimizle iletişime geçebilirsiniz.
                                 </div>
                                 :
-                                errorMessage ?
-                                    <div className="bg-red-500 text-white p-2 rounded-lg">
-                                        {errorMessage}
+                                successMessage ?
+                                    <div className="bg-green-500 text-white p-2 rounded-lg">
+                                        {successMessage}
                                     </div>
                                     :
-                                    props.user ? <p className="text-lg text-zinc-200 max-w-[28rem] text-center">
-                                        Bu rütbeyi <span className="text-yellow-400 font-semibold inline-block">
-                                            <span>
-                                                {new Intl.NumberFormat().format(price).replaceAll(",", ".")}
-                                            </span>
-                                            <span className="inline-block w-6 h-6 top-1 relative">
-                                                {lottie2}
-                                            </span>
-                                        </span> karşılığında satın almayı
-                                        onaylıyor musunuz?
-                                    </p>
-                                        : <p className="text-lg text-zinc-200 max-w-[28rem] text-center">
-                                            Bu rütbeyi satın alabilmek için giriş yapmalısınız.
-                                        </p>}
+                                    errorMessage ?
+                                        <div className="bg-red-500 text-white p-2 rounded-lg">
+                                            {errorMessage}
+                                        </div>
+                                        :
+                                        props.user ? <p className="text-lg text-zinc-200 max-w-[28rem] text-center">
+                                            Bu rütbeyi <span className="text-yellow-400 font-semibold inline-block">
+                                                <span>
+                                                    {new Intl.NumberFormat().format(price).replaceAll(",", ".")}
+                                                </span>
+                                                <span className="inline-block w-6 h-6 top-1 relative">
+                                                    {lottie2}
+                                                </span>
+                                            </span> karşılığında satın almayı
+                                            onaylıyor musunuz?
+                                        </p>
+                                            : <p className="text-lg text-zinc-200 max-w-[28rem] text-center">
+                                                Bu rütbeyi satın alabilmek için giriş yapmalısınız.
+                                            </p>}
                     </div>
                 </div>
             </PopUp>
@@ -247,7 +265,14 @@ export default function RankCard(props: {
                     <Button
                         id={buttonId}
                         type="button"
-                        onClick={() => setShowPopup(true)}
+                        onClick={() => {
+                            if (props.user) {
+                                if (props.user.player.rank !== "player") {
+                                    setAlreadyHasARank(true);
+                                }
+                            }
+                            setShowPopup(true);
+                        }}
                         className="mt-4 bg-blue-500 hover:bg-blue-400 w-fit absolute right-6 bottom-6 md:relative md:right-0 md:bottom-0">
                         Satın Al
                     </Button>

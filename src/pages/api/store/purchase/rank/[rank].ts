@@ -2,7 +2,6 @@ import AuthManager from "@/lib/server/auth/AuthManager";
 import JWTManager from "@/lib/server/auth/JWTManager";
 import PlayerManager from "@/lib/server/auth/PlayerManager";
 import ActionManager from "@/lib/server/database/mongo/ActionManager";
-import RedisManager from "@/lib/server/database/redis/RedisManager";
 import ConsoleManager from "@/lib/server/logs/ConsoleManager";
 import StoreHistoryManager from "@/lib/server/logs/StoreHistoryManager";
 import WebhookManager from "@/lib/server/logs/WebhookManager";

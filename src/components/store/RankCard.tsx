@@ -32,7 +32,9 @@ export default function RankCard(props: {
         }
     }
 
-    const price = discount ? props.price - (props.price * discount.percentage / 100) : props.price;
+    
+    const _price = Math.floor(props.price * 100 / (100 - (props.discount?.percentage || 0)));
+    const price = props.price;
 
     const buttonId = Util.slugify(props.title) + "_buy";
 
@@ -234,7 +236,7 @@ export default function RankCard(props: {
                         {discount &&
                             <div>
                                 <span className='text-zinc-400 text-xl strike w-fit md:text-center'
-                                >{new Intl.NumberFormat().format(props.price).replaceAll(",", ".")}</span>
+                                >{new Intl.NumberFormat().format(_price).replaceAll(",", ".")}</span>
                             </div>
                         }
                         <div className="flex items-center gap-1 w-full md:justify-center">

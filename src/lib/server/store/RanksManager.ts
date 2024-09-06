@@ -155,10 +155,7 @@ export default class RankManager {
                         rankResult.attributes.discount_end_date = null;
                     }
                 }
-
-                if (rankResult.attributes.price && rankResult.attributes.discount_percentage) {
-                    rankResult.attributes.price = rankResult.attributes.price + (rankResult.attributes.price * (rankResult.attributes.discount_percentage / 100));
-                }
+                
                 return rankResult;
             }).sort((a, b) => {
                 return new Date(a.attributes.publishedAt).getTime() - new Date(b.attributes.publishedAt).getTime();

@@ -10,6 +10,7 @@ import styles from "@/styles/blog.module.scss";
 import { PageProps } from "@/types";
 import { User } from "@/lib/server/auth/AuthManager";
 import Button from "@/components/common/Button";
+import styles2 from "@/styles/guides.module.scss";
 
 type GuideProps = {
     guide: Guide
@@ -33,15 +34,14 @@ export default function GuidePage({ guide, user }: GuideProps) {
     return (
         <div className="mt-28">
             <div data-aos="fade-down" className="flex items-center bg-dark-800 p-8 md:p-6 rounded-lg shadow-lg md:flex-col md:gap-8">
-                <div style={{ backgroundColor: guide.attributes.background }}
-                    className="rounded-lg p-6 w-56 h-56 flex justify-center items-center lg:h-full">
+                <div className={styles2.guide_card__icon + " !w-56 !h-56"}>
+                    <div className={styles2.guide_card__icon__background}
+                        style={{ background: `url(${guide.attributes.icon.data.attributes.url}) center center / cover no-repeat` }}></div>
                     <Image
-                        className="w-fit h-48"
                         src={guide.attributes.icon.data.attributes.url}
-                        alt={guide.attributes.title + " Icon"}
-                        width={480}
-                        height={480}
-                        quality={100}
+                        alt="Server Icon"
+                        width={210}
+                        height={210}
                         placeholder='empty'
                     />
                 </div>

@@ -3,7 +3,6 @@
     "uuid": "a998af73-3d91-3c84-b616-a80a0fd258a5",
     "permissions": [
       "group.lord",
-      "group.legend",
       "group.titan"
     ]
   },

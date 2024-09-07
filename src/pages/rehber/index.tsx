@@ -28,7 +28,7 @@ export default function GuidesPage({ guides, user }: GuidesProps) {
             <div className='mt-28'>
                 <div
                     data-aos="fade-down"
-                    className='flex flex-col relative p-16 md:p-12 rounded-lg shadow-lg 
+                    className='flex flex-col relative p-16 md:p-12 rounded-lg before:rounded-lg shadow-lg 
                     bg-[url("/uploads/sun_risepng_b3c86a759f.png")] bg-cover bg-center bg-no-repeat 
                     before:absolute before:top-0 before:left-0 before:w-full before:h-full 
                     before:bg-gradient-to-r before:from-purple-900/80 before:to-indigo-800/80 
@@ -38,7 +38,7 @@ export default function GuidesPage({ guides, user }: GuidesProps) {
                 </div>
 
                 <div data-aos="fade-up"
-                    className='mt-12 flex flex-wrap gap-8'>
+                    className='mt-12 grid grid-cols-3 md:grid-cols-1 lg:grid-cols-2 gap-8'>
                     {
                         guides.map((guide, index) => (
                             <GuideCard key={index} guide={guide} />

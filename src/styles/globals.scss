@@ -173,3 +173,10 @@ img {
   user-select: none;
   pointer-events: none;
 }
+
+.span-max-content {
+  span {
+    display: inline-block;
+    width: max-content;
+  }
+}

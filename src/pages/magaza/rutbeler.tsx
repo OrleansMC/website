@@ -115,8 +115,8 @@ export default function RanksPage({ user, ranks }: RanksProps) {
                     onWheel={handleScroll}
                 >
                     {privileges.map((privilege, index) => {
-                        return <div key={index} className='flex flex-col gap-4 !min-w-[320px] lg:w-full 
-                        flex-[1_0_0%] bg-dark-850 p-6 rounded-lg md:!min-w-[280px] md:gap-2 md:p-4
+                        return <div key={index} className='flex flex-col gap-4 !min-w-[368px] lg:w-full 
+                        flex-[1_0_0%] bg-dark-850 p-6 rounded-lg md:gap-2 md:p-4
                         '>
                             <h3 className='text-2xl font-semibold' style={{ color: privilege.color }}>
                                 {privilege.rank}
@@ -128,24 +128,36 @@ export default function RanksPage({ user, ranks }: RanksProps) {
                                     </h4>
                                     <div className='flex flex-col gap-4'>
                                         {group.privileges.map((privilege, index) =>
-                                            <div key={index} className='flex items-center gap-2'>
+                                            <div key={index} className='flex items-center gap-2 span-max-content'>
                                                 <span
                                                     style={
                                                         groupIndex === 0 && index === 0 ? { transform: "rotate(-45deg)" } : {}
                                                     }
-                                                    className='material-symbols-rounded text-zinc-400 select-none'>
+                                                    className='material-symbols-rounded text-zinc-400 select-none !max-w-[36px]'>
                                                     {privilege.icon_id}
                                                 </span>
-                                                <p className='text-lg text-zinc-200'>
-                                                    {privilege.text}
-                                                </p>
+                                                <div className='text-lg text-zinc-200 flex gap-1 items-center'>
+                                                    {privilege.text.split(/(✅|❌)/gi).map((text, index) => {
+                                                        if (text === "✅") {
+                                                            return <span key={index}
+                                                                className='!max-w-[36px] material-symbols-rounded text-zinc-400 select-none top-1'
+                                                            >check</span>
+                                                        } else if (text === "❌") {
+                                                            return <span key={index}
+                                                                className='!max-w-[36px] material-symbols-rounded text-zinc-400 select-none'
+                                                            >close</span>
+                                                        } else {
+                                                            return <span key={index}>{text}</span>
+                                                        }
+                                                    })}
+                                                </div>
                                             </div>
                                         )}
                                     </div>
                                 </div>
                             )}
 
-                            {index !== 0 &&
+                            {privilege.rank !== "OYUNCU" &&
                                 <Button
                                     type="button"
                                     onClick={() => {

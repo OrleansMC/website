@@ -58,20 +58,24 @@ export default class DiscordOauth2Manager {
     };
 
     public async getUser(playerName: string) {
-        const _id = playerName.toLowerCase();
+        try {
+            const _id = playerName.toLowerCase();
 
-        const user = await this.users.findOne<DiscordUser>({ _id });
+            const user = await this.users.findOne<DiscordUser>({ _id });
 
-        if (!user) {
+            if (!user) {
+                return null;
+            }
+
+            if (user.updated_at + this.updateInterval <= Date.now()) {
+                ConsoleManager.log("DiscordOauth2Manager", "User is outdated, updating user: " + user._id);
+                return this.refreshUser(user);
+            };
+
+            return user;
+        } catch (e) {
             return null;
         }
-
-        if (user.updated_at + this.updateInterval <= Date.now()) {
-            ConsoleManager.log("DiscordOauth2Manager", "User is outdated, updating user: " + user._id);
-            return this.refreshUser(user);
-        };
-
-        return user;
     }
 
     public async refreshUser(user: DiscordUser): Promise<DiscordUser | null> {

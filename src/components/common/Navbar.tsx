@@ -168,7 +168,7 @@ export default function Navbar(navbarProps: {
                                         });
                                         router.reload();
                                     }}>
-                                    <span className="material-symbols-rounded !text-4xl">
+                                    <span className="material-symbols-rounded !text-4xl !max-w-[36px]">
                                         logout
                                     </span>
                                 </div>

@@ -180,3 +180,24 @@ img {
     width: max-content;
   }
 }
+
+.footer-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition-duration: 0.2s;
+
+  * {
+    fill: #dadce9 !important;
+    transition-duration: 0.2s;
+  }
+    
+  &:hover {
+    * {
+      fill: #000000 !important;
+    }
+    background-color: #ffffff;
+  }
+}

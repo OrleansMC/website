@@ -9,6 +9,7 @@ import { PageProps } from '@/types'
 import { GetServerSideProps } from 'next'
 import React from 'react'
 import Util from '@/lib/common/Util'
+import Trailer from '@/components/home/Trailer'
 
 type HomeProps = {
     lastBlog: Blog
@@ -32,6 +33,7 @@ export default function Home({ lastBlog }: HomeProps) {
         <>
             <Hero />
             <div className="flex flex-col gap-48 mb-44">
+                <Trailer />
                 <News lastBlog={lastBlog} />
                 <Section
                     title="Discord Topluluğumuzun Bir Parçası Olun"

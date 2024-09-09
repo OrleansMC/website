@@ -33,6 +33,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-google-recaptcha": "^3.1.0",
+    "react-lite-youtube-embed": "^2.4.0",
     "react-markdown": "^9.0.1",
     "redis": "^4.7.0",
     "request-ip": "^3.3.0",

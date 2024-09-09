@@ -9,7 +9,17 @@
   {
     "uuid": "d025cda8-2b5c-3acc-9178-52afdc6a0bc9",
     "permissions": [
-      "group.legend"
+      "group.legend",
+      "group.legend",
+      "group.yuce",
+      "group.titan",
+      "group.lord"
+    ]
+  },
+  {
+    "uuid": "3e587d57-46ab-3e40-99e5-9dd253c6e088",
+    "permissions": [
+      "group.yuce"
     ]
   }
 ]

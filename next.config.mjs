@@ -100,10 +100,20 @@ const nextConfig = {
         permanent: false,
       },
       {
-        source: '/twitter',
-        destination: 'https://twitter.com/mustqfacan',
+        source: '/x',
+        destination: 'https://x.com/orleansmc_',
         permanent: false,
       },
+      {
+        source: '/youtube',
+        destination: 'https://www.youtube.com/@MCOrleans',
+        permanent: false,
+      },
+      {
+        source: '/instagram',
+        destination: 'https://www.instagram.com/orleansmc_',
+        permanent: false,
+      }
     ];
   },
   webpack: config => {

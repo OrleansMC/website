@@ -64,7 +64,7 @@ export const getServerSideProps = (async (ctx) => {
                     }
                 };
                 return newGuide;
-            }),
+            }).reverse(),
             user: await AuthManager.getInstance().getUserFromContext(ctx)
         }
     }

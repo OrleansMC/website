@@ -84,7 +84,7 @@ export default function StorePage({ user }: StoreProps) {
                     setShowPopup={setShowPopup}
                     href='/magaza'
                     description="Sunucumuzda bulunan kasaları inceleyin ve içeriklerini keşfedin."
-                    icon="/uploads/chest_99cad35421.png"
+                    icon="/uploads/crate_f408a481ea.png"
                     button_text='Kasaları İncele'
                 />
             </div>

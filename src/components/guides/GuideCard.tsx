@@ -18,7 +18,10 @@ export default function GuideCard({ guide }: { guide: Guide }) {
                     alt="Server Icon"
                     width={210}
                     height={210}
-                    placeholder='empty'
+                    placeholder='blur'
+                    blurDataURL={guide.attributes.icon.data.attributes.url
+                        .replace("/uploads/", "/uploads/thumbnail_")
+                    }
                 />
             </div>
             <div className="mt-4">

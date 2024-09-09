@@ -82,27 +82,27 @@ const nextConfig = {
       {
         source: "/mustafacan",
         destination: "https://mustafacan.dev",
-        permanent: true,
+        permanent: false,
       },
       {
         source: "/kredi-yukle",
         destination: "https://buymeacoffee.com/orleansmc/extras",
-        permanent: true,
+        permanent: false,
       },
       {
         source: '/discord',
-        destination: 'https://discord.gg/BZvA97B6UZ',
-        permanent: true,
+        destination: 'https://discord.gg/orleansmc',
+        permanent: false,
       },
       {
         source: '/destek',
-        destination: 'https://discord.gg/BZvA97B6UZ',
-        permanent: true,
+        destination: 'https://discord.gg/orleansmc',
+        permanent: false,
       },
       {
         source: '/twitter',
         destination: 'https://twitter.com/mustqfacan',
-        permanent: true,
+        permanent: false,
       },
     ];
   },

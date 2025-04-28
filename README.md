@@ -1,40 +1,102 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# OrleansMC Website
 
-## Getting Started
+OrleansMC Website is a custom website built for the OrleansMC Minecraft server community. It provides players with a modern,
+clean interface to explore news, guides, their profiles, and more.  
+The project is developed with **Next.js**, **TypeScript**, **Tailwind CSS**, and is backed by **MongoDB**, **MySQL**, **Redis**, and **Docker** technologies.
 
-First, run the development server:
+> This repository contains both the frontend and backend code for the website of OrleansMC Minecraft Server.
+
+## 🌐 Live Website
+
+Visit the website here: [orleansmc.com](https://orleansmc.com)
+
+## 🖼️ Previews
+![Home Page](https://i.imgur.com/Pe36mb5.png)
+![Profile Page](https://i.imgur.com/bTnDue0.png)
+
+## ✨ Features
+
+- **Authentication** with session management
+- **User profiles** and statistics
+- **News and Blog** system (managed via **Strapi CMS**)
+- **Guides and Tutorials** section
+- **Store** integration for ranks and items
+- **Discord OAuth2** account linking
+- **Secure password reset** flow via email
+- **Responsive Design** for desktop and mobile
+- **Admin/Server dashboard** endpoints (API level)
+
+## ⚙️ Tech Stack
+
+- [Next.js](https://nextjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Strapi Headless CMS](https://strapi.io/)
+- [MongoDB](https://www.mongodb.com/)
+- [MySQL](https://www.mysql.com/)
+- [Redis](https://redis.io/)
+- [Docker](https://www.docker.com/)
+- Email Service Integration
+- Discord OAuth2 Authentication
+
+## 📁 Project Structure (Simplified)
+
+```
+/src
+  ├── components/   // UI components (Home, Profile, Store, Blogs, Guides)
+  ├── layouts/      // Layouts for different pages
+  ├── lib/          // Client, Server utilities and managers
+  ├── pages/        // API endpoints and pages (Next.js routing)
+  ├── styles/       // SCSS modules and global styles
+  ├── types/        // TypeScript type definitions
+/public             // Public assets
+```
+
+## 🚀 Setup
+
+Clone the repository and install dependencies:
+
+```bash
+git clone https://github.com/OrleansMC/website.git
+cd orleansmc
+npm install
+```
+
+Create an `.env` file and configure your environment variables (MongoDB, MySQL, Redis, Email Service, etc.).
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Build and start for production:
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm start
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Or use Docker:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```bash
+docker build -t orleansmc-web .
+docker run -p 3000:3000 orleansmc-web
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## 📜 License
 
-## Learn More
+This project is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)**
+license.
 
-To learn more about Next.js, take a look at the following resources:
+You are free to:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Share — copy and redistribute the material in any medium or format
+- Adapt — remix, transform, and build upon the material
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+**Under the following terms:**
 
-## Deploy on Vercel
+- **Attribution** — You must give appropriate credit.
+- **NonCommercial** — You may not use the material for commercial purposes.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+For full details, see the [LICENSE](LICENSE) file.

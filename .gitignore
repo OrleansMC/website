@@ -39,3 +39,5 @@ yarn-error.log*
 
 
 src/lib/server/database/mysql/permissions.json
+.env*
+package-lock.json

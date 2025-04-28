@@ -74,6 +74,8 @@ export default class DiscordOauth2Manager {
 
             return user;
         } catch (e) {
+            console.error(e);
+            ConsoleManager.error("DiscordOauth2Manager", "Error while getting user: " + playerName);
             return null;
         }
     }

@@ -98,7 +98,7 @@ export default class WebhookManager {
         global.pendingWebhooks.push(webhook);
     }
 
-    static sendRegisterWebhook(user: User, ip: string) {
+    static sendRegisterWebhook(username: string, ip: string) {
         const webhook = new Webhook(
             "https://discord.com/api/webhooks/1278436429856505978/0HJx5_kGXvezebxDsM0c572VZMfGWSVYqIo_BPm0zxbR2PRSRn61B4jwL9rR2CU0aOd9"
         );
@@ -106,7 +106,7 @@ export default class WebhookManager {
             .setTitle("Bir kullanıcı kayıt oldu!")
             .addField({
                 name: "Kullanıcı",
-                value: user.username,
+                value: String(username),
                 inline: true
             })
             .addField({

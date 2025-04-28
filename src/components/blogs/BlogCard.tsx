@@ -40,7 +40,7 @@ export default function BlogCard({ blog }: BlogCardProp) {
                         </span>
                     </span>
                     <p className="text-lg text-zinc-400 mt-2 leading-8 text-pretty">
-                        {Util.cleanMarkdown(blog.attributes.description).slice(0, 150)}...
+                        {Util.cleanMarkdown(blog.attributes.description).slice(0, 140)}...
                     </p>
                 </div>
             </Link>

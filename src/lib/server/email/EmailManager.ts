@@ -11,7 +11,7 @@ export default class EmailManager {
 
     private constructor() {
         this.transporter = nodemailer.createTransport({
-            host: 'smtp.eu.mailgun.org',
+            host: 'smtp.mailgun.org',
             port: 587,
             secure: false,
             auth: {

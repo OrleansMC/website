@@ -7,6 +7,7 @@ import styles from "@/styles/guides.module.scss";
 export default function GuideCard({ guide }: { guide: Guide }) {
     return (
         <Link
+            data-aos="fade-up"
             href={`/rehber/${guide.attributes.path}`}
             className="lg:w-full guide_card flex-[1_0_0%] hover:scale-105 
             transition-transform transform-gpu duration-300 w-full">

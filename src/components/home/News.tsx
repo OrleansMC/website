@@ -25,7 +25,12 @@ export default function News({ lastBlog }: NewsProps) {
                     lg:flex-col lg:space-x-0 lg:space-y-8"
                     href={`/haberler${lastBlog?.attributes.path}`}>
                     <div className="relative rounded-lg overflow-hidden flex-[1_0_0%]">
-                        <Image className="" src="/uploads/fire_c244b1f02a.png" alt="Haber 1" width={245 * 3} height={53 * 3} />
+                        <Image
+                            src={lastBlog?.attributes.thumbnail.data.attributes.url}
+                            alt={lastBlog?.attributes.title}
+                            width={245 * 3}
+                            height={53 * 3}
+                        />
                     </div>
                     <div className="flex-[1_0_0%] lg:text-center">
                         <h3 className="text-2xl font-semibold mb-2">{lastBlog?.attributes.title}</h3>

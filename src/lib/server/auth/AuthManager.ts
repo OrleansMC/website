@@ -234,6 +234,7 @@ export default class AuthManager {
             }
             const pin = Util.generateNumericPin();
             pendingRegistrations.set(username, { pin, email, password, username });
+            ConsoleManager.info("AuthManager", "Kullanıcı kaydı için pin oluşturuldu: " + email + " - " + pin);
 
             EmailManager.getInstance().sendEmail(
                 email,

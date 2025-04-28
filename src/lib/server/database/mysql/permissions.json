@@ -1,25 +1,38 @@
 [
   {
-    "uuid": "a998af73-3d91-3c84-b616-a80a0fd258a5",
-    "permissions": [
-      "group.lord",
-      "group.titan"
-    ]
-  },
-  {
     "uuid": "d025cda8-2b5c-3acc-9178-52afdc6a0bc9",
     "permissions": [
-      "group.legend",
-      "group.legend",
-      "group.yuce",
-      "group.titan",
-      "group.lord"
+      "group.legend"
     ]
   },
   {
     "uuid": "3e587d57-46ab-3e40-99e5-9dd253c6e088",
     "permissions": [
       "group.yuce"
+    ]
+  },
+  {
+    "uuid": "b3c71131-a870-32ec-91c5-104c800b37d3",
+    "permissions": [
+      "group.legend"
+    ]
+  },
+  {
+    "uuid": "5fdebe68-13a5-37ba-a6f1-3cc62c7ecf5b",
+    "permissions": [
+      "group.yuce"
+    ]
+  },
+  {
+    "uuid": "a998af73-3d91-3c84-b616-a80a0fd258a5",
+    "permissions": [
+      "group.legend"
+    ]
+  },
+  {
+    "uuid": "185c670f-6d69-326e-8905-cd6d3b75192d",
+    "permissions": [
+      "group.titan"
     ]
   }
 ]

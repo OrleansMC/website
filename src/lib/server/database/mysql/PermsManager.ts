@@ -97,7 +97,7 @@ export default class PermsManager {
                     const discordAccount = await DiscordOauth2Manager.getInstance().getAccount(playerName);
                     if (!discordAccount) continue;
 
-                    await pushMetadata(discordAccount.access_token, {
+                    pushMetadata(discordAccount.access_token, {
                         oyuncu: 1,
                         lord: permissions.includes('group.lord') ? 1 : 0,
                         titan: permissions.includes('group.titan') ? 1 : 0,

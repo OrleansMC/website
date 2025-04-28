@@ -17,6 +17,8 @@ import { useEffect, useState } from 'react';
 import { PageProps } from '@/types';
 import Loading from '@/components/common/Loading';
 import { useRouter } from 'next/router';
+import Script from 'next/script';
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 export default function App({ Component, pageProps }: PageProps & AppProps) {
   const [loading, setLoading] = useState<boolean | null>(null);
@@ -68,6 +70,7 @@ export default function App({ Component, pageProps }: PageProps & AppProps) {
         <meta name="og:site_name" property="og:site_name" content="OrleansMC" />
         <meta name="og:url" property="og:url" content="https://orleansmc.com/" />
       </Head>
+      <GoogleAnalytics gaId='G-2YPEQ5L1HV' />
       <style jsx global>{`
       html {
         font-family: ${font.style.fontFamily};

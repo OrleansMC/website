@@ -91,12 +91,12 @@ const nextConfig = {
       },
       {
         source: '/discord',
-        destination: 'https://discord.gg/orleansmc',
+        destination: 'https://discord.gg/orleans',
         permanent: false,
       },
       {
         source: '/destek',
-        destination: 'https://discord.gg/orleansmc',
+        destination: 'https://discord.gg/orleans',
         permanent: false,
       },
       {
